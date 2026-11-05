@@ -1,0 +1,14 @@
+# Core dependencies for the tactical baseline and Parquet contracts.
+numpy==2.5.4
+pandas==3.1.1
+scipy==1.18.1
+pyarrow==26.0.1
+pyyaml==6.0.3
+
+# Additional teammate development dependencies; pin these once integrated and tested.
+scikit-learn
+hmmlearn
+xgboost
+opencv-python
+google-genai
+# kloppy and matplotlib are listed in the official requirements-starter.txt.

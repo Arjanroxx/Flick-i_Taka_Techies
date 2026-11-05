@@ -1,0 +1,11 @@
+artifacts/
+submission.csv
+Flick-i_Taka_Techies.csv
+.env
+.env.*
+__pycache__/
+.venv/
+data/*
+!data/README.md
+evaluation/reports/
+evaluation/scoreboard.csv

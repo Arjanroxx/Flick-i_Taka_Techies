@@ -1,0 +1,24 @@
+paths:
+  spatial: artifacts/spatial_features.parquet
+  deadball: artifacts/deadball_mask.parquet
+  predictions: artifacts/base_predictions.parquet
+  overrides: artifacts/llm_overrides.parquet
+  submission: Flick-i_Taka_Techies.csv
+  validator: evaluation/validate_submission.py
+  evaluator: evaluation/run_evaluation.py
+  evaluation_results: artifacts/evaluation_input
+  evaluation_reports: artifacts/evaluation
+data:
+  # null uses ./data or the official MTAH_DATA_DIR environment variable.
+  directory: null
+  source: tactical
+pitch: {length: 105.3, width: 68}
+hmm:
+  transition: [[0.995, 0.002, 0.003], [0.002, 0.995, 0.003], [0.005, 0.005, 0.990]]
+thresholds:
+  entropy: 0.9
+  override_confidence: 0.8
+  short_gap: 12
+  restart_speed: 3.0
+  restart_accel: 8.0
+  stationary_speed: 0.3
