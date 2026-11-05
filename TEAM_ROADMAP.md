@@ -48,7 +48,7 @@ P4 also runs the official examples, which need no licensed match assets:
 | P1 | Complete setup. Open mock A and understand its ball, distance and gap columns. | A mock file that passes `validate("spatial", table)`, plus a short setup status for the team. | None |
 | P2 | Complete setup. Open mock B and map each column to stoppage or restart evidence. | A mock B that passes `validate("deadball", table)`, plus a list of tag types the parser must support. | None |
 | P3 | Run the mock pipeline. Read C and inspect its probabilities and labels. | Valid mock C and a CSV accepted by the official validator. | None |
-| P4 | Score the four bundled official baseline CSVs. Read the evaluation and rules documents. | Saved baseline scoreboard and confirmation that the mock pipeline passes. | None |
+| P4 (Arjan) | Score the four bundled official baseline CSVs. Read the evaluation and rules documents. | **Complete on Nov 6** — [scoreboard and verification report](docs/p4/nov05_completion.md). Mock pipeline and contracts passed. | None |
 
 ## Nov 6 — prepare inputs without waiting for the match
 
