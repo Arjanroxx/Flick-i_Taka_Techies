@@ -9,6 +9,6 @@ pyyaml==6.0.3
 scikit-learn
 hmmlearn
 xgboost
-opencv-python
+opencv-python==5.0.0.93
 google-genai
 # kloppy and matplotlib are listed in the official requirements-starter.txt.
