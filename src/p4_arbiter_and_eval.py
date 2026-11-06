@@ -4,6 +4,38 @@ from pathlib import Path
 
 from .contracts import SCHEMAS, frame_halves, read
 
+METRICA_SAMPLE_REVISION = "e706dd506b360d69d9d123d5b8026e7294b13996"
+METRICA_SAMPLE_URL = (
+    "https://raw.githubusercontent.com/metrica-sports/sample-data/"
+    + METRICA_SAMPLE_REVISION
+    + "/data/Sample_Game_1/Sample_Game_1_RawEventsData.csv"
+)
+
+
+def load_metrica_events(path):
+    """Load other-match event observations without inventing frame possession labels."""
+    events = pd.read_csv(path, encoding="utf-8-sig")
+    required = ["Team", "Type", "Period", "Start Frame", "End Frame",
+                "Start Time [s]", "End Time [s]"]
+    if not set(required).issubset(events.columns) or events.empty:
+        raise ValueError("Expected a non-empty Metrica sample events CSV")
+    for name in required[2:]:
+        events[name] = pd.to_numeric(events[name], errors="raise")
+        if not np.isfinite(events[name]).all():
+            raise ValueError(f"Missing or non-finite Metrica event values in {name}")
+    if not events.Team.isin(["Home", "Away"]).all() or events.Type.isna().any():
+        raise ValueError("Unknown team or missing event type")
+    frames = events[["Period", "Start Frame", "End Frame"]].to_numpy()
+    if ((frames[:, 0] < 1).any() or (frames[:, 1:] < 0).any()
+            or (frames != np.floor(frames)).any()):
+        raise ValueError("Metrica periods must be positive and frames nonnegative integers")
+    # Preserve source anomalies for assessment instead of silently repairing event labels.
+    events.attrs["reversed_intervals"] = int((
+        (events["End Frame"] < events["Start Frame"])
+        | (events["End Time [s]"] < events["Start Time [s]"])
+    ).sum())
+    return events
+
 def find_windows(predictions, threshold):
     windows = []
     for half in (1, 2):
