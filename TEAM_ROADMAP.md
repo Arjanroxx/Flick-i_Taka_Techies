@@ -66,7 +66,7 @@ P4 also runs the official examples, which need no licensed match assets:
 | P1 | Check metre conversion, short-gap interpolation, half resets and the inverse homography helper using fixtures. | Checks that preserve long gaps, avoid interpolation across halves and retain out-of-bounds coordinates. | None |
 | P2 | Check tag rounding and exclusive end frames. Try restart detection with synthetic speed spikes. | Boundary examples and a list of provisional restart thresholds. | None |
 | P3 | Verify that unavailable distances produce neutral team evidence and that each half starts independently. | Finite normalized probabilities on missing-input examples, with X outside play. | None |
-| P4 | Frame extraction has passed locally on both delivered videos. Finish the local arbiter response format and invalid-response checks. | A frame-extraction example and a response schema with label, confidence and interval bounds. | None |
+| P4 | Frame extraction has passed locally on both delivered videos. Finish the local arbiter response format and invalid-response checks. | **Complete** — local frame-read checks and [tested response contract](docs/p4/nov07_08_completion.md#response-contract). | None |
 
 ## Nov 8 — review and improve the first real handoffs
 
@@ -77,7 +77,7 @@ Initial ingestion passed on Nov 6. Use this day for teammate-reviewed handoffs a
 | P1 | Review the Nov 6 spatial baseline. Verify team-slot mapping, metre conversion and missing-ball quality; publish P1's reviewed A v0. | **A v0** at the agreed handoff path, passing its contract, with missing-ball and gap-length summaries. | Data email |
 | P2 | Build on the passed Nov 6 time-base check. Review real categories, overlap and restart-window quality. | A tag-count summary and examples of parsed intervals, with no manual possession labels. | Data email |
 | P3 | Compare delivered frame counts with the published half blocks. Keep the mock pipeline ready for A/B replay. | An integration checklist identifying the exact A and B files needed for the first real run. | Data email |
-| P4 | Build on the Nov 6 local video checks. Document the broadcast discrepancy, start the technical document and design the local arbitration experiment. | Video-read status and a technical-document outline covering inputs, method, training sources and reproduction. | Data email |
+| P4 | Build on the Nov 6 local video checks. Document the broadcast discrepancy, start the technical document and design the local arbitration experiment. | **Complete** — video-read status, [experiment design and technical outline](docs/p4/nov07_08_completion.md). | Data email |
 
 P1 starts with tactical tracking. Broadcast is an optional extension because it needs a separately verified synchronization method.
 
