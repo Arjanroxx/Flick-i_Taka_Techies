@@ -4,7 +4,7 @@ Four-person team workflow for the More Than a Hack 2027 possession challenge.
 
 **Start with [TEAM_ROADMAP.md](TEAM_ROADMAP.md).** It gives each person a daily task, an expected deliverable and the teammate handoffs they need.
 
-Match data access is pending. The organisers estimate delivery within 72 hours. The team plan assumes arrival around Nov 8, 2026 and keeps Nov 16 for reproduction and Nov 17 for submission.
+Match data arrived on Nov 6, 2026. Initial tactical processing and local video checks pass. See [P4's Nov 6 report](docs/p4/nov06_completion.md) for the external sample loader, local outputs and remaining broadcast issues. Nov 16 is reserved for reproduction and Nov 17 for submission.
 
 ## Run the shared workflow
 
@@ -26,7 +26,7 @@ After receiving and unpacking the licensed bundle according to [DATA.md](DATA.md
 
 The real-data run creates the team handoffs, exports `Flick-i_Taka_Techies.csv`, validates it, and runs the public scorer. A different data location can be passed with `--data-dir 'D:/match-data'` or `MTAH_DATA_DIR`.
 
-The tactical baseline, mock workflow and official-format fixture checks have passed. Actual-match behavior awaits the licensed data. Broadcast synchronization and local arbitration remain optional development work described in the roadmap. Competition data and extracts must stay out of hosted LLMs under the official overview terms.
+The tactical baseline, mock workflow and official-format fixture checks have passed. The delivered tactical data now passes ingestion and output-contract checks. Possession accuracy still needs development and suitable external validation. Broadcast synchronization and local arbitration remain optional development work described in the roadmap. Competition data and extracts must stay out of hosted LLMs under the official overview terms.
 
 ## Shared files
 

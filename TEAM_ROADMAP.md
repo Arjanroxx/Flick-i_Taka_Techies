@@ -4,11 +4,11 @@ Our goal is one reproducible CSV with 199,319 rows, one per tactical-video frame
 
 ## Dates and data arrival
 
-The organisers say access will arrive by email within 72 hours. For planning, we assume arrival around **Nov 8, 2026**, counting from Nov 5. This is an estimate, not a confirmed delivery date. The submission deadline is **Nov 17, 2026**.
+**Data arrived on Nov 6, 2026**, ahead of the original Nov 8 planning estimate. The submission deadline remains **Nov 17, 2026**.
 
-**Nov 5–7 use synthetic examples and public data from other matches.** Every person can start immediately. On receipt of the email, each person downloads the licensed bundle using their own authorised access and follows `DATA.md`.
+P4 has completed today's external sample loader and source assessment, plus a real tactical baseline run, tracking/tag alignment checks, local video extraction checks and an initial uncertainty-window queue. See [the Nov 6 report](docs/p4/nov06_completion.md). These checks accelerate preparation. Each teammate still owns the quality of their method.
 
-If access arrives late, continue the Nov 5–7 preparation tasks, then complete the Nov 8 ingestion checks first. Protect Nov 16 for reproduction and Nov 17 for submission. Keep the tactical-only baseline as the fallback and drop unfinished optional improvements before shortening those final checks.
+P1, P2 and P3 can start reviewing real inputs now. Keep Nov 16 for exact reproduction and Nov 17 for submission. Broadcast video has a one-frame count discrepancy, and broadcast homography is absent from the supplied folder. Continue tactical development while investigating optional broadcast alignment.
 
 ## Who owns what
 
@@ -48,16 +48,16 @@ P4 also runs the official examples, which need no licensed match assets:
 | P1 | Complete setup. Open mock A and understand its ball, distance and gap columns. | A mock file that passes `validate("spatial", table)`, plus a short setup status for the team. | None |
 | P2 | Complete setup. Open mock B and map each column to stoppage or restart evidence. | A mock B that passes `validate("deadball", table)`, plus a list of tag types the parser must support. | None |
 | P3 | Run the mock pipeline. Read C and inspect its probabilities and labels. | Valid mock C and a CSV accepted by the official validator. | None |
-| P4 | Score the four bundled official baseline CSVs. Read the evaluation and rules documents. | Saved baseline scoreboard and confirmation that the mock pipeline passes. | None |
+| P4 (Arjan) | Score the four bundled official baseline CSVs. Read the evaluation and rules documents. | **Complete on Nov 6** — [scoreboard and verification report](docs/p4/nov05_completion.md). Mock pipeline and contracts passed. | None |
 
-## Nov 6 — prepare inputs without waiting for the match
+## Nov 6 — data arrived; complete preparation and start real checks
 
 | Person | What to do | Deliverable by end of day | Cross-teammate prerequisite |
 |---|---|---|---|
-| P1 | Review the official raw tracking format. Try examples with missing ball and player positions. | Loader checks showing `frame_id - 1` alignment and missing-value handling on synthetic input. | None |
-| P2 | Try a small synthetic Smart Tagging XML with throw-ins, corners, kick-offs and an unknown team. | Parser examples showing category mapping, half-open intervals and safe handling of `N/A`. | None |
-| P3 | Inspect the HMM on synthetic sequences containing turnovers, stoppages and occlusions. | A short behavior report showing where smoothing changes labels and where X is emitted. | None |
-| P4 | Select and load a public dataset from another match for development. Check that its licence and labels suit the intended use. | A working sample loader and a source/licence/label description, or a documented reason it cannot support supervised tuning. | None |
+| P1 | Review the delivered tactical tracking and the existing real A output. Try synthetic missing-observation cases as well. | Loader checks showing `frame_id - 1` alignment and missing-value handling on synthetic input. | None |
+| P2 | Inspect real tag categories and timing, then try synthetic boundary cases for throw-ins, corners, kick-offs and unknown teams. | Parser examples showing category mapping, half-open intervals and safe handling of `N/A`. | None |
+| P3 | Inspect the real baseline output and use synthetic turnovers, stoppages and occlusions to check behavior. | A short behavior report showing where smoothing changes labels and where X is emitted. | None |
+| P4 | Select and load a public dataset from another match for development. Check that its licence and labels suit the intended use. | **Complete** — [working event loader and source assessment](docs/p4/nov06_completion.md). Direct frame-possession tuning remains unsupported without suitable labels. | None |
 
 ## Nov 7 — finish preparation
 
@@ -66,18 +66,18 @@ P4 also runs the official examples, which need no licensed match assets:
 | P1 | Check metre conversion, short-gap interpolation, half resets and the inverse homography helper using fixtures. | Checks that preserve long gaps, avoid interpolation across halves and retain out-of-bounds coordinates. | None |
 | P2 | Check tag rounding and exclusive end frames. Try restart detection with synthetic speed spikes. | Boundary examples and a list of provisional restart thresholds. | None |
 | P3 | Verify that unavailable distances produce neutral team evidence and that each half starts independently. | Finite normalized probabilities on missing-input examples, with X outside play. | None |
-| P4 | Test frame extraction on an available public video or generated test video. Define the automated arbiter response format. | A frame-extraction example and a response schema with label, confidence and interval bounds. | None |
+| P4 | Frame extraction has passed locally on both delivered videos. Finish the local arbiter response format and invalid-response checks. | **Complete** — local frame-read checks and [tested response contract](docs/p4/nov07_08_completion.md#response-contract). | None |
 
-## Nov 8 — receive and inspect the match bundle
+## Nov 8 — review and improve the first real handoffs
 
-These tasks begin when the organisers provide access.
+Initial ingestion passed on Nov 6. Use this day for teammate-reviewed handoffs and feature-quality checks. Earlier dates below describe baseline availability, not completed teammate method reviews.
 
 | Person | What to do | Deliverable by end of day | Cross-teammate prerequisite |
 |---|---|---|---|
-| P1 | Load tactical ATD. Verify row count, team-slot mapping and metre coordinates. Run the existing spatial baseline. | **A v0** at the agreed handoff path, passing its contract, with missing-ball and gap-length summaries. | Data email |
-| P2 | Load real Smart Tagging. Review its actual categories and timing. | A tag-count summary and examples of parsed intervals, with no manual possession labels. | Data email |
+| P1 | Review the Nov 6 spatial baseline. Verify team-slot mapping, metre conversion and missing-ball quality; publish P1's reviewed A v0. | **A v0** at the agreed handoff path, passing its contract, with missing-ball and gap-length summaries. | Data email |
+| P2 | Build on the passed Nov 6 time-base check. Review real categories, overlap and restart-window quality. | A tag-count summary and examples of parsed intervals, with no manual possession labels. | Data email |
 | P3 | Compare delivered frame counts with the published half blocks. Keep the mock pipeline ready for A/B replay. | An integration checklist identifying the exact A and B files needed for the first real run. | Data email |
-| P4 | Check video metadata and sample frame reads. Review the official scoring output and begin the technical document. | Video-read status and a technical-document outline covering inputs, method, training sources and reproduction. | Data email |
+| P4 | Build on the Nov 6 local video checks. Document the broadcast discrepancy, start the technical document and design the local arbitration experiment. | **Complete** — video-read status, [experiment design and technical outline](docs/p4/nov07_08_completion.md). | Data email |
 
 P1 starts with tactical tracking. Broadcast is an optional extension because it needs a separately verified synchronization method.
 
@@ -210,4 +210,4 @@ Keep licensed match assets in `data/` and generated tracking, video clips, API c
 - P4 loads an existing valid D or returns an empty table. Its window finder and frame extractor are implemented. External Metrica ingestion and local arbitration remain development work. Gemini experiments are limited to external examples whose terms permit upload.
 - The provided public five-minute labels are for pipeline sanity checks. No human labels, manual corrections or frame-specific hand-coded possession rules on the competition match are allowed.
 
-The official files came from upstream commit `f8f2629ff1e0985f81d7e59d8413678514ee1530`. Verification passed under Python 3.12 for the official baseline scores, mock pipeline, an official-format synthetic fixture, gap and half boundaries, saved overrides, artifact replay and CSV validation. Actual-match behavior remains to be verified when access arrives.
+The official files came from upstream commit `f8f2629ff1e0985f81d7e59d8413678514ee1530`. Verification passed under Python 3.12 for the official baseline scores, mock pipeline, an official-format synthetic fixture, gap and half boundaries, saved overrides, artifact replay and CSV validation. Initial real-data ingestion, contracts and local decode checks passed on Nov 6. Possession accuracy and feature quality remain development work.
