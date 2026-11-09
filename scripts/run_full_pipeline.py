@@ -1,6 +1,7 @@
 """Run the tactical-feed baseline or replay the team's validated handoffs."""
 import argparse
 from copy import deepcopy
+import json
 from pathlib import Path
 import shutil
 import subprocess
@@ -22,6 +23,7 @@ def main():
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument("--mock", action="store_true", help="Use synthetic A and B under artifacts/mock")
     modes.add_argument("--from-artifacts", action="store_true", help="Replay real A and B handoffs")
+    modes.add_argument("--deadball-only", action="store_true", help="Build B from the saved P1 handoff and Smart Tagging")
     parser.add_argument("--data-dir", type=Path, help="Override ./data and MTAH_DATA_DIR")
     parser.add_argument("--config", type=Path, default=ROOT / "configs/config.yaml")
     parser.add_argument("--skip-evaluation", action="store_true", help="Skip public scoring, retain validation")
@@ -40,6 +42,24 @@ def main():
             paths[name] = ROOT / "artifacts/mock" / paths[name].name
         print("Synthetic smoke run. Output is for integration checks.", flush=True)
     config["paths"] = {name: str(path) for name, path in paths.items()}
+    if args.deadball_only:
+        spatial = read("spatial", paths["spatial"])
+        deadball = p2.run(config, spatial)
+        write("deadball", deadball, paths["deadball"])
+        playing = deadball.loc[spatial.half != 0]
+        print(json.dumps({
+            "path": str(paths["deadball"]),
+            "frames": len(deadball),
+            "out_of_bounds_frames": int(playing.is_out_of_bounds.sum()),
+            "strong_boundary_frames": int((playing.is_dead_ball_prob >= 0.98).sum()),
+            "restart_candidates_by_type": playing.loc[
+                playing.restart_frame_flag, "active_set_piece_type"
+            ].value_counts().to_dict(),
+            "tagged_frames_by_type": playing.loc[
+                playing.active_set_piece_type != "none", "active_set_piece_type"
+            ].value_counts().to_dict(),
+        }, indent=2))
+        return
     if not paths["validator"].is_file():
         parser.error(f"Missing official validator at {paths['validator']}")
     if args.mock:

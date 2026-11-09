@@ -15,7 +15,7 @@ P1, P2 and P3 can start reviewing real inputs now. Keep Nov 16 for exact reprodu
 | Person | Responsibility in plain language | Main file | Handoff |
 |---|---|---|---|
 | P1 | Work out where the ball and both teams are. Fill only suitable short ball gaps. | `src/p1_spatial_features.py` | **A** — `artifacts/spatial_features.parquet` |
-| P2 | Estimate when play has stopped and when it restarts. | `src/p2_deadball_detector.py` | **B** — `artifacts/deadball_mask.parquet` |
+| P2 | Estimate when play has stopped and when it restarts. | `src/p2_deadball_detector.py` ([run instructions](docs/p2/stoppage_mask.md)) | **B** — `artifacts/deadball_mask.parquet` |
 | P3 | Turn A and B into a stable possession sequence. | `src/p3_sequence_model.py` | **C** — `artifacts/base_predictions.parquet` and the final CSV |
 | P4 | Check difficult windows with an automated local method and own evaluation and reproduction checks. | `src/p4_arbiter_and_eval.py` | **D** — `artifacts/llm_overrides.parquet` and evaluation reports |
 
