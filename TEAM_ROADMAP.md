@@ -88,7 +88,7 @@ P1 starts with tactical tracking. Broadcast is an optional extension because it 
 | P1 | Inspect A v0 for unreasonable speeds, missing-team distances and gap behavior. Fix clear processing bugs. | **A v1**, validated, with a brief description of changes from A v0. | None |
 | P2 | Combine automatic tags, unclipped ball positions and kinematics into the first stoppage mask. | **B v0**, validated, with candidate restart frames and confidence assumptions. | **WAIT FOR P1 · Nov 8 — A v0** |
 | P3 | Run the sequence model with the first real A and B. Validate its output format. | **C v0** and a first real-data CSV that passes the official format validator. | **WAIT FOR P1 · Nov 8 — A v0; P2 · Nov 9 — B v0** |
-| P4 | Implement structured-response parsing and rejection of malformed arbiter output using synthetic examples. | Parser examples rejecting invalid labels, confidence values and interval bounds. | None |
+| P4 | Implement structured-response parsing and rejection of malformed arbiter output using synthetic examples. | **Complete on Nov 11** — [synthetic response tests](tests/test_arbiter_response.py) passed for valid labels and confidence endpoints, malformed JSON, invalid fields and interval bounds. Run with `python -m unittest discover -s tests -v`. | None |
 
 ## Nov 10 — improve stoppages and inspect difficult windows
 

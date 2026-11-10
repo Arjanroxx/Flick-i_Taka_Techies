@@ -37,9 +37,16 @@ def load_metrica_events(path):
     ).sum())
     return events
 
+def _unique_json_fields(pairs):
+    record = dict(pairs)
+    if len(record) != len(pairs):
+        raise ValueError("Duplicate fields in arbiter response")
+    return record
+
+
 def parse_arbiter_response(response, window):
     """Validate one local JSON response and return a Contract D row."""
-    record = json.loads(response)
+    record = json.loads(response, object_pairs_hook=_unique_json_fields)
     schema = SCHEMAS["overrides"]
     if not isinstance(record, dict) or record.keys() != schema.keys():
         raise ValueError("Expected exactly start_frame, end_frame, override_label and confidence")
