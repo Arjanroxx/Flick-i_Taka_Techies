@@ -22,3 +22,7 @@ thresholds:
   restart_speed: 3.0
   restart_accel: 8.0
   stationary_speed: 0.3
+  # Provisional P2 settings for 25 fps tactical tracking.
+  stoppage_confirm_frames: 3
+  boundary_margin_m: 0.35
+  stoppage_lookback_seconds: 3.0
