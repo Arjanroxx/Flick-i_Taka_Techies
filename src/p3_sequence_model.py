@@ -8,7 +8,7 @@ def run(config, spatial, deadball):
     dead = deadball.is_dead_ball_prob.to_numpy()
     distances = spatial[["dist_nearest_H", "dist_nearest_A"]].to_numpy()
     # An absent team observation provides no preference, rather than a fake distance.
-    known = np.isfinite(distances).all(axis=1)
+    known = np.isfinite(distances).all(axis=1) & ~spatial.ball_is_imputed.to_numpy()
     teams = np.full((len(spatial), 2), 0.5)
     teams[known] = softmax(-distances[known], axis=1)
     emissions = np.column_stack((teams * (1 - dead[:, None]), dead))
