@@ -8,6 +8,12 @@ from starter.load_atd import video_frame_of
 from starter.load_homography import unproject
 from .contracts import FRAME_COUNT, FRAMES, SCHEMAS, frame_halves
 
+# Ceiling for a short-gap fill: interpolating across endpoints whose displacement implies a
+# faster-than-physical average speed (a stepped-on tracker reading, not a moving ball) would
+# invent metres of travel. 40 m/s is above every reliably observed ball speed (p99 ~25 m/s);
+# gaps that fail the ceiling are left missing instead of filled.
+MAX_INTERP_SPEED_MS = 40.0
+
 
 def project(points, homography):
     """Image pixels to metres, using the inverse of the supplied pitch-to-image matrix."""
@@ -63,14 +69,25 @@ def build_features(ball, players, teams, short_gap):
         for left, right in zip(starts, ends):
             table.loc[left:right - 1, "gap_length_frames"] = right - left
             if right - left <= short_gap and left > start and right < stop:
+                duration = (right - left + 1) / GAMES[GAME]["fps"]
+                span = np.hypot(filled[right, 0] - filled[left - 1, 0],
+                                filled[right, 1] - filled[left - 1, 1])
+                if span / duration > MAX_INTERP_SPEED_MS:
+                    # Endpoints are physically unreachable across the gap; leave it missing.
+                    continue
                 for axis in (0, 1):
                     filled[left:right, axis] = np.interp(
                         np.arange(left, right), [left - 1, right], filled[[left - 1, right], axis]
                     )
                 table.loc[left:right - 1, "ball_is_imputed"] = True
-        # Derivatives never cross a half boundary or an unresolved gap.
+        # Derivatives need observed positions at both ends of the step; they never cross a
+        # half boundary, an unresolved gap, or a filled (imputed) frame.
+        observed = ~missing[start:stop]
+        pair_ok = observed[:-1] & observed[1:]
         velocity = np.full((stop - start, 2), np.nan, dtype="float32")
-        velocity[1:] = np.diff(filled[start:stop], axis=0) * GAMES[GAME]["fps"]
+        velocity[1:] = np.where(pair_ok[:, None],
+                                np.diff(filled[start:stop], axis=0) * GAMES[GAME]["fps"],
+                                np.nan)
         speed = np.linalg.norm(velocity, axis=1)
         acceleration = np.full(len(speed), np.nan, dtype="float32")
         acceleration[1:] = np.linalg.norm(np.diff(velocity, axis=0), axis=1) * GAMES[GAME]["fps"]
