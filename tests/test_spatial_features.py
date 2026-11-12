@@ -51,16 +51,39 @@ class SpatialFeaturesTests(unittest.TestCase):
         ball = self.ball0.copy()
         left = self.start1 + 200
         ball[left - 1] = (10.0, 10.0)
-        ball[left + 5] = (20.0, 20.0)
+        ball[left + 5] = (13.0, 13.0)  # 3 m per axis: physically plausible over the gap
         ball[left:left + 5] = np.nan
         table = self.build(ball)
         for offset in range(5):
             frame = left + offset
-            expected = 10.0 + 10.0 * (offset + 1) / 6.0
+            expected = 10.0 + 0.5 * (offset + 1)
             self.assertAlmostEqual(float(table.ball_x[frame]), expected, places=3)
             self.assertAlmostEqual(float(table.ball_y[frame]), expected, places=3)
             self.assertTrue(bool(table.ball_is_imputed[frame]))
             self.assertEqual(int(table.gap_length_frames[frame]), 5)
+
+    def test_teleport_gap_not_interpolated(self):
+        ball = self.ball0.copy()
+        left = self.start1 + 350
+        ball[left - 1] = (10.0, 10.0)
+        ball[left + 2] = (96.0, 10.0)  # 86 m across a 2-frame gap: tracker teleport
+        ball[left:left + 2] = np.nan
+        table = self.build(ball)
+        self.assertTrue(table.ball_x[left:left + 2].isna().all())
+        self.assertTrue((~table.ball_is_imputed[left:left + 2]).all())
+        self.assertTrue((table.gap_length_frames[left:left + 2] == 2).all())
+
+    def test_velocity_across_imputed_bridge_is_nan(self):
+        ball = self.ball0.copy()
+        left = self.start1 + 550
+        ball[left:left + 3] = np.nan  # short plausible gap: interpolated
+        table = self.build(ball)
+        self.assertTrue(bool(table.ball_is_imputed[left]))
+        for frame in (left, left + 1, left + 2, left + 3):  # any step touching a filled frame
+            self.assertTrue(np.isnan(table.ball_vx[frame]))
+            self.assertTrue(np.isnan(table.ball_speed[frame]))
+        self.assertTrue(np.isfinite(table.ball_vx[left - 1]))
+        self.assertTrue(np.isfinite(table.ball_vx[left + 4]))
 
     def test_long_gap_stays_missing(self):
         ball = self.ball0.copy()
