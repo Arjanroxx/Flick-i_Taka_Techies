@@ -40,6 +40,9 @@ The tactical baseline, mock workflow and official-format fixture checks have pas
 | `src/p3_sequence_model.py` | Smoothed possession predictions |
 | `src/p4_arbiter_and_eval.py` | Difficult-window helpers and saved overrides |
 | `scripts/run_full_pipeline.py` | Connects all stages and validates the export |
+| `scripts/run_local_arbiter.py` | Trials local arbitration on saved A/B/C and writes a private response cache and candidate D |
+
+After generating A, B and C, run `.venv/Scripts/python.exe scripts/run_local_arbiter.py` to review a bounded sample of disputed windows. Pass `--config` to use alternative handoff paths. The candidate D, baseline/candidate CSVs and audit cache are saved under `artifacts/p4/nov10/dry_run/`. The [Nov 10 report](docs/p4/nov10_completion.md) records the provisional rule and verification results.
 
 Read [RULES.md](RULES.md) before development. Keep licensed assets in `data/` and generated outputs in `artifacts/`, both excluded from Git. The public five-minute labels are for pipeline sanity checks only.
 

@@ -75,6 +75,48 @@ def find_windows(predictions, threshold):
         windows.extend(zip(starts, ends))
     return windows
 
+def local_arbiter(spatial, deadball, predictions, window, *, min_observed_frames=3,
+                  max_distance_m=2.0, min_margin_m=2.0, max_dead_probability=0.2):
+    """Propose team overrides from sustained observed proximity inside one request."""
+    start, end = window
+    evidence = spatial.loc[start:end]
+    stops = deadball.loc[start:end]
+    home = evidence.dist_nearest_H.to_numpy()
+    away = evidence.dist_nearest_A.to_numpy()
+    near = np.minimum(home, away)
+    far = np.maximum(home, away)
+    observed = (
+        np.isfinite(evidence[["ball_x", "ball_y"]]).all(axis=1).to_numpy()
+        & ~evidence.ball_is_imputed.to_numpy()
+        & (evidence.gap_length_frames.to_numpy() == 0)
+        & (evidence.half.to_numpy() != 0)
+        & ~stops.is_out_of_bounds.to_numpy()
+        & (stops.is_dead_ball_prob.to_numpy() <= max_dead_probability)
+        & np.isfinite(home) & np.isfinite(away)
+        & (near <= max_distance_m) & (far - near >= min_margin_m)
+    )
+    records = []
+    for label, nearer in (("H", home < away), ("A", away < home)):
+        flags = np.r_[False, observed & nearer, False]
+        starts = np.flatnonzero(~flags[:-1] & flags[1:])
+        ends = np.flatnonzero(flags[:-1] & ~flags[1:])
+        for left, right in zip(starts, ends):
+            first, last = int(start + left), int(start + right - 1)
+            if (right - left < min_observed_frames
+                    or predictions.raw_label.loc[first:last].eq(label).all()):
+                continue
+            # A proximity score with no probability calibration.
+            score = float(np.min(far[left:right] / (near[left:right] + far[left:right])))
+            response = json.dumps({"start_frame": first, "end_frame": last,
+                                   "override_label": label, "confidence": score})
+            records.append(parse_arbiter_response(response, window))
+    if records:
+        return validate("overrides", pd.concat(records, ignore_index=True).sort_values(
+            ["start_frame", "end_frame"], ignore_index=True
+        ))
+    return pd.DataFrame({name: pd.Series(dtype=dtype) for name, dtype in SCHEMAS["overrides"].items()})
+
+
 def extract_frame(video_path, frame):
     import cv2
 

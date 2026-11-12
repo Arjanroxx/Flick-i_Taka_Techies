@@ -97,7 +97,7 @@ P1 starts with tactical tracking. Broadcast is an optional extension because it 
 | P1 | Improve imputation only where evidence supports it. Compare short linear filling with a candidate alternative. | A comparison based on fixtures or other-match data, and an updated A if justified. | None |
 | P2 | Recompute restart candidates using improved spatial features. Review tag-window limits and out-of-bounds behavior. | **B v1** and a restart-detection summary. | **WAIT FOR P1 · Nov 9 — A v1** |
 | P3 | Compare posterior labels with a Viterbi path on external or synthetic examples. Export disputed windows from C v0. | A decoder comparison and a list of high-entropy windows for P4. | None |
-| P4 | Use C v0 to test local automated arbitration on a small set of windows. Keep competition frames and features on the local machine. Log model, inputs and response. | **D v0**, possibly empty, plus an auditable response cache. No hand-labelled overrides. | **WAIT FOR P3 · Nov 9 — C v0** |
+| P4 | Use C v0 to test local automated arbitration on a small set of windows. Keep competition frames and features on the local machine. Log model, inputs and response. | **Complete on Nov 12** — [eight-window dry run](docs/p4/nov10_completion.md), validated empty D v0 and reproducible local response cache. Inputs regenerated from merged P1–P3 code. Refresh against P3's reviewed C when available. | **WAIT FOR P3 · Nov 9 — C v0** |
 
 ## Nov 11 — check feature quality and tune externally
 
