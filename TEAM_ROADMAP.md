@@ -115,7 +115,7 @@ P1 starts with tactical tracking. Broadcast is an optional extension because it 
 | P1 | Freeze the next spatial candidate and document remaining limitations. | **A candidate 1**, validated and reproducible from code. | None |
 | P2 | Rebuild B using the agreed spatial candidate. | **B candidate 1**, validated, with its A version recorded. | **WAIT FOR P1 · Nov 12 — A candidate 1** |
 | P3 | Run the agreed sequence settings on the new A and B. | **C candidate 1**, a valid CSV and an updated disputed-window list. | **WAIT FOR P1 · Nov 12 — A candidate 1; P2 · Nov 12 — B candidate 1** |
-| P4 | Start with the prior C while waiting, then regenerate arbitration for the new disputed windows. | **D candidate 1**, or an explicit empty D if arbitration is not ready. Record the C version used. | **WAIT FOR P3 · Nov 12 — C candidate 1** |
+| P4 | Start with the prior C while waiting, then regenerate arbitration for the new disputed windows. | **Provisional integration complete Nov 16** — [refreshed local C and explicit empty D](docs/p4/nov12_14_completion.md). Refresh against P3-reviewed C remains pending. | **WAIT FOR P3 · Nov 12 — C candidate 1** |
 
 Order this day's handoffs **P1 → P2 → P3 → P4**. P4 can finish the refreshed D on Nov 13 if needed.
 
@@ -126,7 +126,7 @@ Order this day's handoffs **P1 → P2 → P3 → P4**. P4 can finish the refresh
 | P1 | Resolve reproducible feature-processing bugs and review long-gap behavior. | Final proposed A changes, or confirmation that A candidate 1 is retained. | None |
 | P2 | Resolve reproducible category or restart-processing bugs. | Final proposed B changes, or confirmation that B candidate 1 is retained. | None |
 | P3 | Check the X shield on other-match data or fixtures. Confirm it cannot bridge a half boundary. | Final proposed sequence settings and a description of X behavior. | None |
-| P4 | Complete D candidate 1 and integrate it with the candidate CSV. Check its effect on external examples. | Validated override integration and an updated technical-document draft. | **WAIT FOR P3 · Nov 12 — C candidate 1** |
+| P4 | Complete D candidate 1 and integrate it with the candidate CSV. Check its effect on external examples. | **Provisional integration verified Nov 16** — empty D reproduces the base CSV; technical draft prepared. Reviewed-C refresh remains pending. | **WAIT FOR P3 · Nov 12 — C candidate 1** |
 
 ## Nov 14 — freeze the feature inputs
 
@@ -135,7 +135,7 @@ Order this day's handoffs **P1 → P2 → P3 → P4**. P4 can finish the refresh
 | P1 | Choose the spatial version to ship. Keep broadcast only if its alignment is verified and the full run works. | **Frozen A**, its code commit and regeneration command. | None |
 | P2 | Rebuild and freeze the stoppage mask against frozen A. | **Frozen B**, its code commit and the A version used. | **WAIT FOR P1 · Nov 14 — frozen A** |
 | P3 | Finalize sequence choices using external evidence. Prepare the final A/B integration run. | Frozen model settings and a written rationale based on external development. | None |
-| P4 | Complete external arbitration comparisons and decide whether the optional arbiter is ready to ship. | A documented include/omit decision, cached responses and the technical-document draft. | None |
+| P4 | Complete external arbitration comparisons and decide whether the optional arbiter is ready to ship. | **Complete Nov 16** — [omit decision and cached comparisons](docs/p4/nov12_14_completion.md), plus [technical draft](Flick-i_Taka_Techies_technical.md). | None |
 
 ## Nov 15 — freeze predictions and overrides
 
