@@ -118,6 +118,17 @@ class DeadballDetectorTests(unittest.TestCase):
         self.assertFalse(mask.restart_frame_flag.any())
         self.assertAlmostEqual(mask.at[self.start + 4, "is_dead_ball_prob"], 0.05)
 
+    def test_lead_up_does_not_backfill_over_slow_live_motion(self):
+        frame = self.start
+        self.spatial.loc[frame:frame + 2, "ball_speed"] = 0
+        self.spatial.loc[frame + 5:frame + 7, "ball_speed"] = 0
+        self.burst(frame + 8)
+        mask = self.mask(self.event("Free Kick"))
+        self.assertTrue(mask.at[frame + 8, "restart_frame_flag"])
+        self.assertAlmostEqual(mask.at[frame + 2, "is_dead_ball_prob"], 0.05)
+        self.assertAlmostEqual(mask.at[frame + 4, "is_dead_ball_prob"], 0.05)
+        self.assertAlmostEqual(mask.at[frame + 5, "is_dead_ball_prob"], 0.70)
+
     def test_evidence_resets_between_halves(self):
         self.spatial.loc[self.last - 2:self.last, "ball_x"] = -1
         self.burst(self.second)

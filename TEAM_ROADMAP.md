@@ -146,6 +146,11 @@ Order this day's handoffs **P1 → P2 → P3 → P4**. P4 can finish the refresh
 | P3 | Generate the final base predictions from frozen A and B. | **Frozen C**, its settings and a valid candidate CSV. | **WAIT FOR P1 · Nov 14 — frozen A; P2 · Nov 14 — frozen B** |
 | P4 | Regenerate or confirm local overrides against frozen C. Freeze the output cache and document model settings. | **Frozen D**, including an empty D if arbitration is omitted, plus reproduction instructions. | **WAIT FOR P3 · Nov 15 — frozen C** |
 
+P2's code candidate, fixture verification and freeze command are documented in
+[the P2 handoff guide](docs/p2/stoppage_mask.md). The final real-data B and
+P2 sign-off depend on running that command with the team's frozen A and
+authorized tactical XML.
+
 ## Nov 16 — reproduce the submission from a clean checkout
 
 | Person | What to do | Deliverable by end of day | Cross-teammate prerequisite |
