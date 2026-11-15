@@ -18,14 +18,16 @@ from src.contracts import SCHEMAS, read, validate, write
 from src.p4_arbiter_and_eval import apply_overrides, find_windows, local_arbiter
 
 MODEL = "observed_proximity_v1"
+LOCAL_SETTINGS = {"min_observed_frames": 3, "max_distance_m": 2.0,
+                  "min_margin_m": 2.0, "max_dead_probability": 0.2}
 
 
 def fingerprint(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def select_windows(predictions, threshold, limit, max_frames):
-    windows = find_windows(predictions, threshold)
+def select_windows(predictions, threshold, limit, max_frames, *, halves=None):
+    windows = find_windows(predictions, threshold, halves=halves)
     ranked = sorted(windows, key=lambda pair: (
         -float(predictions.state_entropy.loc[pair[0]:pair[1]].max()), pair[0]
     ))
@@ -63,8 +65,7 @@ def main():
     spatial = tables["spatial"]
     deadball = tables["deadball"]
     predictions = tables["predictions"]
-    settings = {"min_observed_frames": 3, "max_distance_m": 2.0,
-                "min_margin_m": 2.0, "max_dead_probability": 0.2}
+    settings = LOCAL_SETTINGS.copy()
     windows = select_windows(predictions, threshold, args.limit, args.max_window_frames)
     responses, requests = [], []
     for window in windows:

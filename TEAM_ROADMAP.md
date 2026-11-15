@@ -106,7 +106,7 @@ P1 starts with tactical tracking. Broadcast is an optional extension because it 
 | P1 | Check duplicate slots, nearest-team distances and relative-velocity spikes. Assess whether geometric control adds value. | **A v2** with a feature-quality summary. | None |
 | P2 | Test whether B v1 splits continuous play or misses plausible stoppages. Develop thresholds on other games or fixtures. | **B v2** and a record of the evidence used for threshold choices. | None |
 | P3 | Tune transition settings using suitable other-match labels or fixtures. Keep a record of each experiment. | A candidate configuration and an external-development comparison. | **WAIT FOR P4 · Nov 6 — external sample loader/source assessment**, if using it |
-| P4 | Check confidence filtering, overlapping overrides and half-boundary rejection. Assess arbitration on licensed other-match examples. | An override-application check and a provisional confidence threshold. | None |
+| P4 | Check confidence filtering, overlapping overrides and half-boundary rejection. Assess arbitration on licensed other-match examples. | **Complete on Nov 12** — [override checks and public Metrica tracking assessment](docs/p4/nov11_completion.md). Eight external windows reviewed, reproducible outputs, 43 tests passed. Threshold 0.8 remains provisional. | None |
 
 ## Nov 12 — refresh the complete team handoff
 

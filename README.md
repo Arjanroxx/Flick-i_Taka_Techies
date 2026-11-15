@@ -44,6 +44,8 @@ The tactical baseline, mock workflow and official-format fixture checks have pas
 
 After generating A, B and C, run `.venv/Scripts/python.exe scripts/run_local_arbiter.py` to review a bounded sample of disputed windows. Pass `--config` to use alternative handoff paths. The candidate D, baseline/candidate CSVs and audit cache are saved under `artifacts/p4/nov10/dry_run/`. The [Nov 10 report](docs/p4/nov10_completion.md) records the provisional rule and verification results.
 
+To run P4's external-match assessment, use `.venv/Scripts/python.exe scripts/assess_external_arbiter.py --download`. It fetches the pinned public Metrica sample and writes source-specific features, predictions and an audit cache under `artifacts/p4/nov11/external_run/`. The [Nov 11 report](docs/p4/nov11_completion.md) documents the source, timeline adapter and provisional confidence setting.
+
 Read [RULES.md](RULES.md) before development. Keep licensed assets in `data/` and generated outputs in `artifacts/`, both excluded from Git. The public five-minute labels are for pipeline sanity checks only.
 
 ## Official challenge documentation
