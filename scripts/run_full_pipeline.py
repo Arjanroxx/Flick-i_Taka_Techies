@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from games import GAME, GAMES
+from scripts import p2_handoff
 from src import p1_spatial_features as p1, p2_deadball_detector as p2
 from src import p3_sequence_model as p3, p4_arbiter_and_eval as p4
 from src.contracts import day1_mocks, frame_halves, read, validate, write
@@ -27,7 +28,11 @@ def main():
     parser.add_argument("--data-dir", type=Path, help="Override ./data and MTAH_DATA_DIR")
     parser.add_argument("--config", type=Path, default=ROOT / "configs/config.yaml")
     parser.add_argument("--skip-evaluation", action="store_true", help="Skip public scoring, retain validation")
+    parser.add_argument("--verify-deadball", action="store_true",
+                        help="Repeat B generation and require an identical Parquet SHA-256")
     args = parser.parse_args()
+    if args.verify_deadball and not args.deadball_only:
+        parser.error("--verify-deadball requires --deadball-only")
     config = yaml.safe_load(args.config.read_text(encoding="utf-8-sig"))
     config = deepcopy(config)
     paths = {name: (ROOT / path).resolve() for name, path in config["paths"].items()}
@@ -43,22 +48,8 @@ def main():
         print("Synthetic smoke run. Output is for integration checks.", flush=True)
     config["paths"] = {name: str(path) for name, path in paths.items()}
     if args.deadball_only:
-        spatial = read("spatial", paths["spatial"])
-        deadball = p2.run(config, spatial)
-        write("deadball", deadball, paths["deadball"])
-        playing = deadball.loc[spatial.half != 0]
-        print(json.dumps({
-            "path": str(paths["deadball"]),
-            "frames": len(deadball),
-            "out_of_bounds_frames": int(playing.is_out_of_bounds.sum()),
-            "strong_boundary_frames": int((playing.is_dead_ball_prob >= 0.98).sum()),
-            "restart_candidates_by_type": playing.loc[
-                playing.restart_frame_flag, "active_set_piece_type"
-            ].value_counts().to_dict(),
-            "tagged_frames_by_type": playing.loc[
-                playing.active_set_piece_type != "none", "active_set_piece_type"
-            ].value_counts().to_dict(),
-        }, indent=2))
+        report = p2_handoff.generate(config, paths, args.config, ROOT, args.verify_deadball)
+        print(json.dumps(report, indent=2))
         return
     if not paths["validator"].is_file():
         parser.error(f"Missing official validator at {paths['validator']}")

@@ -2,24 +2,32 @@
 
 ## Generate handoff B
 
-From the repository root, with your authorized tactical bundle and P1's validated
-`artifacts/spatial_features.parquet`:
+Use the team's frozen P1 handoff at `artifacts/spatial_features.parquet` and the
+authorized tactical bundle. From a clean checkout of the candidate commit, run:
 
 ```powershell
-.venv/Scripts/python.exe scripts/run_full_pipeline.py --deadball-only --data-dir 'D:/match-data'
+New-Item -ItemType Directory -Force artifacts | Out-Null
+.venv/Scripts/python.exe scripts/run_full_pipeline.py --deadball-only --verify-deadball --data-dir 'D:/match-data' |
+    Set-Content -Encoding utf8 artifacts/p2_handoff.json
 ```
 
-The command writes `artifacts/deadball_mask.parquet`, validates the B contract,
-and prints counts for observed boundary exits by frame, strong boundary evidence,
-tagged frames by category, and restart candidates by category. Use the team's
-`--config` option if A or B uses a different path. For P3 integration, use the same
-config with `--from-artifacts --skip-evaluation`. The regular full run rebuilds
-both A and B using the same detector.
+Pass `--config` when the team uses different paths. The command validates B and
+replaces the configured output after the repeat run produces the same SHA-256.
+The JSON records the checkout commit, hashes of A, the XML and the config,
+and the hash of B. It also records kickoff alignment, set-piece counts and
+overlaps, example intervals, candidate restarts and missing-ball counts.
+`--deadball-only` also works by itself for a single run.
 
-Share the B file privately with P3. Record the P1 handoff version, this code commit
-and the exact config with the handoff. Run the same command twice against the same
-inputs to check reproducibility. For identical environments you can compare hashes
-using `Get-FileHash artifacts/deadball_mask.parquet` after each run.
+Before signing off, check `reproduced_byte_for_byte`, both kickoff containment
+checks, the tag counts against [DATA.md](../../DATA.md), and the reported A hash
+against P1's frozen handoff. Use the interval examples and restart counts to
+investigate deviations in the automatic evidence. A match can reproduce exactly
+while still containing missed or false stoppages.
+
+Share B and the JSON privately with P3, together with P1's version and the config
+used. P3 can replay the same A/B pair with `--from-artifacts --skip-evaluation`.
+The regular full run builds A and B with the same detector. Keep the XML,
+Parquet files and match-specific JSON out of Git.
 
 ## How B is built
 
@@ -42,7 +50,8 @@ motion must follow a confirmed outside run or recent observed stillness
 (at or below 0.3 m/s for three frames) and an acceleration of at least 8 m/s²
 for the stillness case. A supported lead-up can extend back up to three seconds
 inside the tag. It starts at observed stillness or a confirmed boundary exit
-and stays after any earlier observed fast in-bounds motion within that lookback.
+and stays after any earlier observed in-bounds movement above the stationary
+threshold within that lookback.
 Overlapping tags combine evidence by strength. The narrower tag supplies the
 display category unless the frame is a restart, in which case the selected
 restart's tag supplies it.
@@ -75,3 +84,20 @@ are heuristic evidence weights. Verify tag counts, inferred restarts and
 reproducibility locally against the delivered assets before freezing B. Use the
 public five-minute labels only to sanity-check alignment and output, and use
 eligible other-match labels for model selection.
+
+## Candidate verification
+
+Synthetic fixtures exercise a one-frame tracking spike, a sustained observed
+boundary exit, a restart after stillness, missing and imputed ball positions,
+and slow live motion between two stationary intervals. The sustained-motion
+rule rejects the isolated spike, and the backfill stops at slow live motion.
+The fixture with a supported throw-in retains the restart on the first in-bounds
+frame of the sustained return. These checks support retaining the existing
+three-frame confirmation, 0.35 m boundary margin and 3 m/s restart threshold
+for this candidate. They do not measure generalization to a second match.
+
+The end-to-end fixture derives A using the merged P1 feature builder, reads a
+synthetic tactical XML, reproduces B byte for byte and feeds A/B to P3 and the
+official CSV validator. Real-match B and final sign-off require the authorized
+XML and a confirmed frozen A. The public five-minute labels are reserved for
+sanity checks and were not used to set the thresholds.
