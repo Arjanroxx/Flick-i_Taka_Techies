@@ -160,6 +160,8 @@ authorized tactical XML.
 | P3 | Run the full workflow with the frozen versions. Verify exact CSV reproduction and format. | A release-candidate CSV, its SHA-256 checksum and a successful validator log. | **WAIT FOR P4 · Nov 15 — frozen D** |
 | P4 | Use the public five-minute ground truth once for pipeline sanity checks. Finish the technical document and reproduction checklist. | Sanity-check report, final document draft and confirmation that the documented command reproduces the candidate CSV. | **WAIT FOR P3 · Nov 16 — release-candidate CSV** |
 
+P4 completed an additional [clean-source reproduction check](docs/p4/nov16_reproduction.md) on Nov 16. Two full runs matched the provisional candidate's A/B/C/D/CSV fingerprints and all 45 tests passed. Reviewed-release refresh, final sanity scoring and owner sign-offs remain pending.
+
 Use the public ground truth to check alignment and pipeline correctness. Model selection and threshold tuning use other games or fixtures.
 
 ## Nov 17 — validate and submit

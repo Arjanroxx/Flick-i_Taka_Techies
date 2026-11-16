@@ -1,6 +1,6 @@
 # Flick-i_Taka_Techies — technical document draft
 
-Prepared Nov 16, 2026. Candidate integration is verified locally. Final A/B/C/D sign-offs, release checksum and clean-checkout reproduction are pending.
+Prepared Nov 16, 2026. Candidate integration and clean-source reproduction are verified for the locally generated provisional candidate. Final reviewed A/B/C/D sign-offs and the release checksum remain pending.
 
 ## Task and output
 
@@ -68,4 +68,4 @@ Use Python 3.12 and `requirements-team.txt`. Unpack the authorised bundle as des
 
 For the omission decision, supply the validated empty D at the configured override path, then export using the matching A/B configuration and `--from-artifacts --skip-evaluation`. Validate the exact final file with `evaluation/validate_submission.py`. Record the configuration, code commit, input hashes, D and final CSV checksum together.
 
-The Nov 16 local candidate and manifest are under `artifacts/p4/nov14/candidate/`. Private configurations and trial caches are described in `docs/p4/nov12_14_completion.md`. The final document needs the reviewed release versions and clean-checkout verification result before submission.
+The Nov 16 local candidate and manifest are under `artifacts/p4/nov14/candidate/`. Private configurations and trial caches are described in `docs/p4/nov12_14_completion.md`. A separate clean clone reproduced all five output fingerprints and passed all 45 tests, as recorded in `docs/p4/nov16_reproduction.md`. The final document needs the reviewed release versions and their reproduction result before submission.
