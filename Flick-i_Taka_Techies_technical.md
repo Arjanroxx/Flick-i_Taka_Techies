@@ -1,6 +1,6 @@
 # Flick-i_Taka_Techies — technical document
 
-Verified Nov 17, 2026. P4 independently reproduced P3's final candidate, refreshed the empty-D decision, passed all 57 tests and confirmed public-window sanity results. [Verification and P4 sign-off](docs/p4/nov17_release_signoff.md). P1/P2 owner confirmations and actual submission remain separate team actions.
+Verified Nov 17, 2026. P4 independently reproduced P3's final candidate, refreshed the empty-D decision, passed all 57 tests and confirmed public-window sanity results. [Verification and P4 sign-off](docs/p4/nov17_release_signoff.md). P1's sign-off is merged. P4 completed [team verification of P2's B](docs/p2/nov17_release_verification.md); P2's personal confirmation remains unavailable. Actual submission remains a separate team action.
 
 ## Release record
 
