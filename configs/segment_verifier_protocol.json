@@ -1,0 +1,20 @@
+{
+  "status": "research; partial automatic H/A references only; no D fitting or fresh final holdout",
+  "development_source": "configs/skillcorner_protocol.json development_matches",
+  "outer_folds": 3,
+  "fold_assignment": "development-list index modulo 3",
+  "coefficient_fit": "first six non-validation matches",
+  "threshold_calibration": "last two non-validation matches",
+  "duration_scale": "coefficient-fit matches only; equal-match mean of uncensored interior H/A spell means",
+  "utility_target": "positive if one proposed split improves exact global mean spellF1; unknown/censored proposal intervals excluded",
+  "training_loss": "per-match equal-weight logistic loss; L2=0.1; not a differentiable direct spellF1 loss",
+  "proposal": "long decoded H/A spell; observed opponent within 3m and advantage>=0.5m for original confirmation length; original-owner brackets within 3s; no D/out-of-bounds conflict",
+  "threshold_quantiles": [0, 0.5, 0.75, 0.9, 0.95, 1],
+  "disabled_threshold": 1.1,
+  "threshold_selection": "mean calibration-match spellF1, then H/A macroF1, then higher threshold; disabled baseline always included",
+  "primary_comparison": "duration plus learned utility verifier versus same fold-fitted duration decoder",
+  "development_gate": {"mean_spell_gain": 0.01, "minimum_match_wins": 8, "paired_bootstrap_lower_bound": 0},
+  "final_fit": "first ten development matches coefficients/duration scale; last two threshold calibration",
+  "public_or_eight_used_for_fitting_or_selection": false,
+  "promotion_requires_fresh_compatible_validation": true
+}

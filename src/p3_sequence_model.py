@@ -176,7 +176,12 @@ def decode(config, spatial, deadball):
     labels[shield] = "X"
     labels[halves == 0] = "X"
     result = pd.DataFrame(probs, index=spatial.index, columns=["prob_H", "prob_A", "prob_D"])
-    return result.assign(state_entropy=uncertainty, raw_label=labels).astype(SCHEMAS["predictions"])
+    result = result.assign(state_entropy=uncertainty, raw_label=labels).astype(SCHEMAS["predictions"])
+    if config.get('segment_verifier', {}).get('enabled', False):
+        from .segment_verifier import refine_predictions
+        result['raw_label'] = refine_predictions(result, spatial, deadball, config)
+        result = result.astype(SCHEMAS['predictions'])
+    return result
 
 
 def run(config, spatial, deadball):

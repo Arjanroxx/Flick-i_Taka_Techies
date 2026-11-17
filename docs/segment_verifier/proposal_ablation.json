@@ -1,0 +1,47 @@
+{
+  "no_retraining_or_selection": true,
+  "training_sources": {
+    "src/segment_verifier.py": "c534c77e94aefe81c6cf99066fb63eb3942d0efc84a41d6d73b52892484d9795",
+    "scripts/train_segment_verifier.py": "1fe29f45c03f9d40fdcefb666734a62d35a7078c7f13a076f7c3a52eef6621b3",
+    "src/p3_sequence_model.py": "e3a02e7476084c738fbb2920a7bbb7479764042575d47b5f71b54a5f79fd0fee",
+    "src/duration_model.py": "4736b6748a896c17558180106ca5db6899aa6008af29f703b72db262afcba9de",
+    "src/control_evidence.py": "c781b32622659add5228c6428c6f691c5bed84deed3b4bce68234ebd5a7ba0b4",
+    "src/p2_deadball_detector.py": "8b10a574decc7489bb54449ebd8a52c33c6cce111008ec2701d7222c896693b8",
+    "src/skillcorner_validation.py": "e3840d1a40255c16b3a30e3db6948dd8c7061b7ab74dc34d00951f58b839ddb1",
+    "src/learned_control_cache.py": "428210a8fe37d07941274ddc2ca64be293338a0c32b8e1e6a5aeefc26d1d4723",
+    "scripts/evaluate_duration_model.py": "cb2a53d990db528f59e3f24a530afd54a8e20fb9f10b0adf948dbc4851fe12cd",
+    "evaluation/possession_metrics.py": "32c878630c74fb52a90c301485d6dff806509d8e933b1177b6035ee8e8f42b80",
+    "configs/skillcorner_protocol.json": "d5a53756f4d6cf2443d2f131515f8ea15f2cc8e346b680e64c3d964f6554d9e9",
+    "configs/segment_verifier_protocol.json": "4da1f062eb10fa67d025877be841f72e38ae02c32f1be12a9c254839bb28d020"
+  },
+  "ablation_fingerprints": {
+    "scripts/assess_segment_proposals.py": "9c96244a701b93c0bf54772f66b2212db6a7b77b0487eef25f88ba330402526c",
+    "artifacts\\segment_verifier\\fold0_model.json": "f05d713bea228bfc3706732315fa0f71ccb2fd252c32801320da87672f135b04",
+    "artifacts\\segment_verifier\\fold1_model.json": "ee331cfc165e3d445ac01065e6d2555442445cd12d8e3ad203fd5ffe9767a906",
+    "artifacts\\segment_verifier\\fold2_model.json": "7491e2a6a09af3db81ef5ce4fdb3c6460960f73ce203444e56516b6771836de5"
+  },
+  "frozen_held_out_scores_reproduced": true,
+  "summary": {
+    "spellF1": {
+      "duration": 0.5094905377058329,
+      "proposal_only": 0.3868259139107392,
+      "segment_verifier": 0.5117206984968666
+    },
+    "macroF1_HA": {
+      "duration": 0.7925200232639268,
+      "proposal_only": 0.7617955920398646,
+      "segment_verifier": 0.792309324581184
+    },
+    "precision_05": {
+      "duration": 0.6152787513706776,
+      "proposal_only": 0.31282344125766653,
+      "segment_verifier": 0.6063996860301772
+    },
+    "recall_05": {
+      "duration": 0.44811834170732845,
+      "proposal_only": 0.516446417608951,
+      "segment_verifier": 0.45758234408980636
+    }
+  },
+  "public_or_eight_evaluated": false
+}
