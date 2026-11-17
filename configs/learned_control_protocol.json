@@ -1,0 +1,17 @@
+{
+  "development_source": "configs/skillcorner_protocol.json",
+  "folds": 3,
+  "fold_assignment": "development-list position modulo 3",
+  "calibration_matches_per_fold": 2,
+  "calibration_assignment": "last two remaining training matches; never outer validation matches",
+  "ridge_candidates": [0.01, 0.1],
+  "confidence_candidates": [0.75, 0.85],
+  "match_weighting": "each coefficient-fit match receives equal total weight; each calibration match receives equal total weight",
+  "feature_target": "provider H/A ownership conditional on detected nearby geometry, not explicit reception annotations",
+  "reference_mask": "eligible observed geometry and known H/A only; null is never D",
+  "primary_selection": "mean match-held-out partial-reference spellF1",
+  "tie_breaker": "mean H/A macroF1",
+  "promotion_gate": {"minimum_mean_spell_gain": 0.01, "minimum_match_wins": 8, "paired_bootstrap_lower_bound": 0},
+  "final_fit_assignment": "first ten development matches fit coefficients; last two calibrate temperature",
+  "existing_candidate_preserved": true
+}
