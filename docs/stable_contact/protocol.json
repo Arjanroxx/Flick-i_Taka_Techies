@@ -1,0 +1,9 @@
+{
+  "sources": {
+    "src/stable_contact.py": "50930f15895f2fa383ee9b3f5e19af37bf239fce97e73d8b71596a7d1779cb9d",
+    "src/p3_sequence_model.py": "66dd50f516664c41342d21549c6ba80d37c606c2854fda58dc0df8eba60c7dfc",
+    "configs/skillcorner_protocol.json": "d5a53756f4d6cf2443d2f131515f8ea15f2cc8e346b680e64c3d964f6554d9e9"
+  },
+  "settings": "0.4 seconds, distance <=2m, advantage >=0.5m, speed 1..12m/s, distance rate <=2m/s",
+  "selection": "development only; no tuning; public only if mean gain >=0.01 and >=8 wins"
+}

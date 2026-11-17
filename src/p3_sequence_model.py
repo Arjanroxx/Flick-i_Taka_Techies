@@ -54,6 +54,10 @@ def build_emissions(spatial, deadball, config):
         from .control_evidence import sustained_control_evidence
         teams, known = sustained_control_evidence(
             spatial, deadball, temperature, config.get("control", {}))
+    elif mode == 'stable_contact':
+        from .stable_contact import stable_contact_evidence
+        teams, known = stable_contact_evidence(spatial, deadball, temperature,
+            config.get('control', {}), config.get('stable_contact', {}))
     elif mode == 'learned_control':
         from .learned_control import learned_control_evidence
         teams, known = learned_control_evidence(
