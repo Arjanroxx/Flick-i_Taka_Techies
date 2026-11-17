@@ -61,10 +61,14 @@ def validate(kind, table):
         if name in CATEGORIES and not values.isin(CATEGORIES[name]).all():
             raise ValueError(f"{kind}.{name}: invalid category")
     if kind == "spatial":
+        if (table.ball_x.isna() != table.ball_y.isna()).any():
+            raise ValueError("Ball coordinates must be jointly present or missing")
         if not np.array_equal(table.half, frame_halves()):
             raise ValueError("Spatial halves must match the official play blocks (0 outside play)")
         if (table.ball_is_imputed & (table.ball_x.isna() | table.ball_y.isna())).any():
             raise ValueError("Imputed positions must contain both coordinates")
+        if (table.ball_is_imputed & ((table.gap_length_frames <= 0) | (table.half == 0))).any():
+            raise ValueError("Imputed positions require a positive in-half gap")
     if kind == "overrides" and (table.start_frame > table.end_frame).any():
         raise ValueError("Override starts after its end")
     if kind == "overrides" and len(table):
@@ -74,6 +78,8 @@ def validate(kind, table):
         if ((starts == 0) | (starts != ends)).any():
             raise ValueError("Each override must stay inside one published half")
     if kind == "predictions":
+        if not table.loc[frame_halves() == 0, "raw_label"].eq("X").all():
+            raise ValueError("Predictions outside published play blocks must be X")
         probs = table[["prob_H", "prob_A", "prob_D"]].to_numpy()
         if not np.allclose(probs.sum(axis=1), 1, atol=1e-5) or not np.allclose(
             entropy(probs), table.state_entropy, atol=1e-5
@@ -91,13 +97,14 @@ def write(kind, table, path):
 
 def day1_mocks():
     phase = FRAMES.to_numpy() % 600
+    imputed = (phase < 8) & (frame_halves() != 0)
     spatial = pd.DataFrame(0, index=FRAMES, columns=list(SCHEMAS["spatial"]))
     spatial = spatial.assign(
         half=frame_halves(),
         ball_x=52.5, ball_y=34, voronoi_control_H=0.5,
         dist_nearest_H=np.where(phase < 300, 1, 5),
         dist_nearest_A=np.where(phase < 300, 5, 1),
-        ball_is_imputed=phase < 8, gap_length_frames=np.where(phase < 8, 8, 0),
+        ball_is_imputed=imputed, gap_length_frames=np.where(imputed, 8, 0),
     ).astype(SCHEMAS["spatial"])
     deadball = pd.DataFrame({
         "is_dead_ball_prob": np.where(phase >= 560, 0.98, 0.02),

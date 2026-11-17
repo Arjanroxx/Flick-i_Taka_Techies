@@ -1,0 +1,49 @@
+control:
+  confirmation_frames: 3
+  max_dead_probability: 0.2
+  max_distance_m: 2.0
+  min_margin_m: 2.0
+data:
+  directory: null
+  source: tactical
+hmm:
+  contact_fps: 25
+  contact_minimum_seconds: 0.4
+  contact_switch_probability: 0.02
+  decoder: viterbi
+  emission_temperature: 3.0
+  team_evidence: sustained_control
+  transition:
+  - - 0.999
+    - 0.0004
+    - 0.0006
+  - - 0.0004
+    - 0.999
+    - 0.0006
+  - - 0.0005
+    - 0.0005
+    - 0.999
+paths:
+  deadball: artifacts/sustained_switching_candidate/deadball_mask.parquet
+  evaluation_reports: artifacts/sustained_switching_candidate/evaluation
+  evaluation_results: artifacts/sustained_switching_candidate/evaluation_input
+  evaluator: evaluation/run_evaluation.py
+  overrides: artifacts/sustained_switching_candidate/llm_overrides.parquet
+  predictions: artifacts/sustained_switching_candidate/base_predictions.parquet
+  spatial: artifacts/sustained_switching_candidate/spatial_features.parquet
+  submission: artifacts/sustained_switching_candidate/Flick-i_Taka_Techies.csv
+  validator: evaluation/validate_submission.py
+pitch:
+  length: 105.3
+  width: 68
+thresholds:
+  boundary_margin_m: 0.35
+  entropy: 0.9
+  override_confidence: 0.8
+  restart_accel: 8.0
+  restart_speed: 3.0
+  short_gap: 12
+  stationary_speed: 0.3
+  stoppage_confirm_frames: 3
+  stoppage_lookback_seconds: 3.0
+  team_uncertainty: 0.9

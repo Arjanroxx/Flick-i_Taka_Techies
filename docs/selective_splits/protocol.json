@@ -1,0 +1,21 @@
+{
+  "sources": {
+    "src/selective_splits.py": "9f60711227f7ec9fe69421730e61f8735d931a57589c83a9751404126c7f8bb9",
+    "src/p3_sequence_model.py": "b570cc0db55cb382ce50c8c7673b2bce9a2291ef54bee079c7eaa87cabe94d79",
+    "src/duration_model.py": "4736b6748a896c17558180106ca5db6899aa6008af29f703b72db262afcba9de",
+    "src/control_evidence.py": "c781b32622659add5228c6428c6f691c5bed84deed3b4bce68234ebd5a7ba0b4",
+    "src/p2_deadball_detector.py": "8b10a574decc7489bb54449ebd8a52c33c6cce111008ec2701d7222c896693b8",
+    "src/skillcorner_validation.py": "e3840d1a40255c16b3a30e3db6948dd8c7061b7ab74dc34d00951f58b839ddb1",
+    "src/learned_control_cache.py": "428210a8fe37d07941274ddc2ca64be293338a0c32b8e1e6a5aeefc26d1d4723",
+    "scripts/evaluate_duration_model.py": "cb2a53d990db528f59e3f24a530afd54a8e20fb9f10b0adf948dbc4851fe12cd",
+    "scripts/evaluate_selective_splits.py": "c37354ba02aeddad907f35551dc302b377cc2ba0765549c171591acbe8fa43c9",
+    "evaluation/possession_metrics.py": "32c878630c74fb52a90c301485d6dff806509d8e933b1177b6035ee8e8f42b80",
+    "configs/skillcorner_protocol.json": "d5a53756f4d6cf2443d2f131515f8ea15f2cc8e346b680e64c3d964f6554d9e9"
+  },
+  "proposal_verification": "long spell >= other-match duration scale; opponent within 2m with >=0.5m advantage; >=0.4s moving stable contact at 1..12m/s, distance rate <=2m/s; original-owner confirmed brackets within 1s; fully observed live interval",
+  "duration_scale": "leave-one-development-match-out; final scale all development matches",
+  "primary_comparison": "duration_split versus duration",
+  "standalone_ablation": "original_split versus original; no alternative promotion selection",
+  "gate": "primary mean spellF1 gain >=0.01, >=8 wins, paired 90% lower bound >0",
+  "public_or_comparison_tuning": false
+}

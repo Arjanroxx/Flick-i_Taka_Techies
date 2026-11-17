@@ -1,0 +1,48 @@
+control:
+  confirmation_frames: 3
+  max_dead_probability: 0.2
+  max_distance_m: 2.0
+  min_margin_m: 2.0
+data:
+  directory: null
+  source: tactical
+gap_control:
+  fps: 25
+hmm:
+  decoder: viterbi
+  emission_temperature: 3.0
+  team_evidence: gap_control
+  transition:
+  - - 0.999
+    - 0.0004
+    - 0.0006
+  - - 0.0004
+    - 0.999
+    - 0.0006
+  - - 0.0005
+    - 0.0005
+    - 0.999
+paths:
+  deadball: artifacts/gap_control_candidate/deadball_mask.parquet
+  evaluation_reports: artifacts/gap_control_candidate/evaluation
+  evaluation_results: artifacts/gap_control_candidate/evaluation_input
+  evaluator: evaluation/run_evaluation.py
+  overrides: artifacts/gap_control_candidate/llm_overrides.parquet
+  predictions: artifacts/gap_control_candidate/base_predictions.parquet
+  spatial: artifacts/gap_control_candidate/spatial_features.parquet
+  submission: artifacts/gap_control_candidate/Flick-i_Taka_Techies.csv
+  validator: evaluation/validate_submission.py
+pitch:
+  length: 105.3
+  width: 68
+thresholds:
+  boundary_margin_m: 0.35
+  entropy: 0.9
+  override_confidence: 0.8
+  restart_accel: 8.0
+  restart_speed: 3.0
+  short_gap: 12
+  stationary_speed: 0.3
+  stoppage_confirm_frames: 3
+  stoppage_lookback_seconds: 3.0
+  team_uncertainty: 0.9

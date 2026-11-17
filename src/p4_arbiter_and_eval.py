@@ -1,4 +1,5 @@
 import json
+import hashlib
 import numpy as np
 import pandas as pd
 from pathlib import Path
@@ -127,6 +128,17 @@ def local_arbiter(spatial, deadball, predictions, window, *, min_observed_frames
             if (right - left < min_observed_frames
                     or predictions.raw_label.loc[first:last].eq(label).all()):
                 continue
+            # Proximity alone is not evidence of a controlled turnover. Do not
+            # carve an opposite-team island out of one uninterrupted base spell.
+            before, after = first - 1, last + 1
+            periods = frame_halves() if halves is None else halves
+            if before in predictions.index and after in predictions.index:
+                same_period = (periods[before] == periods[first] == periods[after])
+                surrounding = predictions.raw_label.loc[before]
+                if (same_period and surrounding in ("H", "A") and surrounding != label
+                        and predictions.raw_label.loc[after] == surrounding
+                        and predictions.raw_label.loc[first:last].eq(surrounding).all()):
+                    continue
             # A proximity score with no probability calibration.
             score = float(np.min(far[left:right] / (near[left:right] + far[left:right])))
             response = json.dumps({"start_frame": first, "end_frame": last,
@@ -157,11 +169,29 @@ def run(config, predictions):
     # Reuse algorithm-generated overrides. Local arbitration remains P4 work; competition extracts cannot go to hosted LLMs.
     path = Path(config["paths"]["overrides"])
     if path.exists():
-        return read("overrides", path)
+        overrides = read("overrides", path)
+        if len(overrides):
+            # Fail closed: a valid D schema does not establish that it was
+            # generated for the current A/B/C. Empty D has no effect and needs
+            # no provenance. Nonempty D uses the local runner's cache/summary.
+            try:
+                cache = json.loads((path.parent / "response_cache.json").read_text())
+                summary = json.loads((path.parent / "summary.json").read_text())
+                digest = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+                for kind in ("spatial", "deadball", "predictions"):
+                    if digest(config["paths"][kind]) != cache["inputs"][kind]["sha256"]:
+                        raise ValueError("Override provenance does not match current " + kind)
+                if digest(path) != summary["outputs"]["llm_overrides.parquet"]:
+                    raise ValueError("Override contents do not match their audit summary")
+            except (OSError, KeyError, TypeError, json.JSONDecodeError) as error:
+                raise ValueError("Nonempty overrides need matching local audit provenance") from error
+        return overrides
     return pd.DataFrame({name: pd.Series(dtype=dtype) for name, dtype in SCHEMAS["overrides"].items()})
 
 def apply_overrides(predictions, overrides, minimum_confidence):
     """Apply inclusive windows, with higher confidence winning overlaps."""
+    if not np.isfinite(minimum_confidence) or not 0 <= minimum_confidence <= 1:
+        raise ValueError("Override confidence threshold must be between zero and one")
     labels = predictions.raw_label.copy()
     eligible = overrides[overrides.confidence >= minimum_confidence]
     for row in eligible.sort_values("confidence", kind="stable").itertuples(index=False):

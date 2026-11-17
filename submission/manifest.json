@@ -1,0 +1,29 @@
+{
+  "team": "Flick-i Taka Techies",
+  "model": "Step 6 two-phase duration decoder",
+  "csv": "submission/Flick-i Taka Techies.csv",
+  "rows": 199319,
+  "csv_sha256": "9841111b9b3ed93a93fe80ff61934ab2ac747872a1794582662ab05a04a9c2aa",
+  "source_sha256_lf": {
+    "configs/final_submission.yaml": "049c327be08c9019ba4251b82078dff771d1d17da86a667e4194eff22a6596e3",
+    "requirements-team.txt": "55efaed1e6333dee59a21f66d8a15a6aa715a73e0045bee2aaa909434344b231",
+    "scripts/build_submission.py": "7b91f58f152c885801c6e42b8d217c8bf877e943c57527ffd1b1de5ba6075ddb",
+    "scripts/run_full_pipeline.py": "c37a5e0ee26952de82d51e753f73f92ccba4f18ed3da2d9cdd05bbd93681b710",
+    "scripts/p2_handoff.py": "556bcab8e196089d29615169ced21dd9fc0fb64cfe2ecd2eb320c1e6874901e6",
+    "src/p1_spatial_features.py": "f35d4a8867d173d5a1dcbb1384bf7d7d8f9567290377243e306bafd09506422a",
+    "src/p2_deadball_detector.py": "df15ebadb165462915d22417968ffc5a32cb0a914aaa859dfb9b08015dcd9574",
+    "src/p3_sequence_model.py": "d8dd1317144af034595c3dd62002c49cb1b3bbeb8caee49d9ad21d0b035527ce",
+    "src/p4_arbiter_and_eval.py": "a2de496a56111495f5ec6d2a2b7b4057b94ede8bbc66e090ebb6c24e31fac558",
+    "src/contracts.py": "a7a0d84ae295c7018818f1e02c78502fdc6ec9f847e5077907279413c2ca6ea3",
+    "src/control_evidence.py": "e9ef4906bed530cce5de3a360237c88fc954e5cc474ef325564b24b6be2dd992",
+    "src/duration_model.py": "4736b6748a896c17558180106ca5db6899aa6008af29f703b72db262afcba9de",
+    "games.py": "3b2122794e9e0476e2b3a871d14880e5fa47c4feaeacf99caef054c2309076ce",
+    "starter/baseline.py": "84d8a414fb1bdf8c7e1fbe4a8789fe6f9cc0c2cccec4685201285b75dbc0cfe6",
+    "starter/load_atd.py": "6c63ee807ae5c1456d0f4dec933f61ad05227c1c663e7e80c96ead1255eeed30",
+    "starter/load_smart_tagging.py": "cacfe90acf1deb37b3aa3e4666d6a9d5595c1766d59fe24c9150e1a1d51d0c64",
+    "starter/load_homography.py": "3bc547b8034766023520b0bc2ffd5a4650ce60c9e20c09796cb4a0d805327bd8",
+    "evaluation/validate_submission.py": "07ac29499acbd337e1dc1de1832d63f6e1fa1d981e22f6ad08212529e2bbee14"
+  },
+  "pdf": "submission/Flick-i Taka Techies.pdf",
+  "pdf_sha256": "964d643717cf3d63398b3efe24f089a25ef4268c209e1f2d2fc60bfe68593419"
+}

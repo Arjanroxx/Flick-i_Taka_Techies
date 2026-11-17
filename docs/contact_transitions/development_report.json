@@ -1,0 +1,85 @@
+{
+  "development_only": true,
+  "sources": {
+    "src/contact_transitions.py": "31a8a97b24a95b3065ecfbda40e9edf1b33656b4643b8b7612afd0de801aef38",
+    "src/p3_sequence_model.py": "c44690734e19c7cd7267c0be75b87874f4f5d5a1e28ed8fde3c638446159df2c",
+    "src/control_evidence.py": "c781b32622659add5228c6428c6f691c5bed84deed3b4bce68234ebd5a7ba0b4",
+    "src/skillcorner_validation.py": "e3840d1a40255c16b3a30e3db6948dd8c7061b7ab74dc34d00951f58b839ddb1",
+    "src/learned_control_cache.py": "428210a8fe37d07941274ddc2ca64be293338a0c32b8e1e6a5aeefc26d1d4723",
+    "src/p2_deadball_detector.py": "8a579b3c8725295b5438fa8e1122f05f52c676d5d8a718d44df3b7487e89c981",
+    "scripts/evaluate_contact_transitions.py": "5bf1c42598c8e08d0e87bd3ec83808acf01853c3e4a981d611e1bbf40a4f8f9b",
+    "configs/contact_transition_protocol.json": "a179334e803ce75d076042aeeed612ecc91daf28e1eb66e16a7bf9bb3ac6d5ff",
+    "configs/skillcorner_protocol.json": "d5a53756f4d6cf2443d2f131515f8ea15f2cc8e346b680e64c3d964f6554d9e9"
+  },
+  "plan": {
+    "status": "development-only research; original candidate remains recommended",
+    "source_split": "configs/skillcorner_protocol.json development_matches only",
+    "hypothesis": "Confirmed opposite-team control should reduce H/A switching cost at its first supported contact without adding new ownership emissions",
+    "switch_probabilities": [
+      0.02,
+      0.1
+    ],
+    "gate": "original sustained-control detector, opposite last confirmed team; reset on half/frame gap or D weight >= 0.5",
+    "fps_policy": "one opportunity per confirmed turnover, same event probability at both native frame rates; original native-rate evidence/transition adaptation unchanged",
+    "selection": "mean development partial spellF1; report both predeclared candidates",
+    "development_gate": {
+      "minimum_mean_spell_gain": 0.01,
+      "minimum_match_wins": 8,
+      "bootstrap_lower_bound": 0
+    },
+    "public_or_reused_eight_tuning": false,
+    "promotion": "requires a genuinely new external validation set; development success alone is insufficient"
+  },
+  "summary": [
+    {
+      "variant": "0.02",
+      "partial_reference_spellF1": 0.5009824025401197,
+      "macroF1_HA": 0.8031202157356551,
+      "fragmentation": 1.0267099487248725,
+      "spell_count_ratio": 0.8995302661797463,
+      "precision_05": 0.5412796281310254,
+      "recall_05": 0.4859788915427632
+    },
+    {
+      "variant": "0.1",
+      "partial_reference_spellF1": 0.48122913230739767,
+      "macroF1_HA": 0.8092108271149733,
+      "fragmentation": 1.1463118324665258,
+      "spell_count_ratio": 1.0189230320956477,
+      "precision_05": 0.48359681323745146,
+      "recall_05": 0.4916351428227281
+    },
+    {
+      "variant": "original",
+      "partial_reference_spellF1": 0.45917026584770787,
+      "macroF1_HA": 0.7855246543379651,
+      "fragmentation": 0.8971022383675945,
+      "spell_count_ratio": 0.7696498267126812,
+      "precision_05": 0.5405481143839675,
+      "recall_05": 0.4151265568999201
+    }
+  ],
+  "comparisons": {
+    "0.02": {
+      "mean_gain": 0.041812136692411905,
+      "wins": 12,
+      "paired_match_bootstrap_90pct": [
+        0.03291957863911927,
+        0.05115100430177909
+      ],
+      "development_gate_passed": true
+    },
+    "0.1": {
+      "mean_gain": 0.022058866459689883,
+      "wins": 9,
+      "paired_match_bootstrap_90pct": [
+        0.009971477600740113,
+        0.03396001766387599
+      ],
+      "development_gate_passed": true
+    }
+  },
+  "public_or_reused_eight_evaluated": false,
+  "promoted": false,
+  "fresh_validation_still_required": true
+}

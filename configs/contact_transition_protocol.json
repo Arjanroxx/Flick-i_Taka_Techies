@@ -1,0 +1,12 @@
+{
+  "status": "development-only research; original candidate remains recommended",
+  "source_split": "configs/skillcorner_protocol.json development_matches only",
+  "hypothesis": "Confirmed opposite-team control should reduce H/A switching cost at its first supported contact without adding new ownership emissions",
+  "switch_probabilities": [0.02, 0.1],
+  "gate": "original sustained-control detector, opposite last confirmed team; reset on half/frame gap or D weight >= 0.5",
+  "fps_policy": "one opportunity per confirmed turnover, same event probability at both native frame rates; original native-rate evidence/transition adaptation unchanged",
+  "selection": "mean development partial spellF1; report both predeclared candidates",
+  "development_gate": {"minimum_mean_spell_gain": 0.01, "minimum_match_wins": 8, "bootstrap_lower_bound": 0},
+  "public_or_reused_eight_tuning": false,
+  "promotion": "requires a genuinely new external validation set; development success alone is insufficient"
+}

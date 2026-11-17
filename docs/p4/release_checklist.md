@@ -11,7 +11,7 @@ Executed against final P3 source `783d20d1fc6e32d4ee62a3c3ea87bf7e07aa407a` on N
 - [x] Fresh Python 3.12 runtime environment independently reproduced every hash and passed all 57 tests. Full optional development dependency installation timed out; see the sign-off report for scope.
 - [x] Frozen-candidate public sanity check completed without changing settings.
 - [x] Technical document release fields and P4 roadmap updated.
-- [x] P1 sign-off merged through PR #15; P4's evidence-based B release record documents P2's unavailable personal confirmation.
+- [ ] P1/P2 owner confirmations incorporated into the final team release record.
 - [ ] Actual form submission and private receipt.
 
 ## 1. Agree the files to ship

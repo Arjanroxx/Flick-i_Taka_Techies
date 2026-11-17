@@ -1,0 +1,49 @@
+paths:
+  spatial: artifacts/final_submission/spatial_features.parquet
+  deadball: artifacts/final_submission/deadball_mask.parquet
+  predictions: artifacts/final_submission/base_predictions.parquet
+  overrides: artifacts/final_submission/llm_overrides.parquet
+  submission: submission/Flick-i Taka Techies.csv
+  validator: evaluation/validate_submission.py
+  evaluator: evaluation/run_evaluation.py
+  evaluation_results: artifacts/final_submission/evaluation_input
+  evaluation_reports: artifacts/final_submission/evaluation
+data:
+  directory: null
+  source: tactical
+pitch:
+  length: 105.3
+  width: 68
+hmm:
+  transition:
+  - - 0.999
+    - 0.0004
+    - 0.0006
+  - - 0.0004
+    - 0.999
+    - 0.0006
+  - - 0.0005
+    - 0.0005
+    - 0.999
+  emission_temperature: 3.0
+  decoder: duration
+  team_evidence: sustained_control
+thresholds:
+  team_uncertainty: 0.9
+  entropy: 0.9
+  override_confidence: 0.8
+  short_gap: 12
+  restart_speed: 3.0
+  restart_accel: 8.0
+  stationary_speed: 0.3
+  stoppage_confirm_frames: 3
+  boundary_margin_m: 0.35
+  stoppage_lookback_seconds: 3.0
+control:
+  confirmation_frames: 3
+  max_distance_m: 2.0
+  min_margin_m: 2.0
+  max_dead_probability: 0.2
+duration:
+  scale_seconds: 9.51291250794194
+  fps: 25

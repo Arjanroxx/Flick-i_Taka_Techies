@@ -1,0 +1,16 @@
+{
+  "mean": {
+    "spellF1": {
+      "stable_contact": 0.46928380385942686,
+      "sustained_control": 0.45917026584770787
+    },
+    "macroF1": {
+      "stable_contact": 0.792263566073531,
+      "sustained_control": 0.7855246543379651
+    }
+  },
+  "gain": 0.010113538011719039,
+  "wins": 9,
+  "development_gate_passed": true,
+  "public_evaluated": false
+}
