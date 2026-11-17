@@ -152,6 +152,11 @@ def decode(config, spatial, deadball):
     uncertainty = entropy(probs)
     if decoder == "viterbi":
         labels = viterbi(emissions, halves, transition)
+    if config.get('selective_splits', {}).get('enabled', False):
+        from .selective_splits import split_verified_possessions
+        labels = split_verified_possessions(labels, spatial, deadball,
+            config.get('hmm', {}).get('emission_temperature', 1.),
+            config.get('control', {}), config['selective_splits'])
     if config.get('boundary_refinement', {}).get('enabled', False):
         from .boundary_refinement import refine_boundaries
         labels = refine_boundaries(labels, spatial, deadball,
