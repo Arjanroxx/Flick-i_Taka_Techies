@@ -14,6 +14,18 @@ def transition_schedule(spatial, deadball, transition, config):
     preference = np.where(known, teams.argmax(axis=1), -1)
     schedule = np.broadcast_to(transition, (len(spatial), 3, 3)).copy()
     frames, halves = spatial.index.to_numpy(), spatial.half.to_numpy()
+    minimum = config['hmm'].get('contact_minimum_seconds', 0.)
+    fps = config['hmm'].get('contact_fps', 25.)
+    if not np.isfinite([minimum, fps]).all() or minimum < 0 or fps <= 0:
+        raise ValueError('Invalid contact duration or frame rate')
+    if minimum > 0 and len(preference):
+        edges = np.r_[0, np.flatnonzero((preference[1:] != preference[:-1])
+            | (halves[1:] != halves[:-1]) | (np.diff(frames) != 1)) + 1, len(preference)]
+        for start, stop in zip(edges[:-1], edges[1:]):
+            if stop-start < max(2, int(np.ceil(minimum*fps))):
+                preference[start:stop] = -1
+        # Only the transition proposal is filtered. Existing ownership emissions
+        # and their original confirmation mask are never modified.
     last = -1
     for index, team in enumerate(preference):
         if (index == 0 or halves[index] != halves[index-1]

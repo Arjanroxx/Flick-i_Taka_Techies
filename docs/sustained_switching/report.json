@@ -1,0 +1,16 @@
+{
+  "mean": {
+    "spellF1": {
+      "sustained_control": 0.45917026584770787,
+      "sustained_switching": 0.5037714355842214
+    },
+    "macroF1": {
+      "sustained_control": 0.7855246543379651,
+      "sustained_switching": 0.8007000684905033
+    }
+  },
+  "gain": 0.044601169736513624,
+  "wins": 12,
+  "development_gate_passed": true,
+  "public_evaluated": false
+}
