@@ -47,7 +47,15 @@ def build_emissions(spatial, deadball, config):
     # cannot break an otherwise symmetric missing-evidence Viterbi tie.
     dead = np.where(np.isclose(dead, 1 / 3, rtol=0, atol=1e-7), 1 / 3, dead)
     temperature = config.get("hmm", {}).get("emission_temperature", 1.0)
-    teams, known = team_evidence(spatial, temperature)
+    mode = config.get("hmm", {}).get("team_evidence", "distance")
+    if mode == "distance":
+        teams, known = team_evidence(spatial, temperature)
+    elif mode == "sustained_control":
+        from .control_evidence import sustained_control_evidence
+        teams, known = sustained_control_evidence(
+            spatial, deadball, temperature, config.get("control", {}))
+    else:
+        raise ValueError("Unknown team evidence mode: " + str(mode))
     emissions = np.column_stack((teams * (1 - dead[:, None]), dead))
     emissions = np.maximum(emissions, 1e-12)
     emissions /= emissions.sum(axis=1, keepdims=True)
