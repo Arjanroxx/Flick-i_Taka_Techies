@@ -2,6 +2,8 @@
 
 Completed Nov 18, 2026. A small conditional team-possession classifier was trained exclusively on other-match SkillCorner references. It passed the predeclared development gate and was then frozen for the eight reused comparison matches and public five-minute sanity evaluation. **The results do not establish a reliable ranking-metric improvement over the original sustained-control candidate; keep the original as the recommended candidate for now.** No original/default configuration or submitted file was replaced.
 
+The frozen classifier study is preserved at commit `008460d` on `codex/learned-control-validated` (draft PR #24). Later contact-transition research extends shared P3 inference; use that classifier-study commit to reproduce its exact source fingerprints. A source-lock rejection on a later branch is intentional, not permission to overwrite the historical record.
+
 ## Results
 
 | Metric | Original sustained control | Learned-control candidate |

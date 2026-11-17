@@ -85,12 +85,15 @@ def forward_backward(emissions, halves, transition):
         for frame in range(start, stop):
             posterior = prior * emissions[frame]
             probs[frame] = posterior / posterior.sum()
-            prior = probs[frame] @ transition
+            step = transition[frame + 1] if transition.ndim == 3 and frame + 1 < stop else transition
+            if frame + 1 < stop:
+                prior = probs[frame] @ step
         backward = np.ones(3)
         for frame in range(stop - 1, start - 1, -1):
             posterior = probs[frame] * backward
             probs[frame] = posterior / posterior.sum()
-            backward = transition @ (emissions[frame] * backward)
+            step = transition[frame] if transition.ndim == 3 else transition
+            backward = step @ (emissions[frame] * backward)
             backward /= backward.sum()
     return probs
 
@@ -107,7 +110,8 @@ def viterbi(emissions, halves, transition):
         back = np.empty((stop - start, 3), dtype=np.int8)
         back[0] = -1
         for offset, frame in enumerate(range(start + 1, stop)):
-            candidate = score[:, None] + log_transition
+            step = log_transition[frame] if transition.ndim == 3 else log_transition
+            candidate = score[:, None] + step
             back[offset + 1] = candidate.argmax(axis=0)
             score = candidate.max(axis=0) + log_emissions[frame]
         state = int(score.argmax())
@@ -127,6 +131,9 @@ def decode(config, spatial, deadball):
     if decoder not in DECODERS:
         raise ValueError(f"HMM decoder must be one of {DECODERS}")
     emissions, known = build_emissions(spatial, deadball, config)
+    if 'contact_switch_probability' in config.get('hmm', {}):
+        from .contact_transitions import transition_schedule
+        transition = transition_schedule(spatial, deadball, transition, config)
     halves = spatial.half.to_numpy()
     probs = forward_backward(emissions, halves, transition)
     uncertainty = entropy(probs)

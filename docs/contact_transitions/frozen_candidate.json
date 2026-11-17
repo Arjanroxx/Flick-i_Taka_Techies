@@ -1,0 +1,25 @@
+{
+  "sources": {
+    "configs/contact_transition_candidate.yaml": "732cabd8a14f2ee445079bbdcc72caf475870e0a0a1171e52b5ab81014065630",
+    "configs/contact_transition_protocol.json": "a179334e803ce75d076042aeeed612ecc91daf28e1eb66e16a7bf9bb3ac6d5ff",
+    "configs/skillcorner_protocol.json": "d5a53756f4d6cf2443d2f131515f8ea15f2cc8e346b680e64c3d964f6554d9e9",
+    "evaluation/possession_metrics.py": "32c878630c74fb52a90c301485d6dff806509d8e933b1177b6035ee8e8f42b80",
+    "evaluation/run_evaluation.py": "4c09764c06768fa0e3c661a93f86a14e17389a4a01f05370c96035190a1da66d",
+    "evaluation/validate_submission.py": "d716bf6fce9c8a8d334a9258a3bfca63b8153ae9cd98a4bf80fe0d04693af914",
+    "scripts/evaluate_contact_transitions.py": "5bf1c42598c8e08d0e87bd3ec83808acf01853c3e4a981d611e1bbf40a4f8f9b",
+    "scripts/run_full_pipeline.py": "a9478aa486e2d6bea2626d9a6dca42ac1747fc220279b7cc52ae8e7f8c67871c",
+    "scripts/validate_contact_transitions.py": "162f9c1e3ef7e0a295398f3f64dc437d4f1c221b47479517ffcf722b3360c437",
+    "src/contact_transitions.py": "31a8a97b24a95b3065ecfbda40e9edf1b33656b4643b8b7612afd0de801aef38",
+    "src/contracts.py": "d079b2d1e72f2178b1ceee3306e8c879ae7770f5f2ba7b06fa0b3d986827d6ba",
+    "src/control_evidence.py": "c781b32622659add5228c6428c6f691c5bed84deed3b4bce68234ebd5a7ba0b4",
+    "src/learned_control_cache.py": "428210a8fe37d07941274ddc2ca64be293338a0c32b8e1e6a5aeefc26d1d4723",
+    "src/p1_spatial_features.py": "a5dad465febb615ddccdb477cb1447d4dfe25a54b33409b87d357269c53be097",
+    "src/p2_deadball_detector.py": "8a579b3c8725295b5438fa8e1122f05f52c676d5d8a718d44df3b7487e89c981",
+    "src/p3_sequence_model.py": "c44690734e19c7cd7267c0be75b87874f4f5d5a1e28ed8fde3c638446159df2c",
+    "src/p4_arbiter_and_eval.py": "f167e554d8aeaa121c1c8db3f9f69c071cc508e9aa761398186d7434e76df654",
+    "src/skillcorner_validation.py": "e3840d1a40255c16b3a30e3db6948dd8c7061b7ab74dc34d00951f58b839ddb1"
+  },
+  "development_report_sha256": "21ab691b3c5ceaa7a6c9cd1b3b0a06b5452f892ad47f002b3f1c1d54f2e12bf8",
+  "probability": 0.02,
+  "comparison_or_public_scored_at_freeze": false
+}
