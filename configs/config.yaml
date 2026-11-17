@@ -14,7 +14,11 @@ data:
   source: tactical
 pitch: {length: 105.3, width: 68}
 hmm:
-  transition: [[0.995, 0.002, 0.003], [0.002, 0.995, 0.003], [0.005, 0.005, 0.990]]
+  # P3 fixture sweep, Nov 17: persistence 0.999 and distance temperature 3.0.
+  # Chosen on five fixed-seed synthetic spells, not on public competition labels.
+  transition: [[0.999, 0.0004, 0.0006], [0.0004, 0.999, 0.0006], [0.0005, 0.0005, 0.999]]
+  emission_temperature: 3.0
+  decoder: viterbi
 thresholds:
   entropy: 0.9
   override_confidence: 0.8
