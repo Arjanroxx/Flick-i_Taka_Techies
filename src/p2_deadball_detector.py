@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 
-from games import GAME, GAMES
+from games import GAME, GAMES, half_video_blocks
 from starter.load_smart_tagging import load
 from .contracts import FRAMES, SCHEMAS
 
@@ -25,14 +25,19 @@ def _runs(mask):
     return zip(edges[::2], edges[1::2])
 
 
-def _tag_windows(events, blocks):
+def set_piece_type(event):
+    if (event["code"] or "").strip().casefold() == "set pieces":
+        tags = {key.strip().casefold(): value for key, value in event["tags"].items() if key}
+        return SET_PIECE_TYPES.get((tags.get("type") or "").strip().casefold())
+    return None
+
+
+def tag_windows(events):
     """Intersect each recognised half-open tag interval with the play blocks."""
+    blocks = [(start, end + 1) for _, start, end in half_video_blocks(GAME)]
     windows = set()
     for event in events:
-        if (event["code"] or "").strip().casefold() != "set pieces":
-            continue
-        tags = {key.strip().casefold(): value for key, value in event["tags"].items() if key}
-        piece = SET_PIECE_TYPES.get((tags.get("type") or "").strip().casefold())
+        piece = set_piece_type(event)
         if piece is None:
             continue
         for block_start, block_stop in blocks:
@@ -88,7 +93,7 @@ def build_mask(config, spatial, events):
                 stationary[start + left:start + right] = True
 
         fast = speed_ok & ~outside[block] & (speed[block] >= thresholds["restart_speed"])
-        moving[block] = fast
+        moving[block] = speed_ok & ~outside[block] & (speed[block] > thresholds["stationary_speed"])
         for left, right in _runs(fast):
             if right - left < confirmation or left == 0:
                 continue
@@ -103,7 +108,7 @@ def build_mask(config, spatial, events):
     tag_probability = np.full(len(spatial), 0.05, dtype="float32")
     types = np.full(len(spatial), "none", dtype=object)
     restart_types = {}
-    for start, stop, piece in _tag_windows(events, blocks):
+    for start, stop, piece in tag_windows(events):
         window = slice(start, stop)
         types[window] = piece
         possible = np.flatnonzero(candidates[window])

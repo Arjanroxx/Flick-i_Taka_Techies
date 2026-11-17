@@ -97,7 +97,7 @@ P1 starts with tactical tracking. Broadcast is an optional extension because it 
 | P1 | Improve imputation only where evidence supports it. Compare short linear filling with a candidate alternative. | A comparison based on fixtures or other-match data, and an updated A if justified. | None |
 | P2 | Recompute restart candidates using improved spatial features. Review tag-window limits and out-of-bounds behavior. | **B v1** and a restart-detection summary. | **WAIT FOR P1 · Nov 9 — A v1** |
 | P3 | Compare posterior labels with a Viterbi path on external or synthetic examples. Export disputed windows from C v0. | A decoder comparison and a list of high-entropy windows for P4. | None |
-| P4 | Use C v0 to test local automated arbitration on a small set of windows. Keep competition frames and features on the local machine. Log model, inputs and response. | **D v0**, possibly empty, plus an auditable response cache. No hand-labelled overrides. | **WAIT FOR P3 · Nov 9 — C v0** |
+| P4 | Use C v0 to test local automated arbitration on a small set of windows. Keep competition frames and features on the local machine. Log model, inputs and response. | **Complete on Nov 12** — [eight-window dry run](docs/p4/nov10_completion.md), validated empty D v0 and reproducible local response cache. Inputs regenerated from merged P1–P3 code. Refresh against P3's reviewed C when available. | **WAIT FOR P3 · Nov 9 — C v0** |
 
 ## Nov 11 — check feature quality and tune externally
 
@@ -106,7 +106,7 @@ P1 starts with tactical tracking. Broadcast is an optional extension because it 
 | P1 | Check duplicate slots, nearest-team distances and relative-velocity spikes. Assess whether geometric control adds value. | **A v2** with a feature-quality summary. | None |
 | P2 | Test whether B v1 splits continuous play or misses plausible stoppages. Develop thresholds on other games or fixtures. | **B v2** and a record of the evidence used for threshold choices. | None |
 | P3 | Tune transition settings using suitable other-match labels or fixtures. Keep a record of each experiment. | A candidate configuration and an external-development comparison. | **WAIT FOR P4 · Nov 6 — external sample loader/source assessment**, if using it |
-| P4 | Check confidence filtering, overlapping overrides and half-boundary rejection. Assess arbitration on licensed other-match examples. | An override-application check and a provisional confidence threshold. | None |
+| P4 | Check confidence filtering, overlapping overrides and half-boundary rejection. Assess arbitration on licensed other-match examples. | **Complete on Nov 12** — [override checks and public Metrica tracking assessment](docs/p4/nov11_completion.md). Eight external windows reviewed, reproducible outputs, 43 tests passed. Threshold 0.8 remains provisional. | None |
 
 ## Nov 12 — refresh the complete team handoff
 
@@ -115,7 +115,7 @@ P1 starts with tactical tracking. Broadcast is an optional extension because it 
 | P1 | Freeze the next spatial candidate and document remaining limitations. | **A candidate 1**, validated and reproducible from code. | None |
 | P2 | Rebuild B using the agreed spatial candidate. | **B candidate 1**, validated, with its A version recorded. | **WAIT FOR P1 · Nov 12 — A candidate 1** |
 | P3 | Run the agreed sequence settings on the new A and B. | **C candidate 1**, a valid CSV and an updated disputed-window list. | **WAIT FOR P1 · Nov 12 — A candidate 1; P2 · Nov 12 — B candidate 1** |
-| P4 | Start with the prior C while waiting, then regenerate arbitration for the new disputed windows. | **D candidate 1**, or an explicit empty D if arbitration is not ready. Record the C version used. | **WAIT FOR P3 · Nov 12 — C candidate 1** |
+| P4 | Start with the prior C while waiting, then regenerate arbitration for the new disputed windows. | **Provisional integration complete Nov 16** — [refreshed local C and explicit empty D](docs/p4/nov12_14_completion.md). **Final refresh complete Nov 17** — see [P4 sign-off](docs/p4/nov17_release_signoff.md). | **WAIT FOR P3 · Nov 12 — C candidate 1** |
 
 Order this day's handoffs **P1 → P2 → P3 → P4**. P4 can finish the refreshed D on Nov 13 if needed.
 
@@ -126,7 +126,7 @@ Order this day's handoffs **P1 → P2 → P3 → P4**. P4 can finish the refresh
 | P1 | Resolve reproducible feature-processing bugs and review long-gap behavior. | Final proposed A changes, or confirmation that A candidate 1 is retained. | None |
 | P2 | Resolve reproducible category or restart-processing bugs. | Final proposed B changes, or confirmation that B candidate 1 is retained. | None |
 | P3 | Check the X shield on other-match data or fixtures. Confirm it cannot bridge a half boundary. | Final proposed sequence settings and a description of X behavior. | None |
-| P4 | Complete D candidate 1 and integrate it with the candidate CSV. Check its effect on external examples. | Validated override integration and an updated technical-document draft. | **WAIT FOR P3 · Nov 12 — C candidate 1** |
+| P4 | Complete D candidate 1 and integrate it with the candidate CSV. Check its effect on external examples. | **Provisional integration verified Nov 16** — empty D reproduces the base CSV; technical draft prepared. **Final C integration signed off Nov 17** — see [P4 sign-off](docs/p4/nov17_release_signoff.md). | **WAIT FOR P3 · Nov 12 — C candidate 1** |
 
 ## Nov 14 — freeze the feature inputs
 
@@ -135,7 +135,7 @@ Order this day's handoffs **P1 → P2 → P3 → P4**. P4 can finish the refresh
 | P1 | Choose the spatial version to ship. Keep broadcast only if its alignment is verified and the full run works. | **Frozen A**, its code commit and regeneration command. | None |
 | P2 | Rebuild and freeze the stoppage mask against frozen A. | **Frozen B**, its code commit and the A version used. | **WAIT FOR P1 · Nov 14 — frozen A** |
 | P3 | Finalize sequence choices using external evidence. Prepare the final A/B integration run. | Frozen model settings and a written rationale based on external development. | None |
-| P4 | Complete external arbitration comparisons and decide whether the optional arbiter is ready to ship. | A documented include/omit decision, cached responses and the technical-document draft. | None |
+| P4 | Complete external arbitration comparisons and decide whether the optional arbiter is ready to ship. | **Complete Nov 16** — [omit decision and cached comparisons](docs/p4/nov12_14_completion.md), plus [technical draft](Flick-i_Taka_Techies_technical.md). | None |
 
 ## Nov 15 — freeze predictions and overrides
 
@@ -144,7 +144,12 @@ Order this day's handoffs **P1 → P2 → P3 → P4**. P4 can finish the refresh
 | P1 | Run frozen A generation again and compare results. | Reproduction confirmation or a clearly reported processing bug. | None |
 | P2 | Run frozen B generation again and compare results. | Reproduction confirmation or a clearly reported processing bug. | None |
 | P3 | Generate the final base predictions from frozen A and B. | **Frozen C**, its settings and a valid candidate CSV. | **WAIT FOR P1 · Nov 14 — frozen A; P2 · Nov 14 — frozen B** |
-| P4 | Regenerate or confirm local overrides against frozen C. Freeze the output cache and document model settings. | **Frozen D**, including an empty D if arbitration is omitted, plus reproduction instructions. | **WAIT FOR P3 · Nov 15 — frozen C** |
+| P4 | Regenerate or confirm local overrides against frozen C. Freeze the output cache and document model settings. | **Complete Nov 17** — frozen empty D verified against final C, with [hashes and reproduction evidence](docs/p4/nov17_release_signoff.md). | **WAIT FOR P3 · Nov 15 — frozen C** |
+
+P2's code candidate, fixture verification and freeze command are documented in
+[the P2 handoff guide](docs/p2/stoppage_mask.md). The final real-data B and
+P2 sign-off depend on running that command with the team's frozen A and
+authorized tactical XML.
 
 ## Nov 16 — reproduce the submission from a clean checkout
 
@@ -153,7 +158,11 @@ Order this day's handoffs **P1 → P2 → P3 → P4**. P4 can finish the refresh
 | P1 | Verify input discovery and A generation in the clean-checkout run. | Confirmation that documented data paths work without personal machine paths. | None |
 | P2 | Verify tag loading and B generation in the same run. | Confirmation that tags, missing data and restart candidates are handled consistently. | None |
 | P3 | Run the full workflow with the frozen versions. Verify exact CSV reproduction and format. | A release-candidate CSV, its SHA-256 checksum and a successful validator log. | **WAIT FOR P4 · Nov 15 — frozen D** |
-| P4 | Use the public five-minute ground truth once for pipeline sanity checks. Finish the technical document and reproduction checklist. | Sanity-check report, final document draft and confirmation that the documented command reproduces the candidate CSV. | **WAIT FOR P3 · Nov 16 — release-candidate CSV** |
+| P4 | Use the public five-minute ground truth once for pipeline sanity checks. Finish the technical document and reproduction checklist. | **Complete Nov 17** — [sanity and reproduction report](docs/p4/nov17_release_signoff.md), final technical document and matching candidate CSV hashes. | **WAIT FOR P3 · Nov 16 — release-candidate CSV** |
+
+P4 completed an additional [clean-source reproduction check](docs/p4/nov16_reproduction.md) on Nov 16. Two full runs matched the provisional candidate's A/B/C/D/CSV fingerprints and all 45 tests passed. P4 completed the reviewed-release refresh and public sanity check on Nov 17; P1/P2 owner confirmations remain separate.
+
+After PRs #11 and #12 merged on Nov 17, P4 prepared the [final release checklist](docs/p4/release_checklist.md) and updated the [technical document](Flick-i_Taka_Techies_technical.md) with release-record fields. The checklist covers frozen handoff hashes, fresh-environment reproduction, actual execution of the data-gated P3 tests, public-window sanity scoring and submission packaging. P4 executed the final-C checks and signed off on Nov 17; see [final evidence](docs/p4/nov17_release_signoff.md). Submission and receipt remain pending.
 
 Use the public ground truth to check alignment and pipeline correctness. Model selection and threshold tuning use other games or fixtures.
 
@@ -164,7 +173,7 @@ Use the public ground truth to check alignment and pipeline correctness. Model s
 | P1 | Confirm the frozen spatial code and input instructions are in the repository. | P1 sign-off. | None |
 | P2 | Confirm the frozen stoppage code and assumptions are documented. | P2 sign-off. | None |
 | P3 | Regenerate `Flick-i_Taka_Techies.csv` and validate that exact file. | Final CSV, checksum, code commit and validator log. | **WAIT FOR P1 · Nov 17 — sign-off; P2 · Nov 17 — sign-off** |
-| P4 | Verify the CSV and technical document use the team name, check the public repository, and coordinate the team's single submission. | Final document, public repo URL and a submission receipt saved privately by the person submitting. | **WAIT FOR P3 · Nov 17 — final CSV** |
+| P4 | Verify the CSV and technical document use the team name, check the public repository, and coordinate the team's single submission. | **Document and repository checks complete Nov 17.** Actual form submission and private receipt remain pending with the agreed submitter. | **WAIT FOR P3 · Nov 17 — final CSV** |
 
 The organiser's deadline is Nov 17. Confirm the exact cutoff time from their email or form and agree an earlier internal cutoff. P4 coordinates who submits the form.
 
@@ -206,8 +215,8 @@ Keep licensed match assets in `data/` and generated tracking, video clips, API c
 - Relative velocity comes from adjacent observations of the nearest track slot and can spike when a slot changes identity. `voronoi_control_H` currently uses a distance-based proxy.
 - Smart Tagging intervals exclude `end_frame`. D override intervals include `end_frame` and must stay within one half.
 - P2's thresholds are starting values. Its restart flag marks an inferred candidate. Automatic tags provide uncertain evidence.
-- P3 currently uses forward-backward HMM posteriors. X-shield and transition choices need external development.
-- P4 loads an existing valid D or returns an empty table. Its window finder and frame extractor are implemented. External Metrica ingestion and local arbitration remain development work. Gemini experiments are limited to external examples whose terms permit upload.
+- P3 currently uses calibrated distance emissions (temperature 3.0), transition persistence 0.999 and Viterbi decoding, with forward-backward posteriors retained for probabilities and entropy. X-shield and transition choices were selected on synthetic fixtures; external labels remain unavailable.
+- P4 loads an existing valid D or returns an empty table. External Metrica ingestion and deterministic local arbitration are implemented. The final-C refresh proposed no overrides; P4 signs off an explicit empty D. Confidence remains uncalibrated, and external possession accuracy is unmeasured. Gemini experiments are limited to external examples whose terms permit upload.
 - The provided public five-minute labels are for pipeline sanity checks. No human labels, manual corrections or frame-specific hand-coded possession rules on the competition match are allowed.
 
 The official files came from upstream commit `f8f2629ff1e0985f81d7e59d8413678514ee1530`. Verification passed under Python 3.12 for the official baseline scores, mock pipeline, an official-format synthetic fixture, gap and half boundaries, saved overrides, artifact replay and CSV validation. Initial real-data ingestion, contracts and local decode checks passed on Nov 6. Possession accuracy and feature quality remain development work.
