@@ -54,6 +54,10 @@ def build_emissions(spatial, deadball, config):
         from .control_evidence import sustained_control_evidence
         teams, known = sustained_control_evidence(
             spatial, deadball, temperature, config.get("control", {}))
+    elif mode == 'accumulated_control':
+        from .control_evidence import accumulated_control_evidence
+        teams, known = accumulated_control_evidence(
+            spatial, deadball, temperature, config.get('control', {}))
     else:
         raise ValueError("Unknown team evidence mode: " + str(mode))
     emissions = np.column_stack((teams * (1 - dead[:, None]), dead))

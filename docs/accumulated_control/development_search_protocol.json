@@ -1,0 +1,59 @@
+{
+  "grid": [
+    {
+      "confirmation_seconds": 0.16,
+      "min_evidence_probability": 0.6666666666666666
+    },
+    {
+      "confirmation_seconds": 0.16,
+      "min_evidence_probability": 0.7
+    },
+    {
+      "confirmation_seconds": 0.16,
+      "min_evidence_probability": 0.75
+    },
+    {
+      "confirmation_seconds": 0.2,
+      "min_evidence_probability": 0.6666666666666666
+    },
+    {
+      "confirmation_seconds": 0.2,
+      "min_evidence_probability": 0.7
+    },
+    {
+      "confirmation_seconds": 0.2,
+      "min_evidence_probability": 0.75
+    },
+    {
+      "confirmation_seconds": 0.24,
+      "min_evidence_probability": 0.6666666666666666
+    },
+    {
+      "confirmation_seconds": 0.24,
+      "min_evidence_probability": 0.7
+    },
+    {
+      "confirmation_seconds": 0.24,
+      "min_evidence_probability": 0.75
+    }
+  ],
+  "matches": [
+    "2011166",
+    "2013725",
+    "1925299",
+    "2006229",
+    "2006363",
+    "2015213",
+    "1927964",
+    "1959846",
+    "1899585",
+    "2007721",
+    "2010085",
+    "1886347"
+  ],
+  "primary": "mean partial_reference_spellF1",
+  "tie_breaker": "mean macroF1_HA",
+  "script_sha256": "aacd8388d749b803a19df1fffe59404c3df8ccc48ad42ade1e8c95fdbbbb426f",
+  "starting_config_sha256": "3c2bad49f2c5b95421397224f35c1b5cd5dad4b9707a5e463c4821050311d7df",
+  "public_and_test_scores_used": false
+}

@@ -1,0 +1,73 @@
+{
+  "selected_variant": 6,
+  "selected_settings": {
+    "confirmation_seconds": 0.24,
+    "min_evidence_probability": 0.6666666666666666
+  },
+  "development_results": [
+    {
+      "variant": 6,
+      "partial_reference_spellF1": 0.4595910760330392,
+      "macroF1_HA": 0.7989044472505925,
+      "fragmentation": 1.0676024977227416,
+      "spell_count_ratio": 0.9415965413550008
+    },
+    {
+      "variant": 7,
+      "partial_reference_spellF1": 0.4562216118116811,
+      "macroF1_HA": 0.798204864115645,
+      "fragmentation": 1.0907218478247476,
+      "spell_count_ratio": 0.9647158914570068
+    },
+    {
+      "variant": 3,
+      "partial_reference_spellF1": 0.45133177791759777,
+      "macroF1_HA": 0.794087102473302,
+      "fragmentation": 1.0944090298399078,
+      "spell_count_ratio": 0.9686851844623513
+    },
+    {
+      "variant": 8,
+      "partial_reference_spellF1": 0.4498226738140923,
+      "macroF1_HA": 0.7965756944267105,
+      "fragmentation": 1.1263846169838316,
+      "spell_count_ratio": 1.000378660616091
+    },
+    {
+      "variant": 0,
+      "partial_reference_spellF1": 0.4472263404291798,
+      "macroF1_HA": 0.7929809829155919,
+      "fragmentation": 1.1144188187538515,
+      "spell_count_ratio": 0.9882068846076407
+    },
+    {
+      "variant": 4,
+      "partial_reference_spellF1": 0.44701950806505136,
+      "macroF1_HA": 0.7931009627870415,
+      "fragmentation": 1.120255761391697,
+      "spell_count_ratio": 0.9945319160141404
+    },
+    {
+      "variant": 1,
+      "partial_reference_spellF1": 0.44183784375577506,
+      "macroF1_HA": 0.7918810939042773,
+      "fragmentation": 1.1468647284731197,
+      "spell_count_ratio": 1.020652794326909
+    },
+    {
+      "variant": 5,
+      "partial_reference_spellF1": 0.44045959097406556,
+      "macroF1_HA": 0.7917942997095645,
+      "fragmentation": 1.1613957604713387,
+      "spell_count_ratio": 1.0359244403463075
+    },
+    {
+      "variant": 2,
+      "partial_reference_spellF1": 0.4324296830724646,
+      "macroF1_HA": 0.7901318005624164,
+      "fragmentation": 1.1993157192975317,
+      "spell_count_ratio": 1.0735809285529927
+    }
+  ],
+  "test_or_public_selection": false
+}

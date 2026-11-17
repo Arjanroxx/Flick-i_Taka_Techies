@@ -1,5 +1,7 @@
 # Control-aware spatial evidence candidate
 
+**Follow-up experiment:** [accumulated-control study](ACCUMULATED_CONTROL.md) recovered more reference spells but added too many false ones. It did not improve the primary metric. Retain this original sustained-control candidate rather than promoting that revision.
+
 **External validation completed:** [20-match SkillCorner report](SKILLCORNER_VALIDATION.md). The frozen control-aware method improved partial-reference spellF1 on all eight test matches, but provider labels and unknown D intervals limit what this establishes. This remains a separate candidate; no competition submission was changed.
 
 Pitch boundaries inform whether the ball is dead. Possession boundaries require a different question: did the opponent gain control, or merely become momentarily closer? This experimental option addresses the latter without changing raw tracking or inventing new coordinates.
