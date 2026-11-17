@@ -1,6 +1,20 @@
-# Flick-i_Taka_Techies — technical document draft
+# Flick-i_Taka_Techies — technical document
 
-Prepared Nov 16, 2026. Candidate integration and clean-source reproduction are verified for the locally generated provisional candidate. Final reviewed A/B/C/D sign-offs and the release checksum remain pending.
+Prepared for release review Nov 17, 2026. Candidate integration and clean-source reproduction are verified for the locally generated provisional candidate. Final reviewed A/B/C/D sign-offs and the release checksum remain pending. Complete the [release checklist](docs/p4/release_checklist.md) before treating this document as the submitted version.
+
+## Release record
+
+| Item | Current record |
+|---|---|
+| Public repository | https://github.com/Arjanroxx/Flick-i_Taka_Techies |
+| Reviewed merged source | `e89498c8898dc321501ec6de15d2cf9571f7c559`; includes P3 integration test and P4 reproduction report |
+| Final source commit and configuration hash | Pending release freeze |
+| Frozen A / B / C / D hashes | Pending owner-confirmed release manifest |
+| Submission | `Flick-i_Taka_Techies.csv`; final SHA-256 pending |
+| Final format validation and independent regeneration | Pending release-candidate checks |
+| Public-window sanity result | Pending; no threshold selection on this sample |
+
+The source above is the preparation baseline, not a claim that a final candidate was generated from it. The earlier reproduction used `0e6fe9122dca0a20b922791dfc0f61e331720108`.
 
 ## Task and output
 
@@ -56,16 +70,17 @@ The provided public five-minute labels are reserved for pipeline sanity checks. 
 
 ## Reproduction
 
-Use Python 3.12 and `requirements-team.txt`. Unpack the authorised bundle as described in `DATA.md`, or set `MTAH_DATA_DIR` to its folder.
+Use Python 3.12 and `requirements-team.txt`. Unpack the authorised bundle as described in `DATA.md`, or set `MTAH_DATA_DIR` to its folder. From a clean checkout of the final recorded source commit:
 
 ```powershell
+.venv/Scripts/python.exe -m pip install -r requirements-team.txt
 .venv/Scripts/python.exe scripts/run_full_pipeline.py --skip-evaluation
-.venv/Scripts/python.exe scripts/run_full_pipeline.py --deadball-only --verify-deadball
-.venv/Scripts/python.exe scripts/run_local_arbiter.py
-.venv/Scripts/python.exe scripts/assess_external_arbiter.py --download
+.venv/Scripts/python.exe evaluation/validate_submission.py Flick-i_Taka_Techies.csv
 .venv/Scripts/python.exe -m unittest discover -s tests -v
 ```
 
-For the omission decision, supply the validated empty D at the configured override path, then export using the matching A/B configuration and `--from-artifacts --skip-evaluation`. Validate the exact final file with `evaluation/validate_submission.py`. Record the configuration, code commit, input hashes, D and final CSV checksum together.
+Create `.venv` first with `py -3.12 -m venv .venv`. The commands above use the committed configuration; if the team freezes different settings, commit those settings and record that source version before release. A clean checkout has no saved overrides, so the pipeline writes a valid empty D. Existing workspaces must verify that their configured D is empty for the omission decision.
+
+`--from-artifacts --skip-evaluation` reads saved A and B and regenerates C; it does not read P3's existing C. Before using that route, preserve the reviewed C separately and require the regenerated C to match its recorded hash. Record configuration, code commit, input hashes, A/B/C/D and final CSV checksum together. See the release checklist for exact checks and the public sanity-scoring command. External arbitration experiments are optional development steps and are not needed to regenerate the chosen empty-D submission.
 
 The Nov 16 local candidate and manifest are under `artifacts/p4/nov14/candidate/`. Private configurations and trial caches are described in `docs/p4/nov12_14_completion.md`. A separate clean clone reproduced all five output fingerprints and passed all 45 tests, as recorded in `docs/p4/nov16_reproduction.md`. The final document needs the reviewed release versions and their reproduction result before submission.

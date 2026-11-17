@@ -162,6 +162,8 @@ authorized tactical XML.
 
 P4 completed an additional [clean-source reproduction check](docs/p4/nov16_reproduction.md) on Nov 16. Two full runs matched the provisional candidate's A/B/C/D/CSV fingerprints and all 45 tests passed. Reviewed-release refresh, final sanity scoring and owner sign-offs remain pending.
 
+After PRs #11 and #12 merged on Nov 17, P4 prepared the [final release checklist](docs/p4/release_checklist.md) and updated the [technical document](Flick-i_Taka_Techies_technical.md) with release-record fields. The checklist covers frozen handoff hashes, fresh-environment reproduction, actual execution of the data-gated P3 tests, public-window sanity scoring and submission packaging. These final checks are prepared, not yet signed off against a frozen release candidate.
+
 Use the public ground truth to check alignment and pipeline correctness. Model selection and threshold tuning use other games or fixtures.
 
 ## Nov 17 — validate and submit
