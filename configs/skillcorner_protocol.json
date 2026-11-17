@@ -1,0 +1,107 @@
+{
+  "revision": "4340d274572876239c154c90bc507a9b3250a656",
+  "match_ids": [
+    "1874553",
+    "1886347",
+    "1899585",
+    "1925299",
+    "1927964",
+    "1953632",
+    "1959846",
+    "1986691",
+    "1996435",
+    "1996436",
+    "2006229",
+    "2006363",
+    "2007448",
+    "2007721",
+    "2010085",
+    "2011166",
+    "2013725",
+    "2015213",
+    "2016236",
+    "2017461"
+  ],
+  "split_rule": "SHA256(revision + ':' + match_id), ascending; first 12 development, last 8 test",
+  "development_count": 12,
+  "source_fps": 10,
+  "reference_fps": 25,
+  "input_policy": "detected_only",
+  "reference_policy": "home team/away team only; null unknown; no inferred D",
+  "frozen_models": [
+    "distance",
+    "sustained_control"
+  ],
+  "tuning": false,
+  "development_matches": [
+    "2011166",
+    "2013725",
+    "1925299",
+    "2006229",
+    "2006363",
+    "2015213",
+    "1927964",
+    "1959846",
+    "1899585",
+    "2007721",
+    "2010085",
+    "1886347"
+  ],
+  "test_matches": [
+    "1996436",
+    "1953632",
+    "1874553",
+    "1986691",
+    "2007448",
+    "2016236",
+    "2017461",
+    "1996435"
+  ],
+  "frozen_settings": {
+    "hmm": {
+      "transition": [
+        [
+          0.999,
+          0.0004,
+          0.0006
+        ],
+        [
+          0.0004,
+          0.999,
+          0.0006
+        ],
+        [
+          0.0005,
+          0.0005,
+          0.999
+        ]
+      ],
+      "emission_temperature": 3.0,
+      "decoder": "viterbi"
+    },
+    "thresholds": {
+      "team_uncertainty": 0.9,
+      "entropy": 0.9,
+      "override_confidence": 0.8,
+      "short_gap": 12,
+      "restart_speed": 3.0,
+      "restart_accel": 8.0,
+      "stationary_speed": 0.3,
+      "stoppage_confirm_frames": 3,
+      "boundary_margin_m": 0.35,
+      "stoppage_lookback_seconds": 3.0
+    },
+    "control": {
+      "confirmation_frames": 3,
+      "max_distance_m": 2.0,
+      "min_margin_m": 2.0,
+      "max_dead_probability": 0.2
+    }
+  },
+  "time_adaptation": {
+    "transition": "fractional_matrix_power(T25,2.5)",
+    "emissions": "likelihood**2.5, renormalized",
+    "confirmation_frames": 2,
+    "short_gap_frames": 5
+  }
+}

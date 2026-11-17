@@ -59,6 +59,13 @@ def build_emissions(spatial, deadball, config):
     emissions = np.column_stack((teams * (1 - dead[:, None]), dead))
     emissions = np.maximum(emissions, 1e-12)
     emissions /= emissions.sum(axis=1, keepdims=True)
+    power = config.get('hmm', {}).get('emission_power', 1.0)
+    if not np.isfinite(power) or power <= 0:
+        raise ValueError('Emission power must be finite and positive')
+    if power != 1:
+        # External lower-rate observations represent more elapsed time. This
+        # option is never enabled for the 25 Hz competition configuration.
+        emissions = softmax(np.log(emissions) * power, axis=1)
     return emissions, known
 
 
