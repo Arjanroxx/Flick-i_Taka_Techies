@@ -115,6 +115,8 @@ def decode(config, spatial, deadball):
     if decoder == "viterbi":
         labels = viterbi(emissions, halves, transition)
     thresholds = config["thresholds"]
+    if not np.isfinite(thresholds["entropy"]) or not 0 <= thresholds["entropy"] <= np.log(3):
+        raise ValueError("Entropy threshold must be between zero and log(3) nats")
     short_gap = spatial.gap_length_frames.between(1, thresholds["short_gap"]).to_numpy()
     team_limit = thresholds.get("team_uncertainty", 0.9)
     if not np.isfinite(team_limit) or not 0 <= team_limit <= 1:

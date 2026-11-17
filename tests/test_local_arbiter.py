@@ -11,7 +11,7 @@ import yaml
 
 from games import GAME, half_video_blocks
 from scripts.run_local_arbiter import select_windows
-from src.contracts import FRAMES, SCHEMAS, day1_mocks, entropy, read, write
+from src.contracts import FRAMES, SCHEMAS, day1_mocks, entropy, read, write, frame_halves
 from src.p4_arbiter_and_eval import apply_overrides, local_arbiter
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -112,6 +112,7 @@ class LocalArbiterCommandTests(unittest.TestCase):
                                        columns=["prob_H", "prob_A", "prob_D"])
             predictions["state_entropy"] = entropy(probabilities)
             predictions["raw_label"] = "A"
+            predictions.loc[frame_halves() == 0, "raw_label"] = "X"
             predictions = predictions.astype(SCHEMAS["predictions"])
             for kind, table in (("spatial", spatial), ("deadball", deadball),
                                 ("predictions", predictions)):

@@ -69,6 +69,7 @@ def build_mask(config, spatial, events):
     outside = observed & out_of_bounds(x, y, pitch)
     clearly_outside = outside & out_of_bounds(x, y, pitch, margin)
     boundary = np.zeros(len(spatial), dtype=bool)
+    boundary_memory = np.zeros(len(spatial), dtype=bool)
     stationary = np.zeros(len(spatial), dtype=bool)
     moving = np.zeros(len(spatial), dtype=bool)
     candidates = np.zeros(len(spatial), dtype=bool)
@@ -82,6 +83,14 @@ def build_mask(config, spatial, events):
             if right - left >= confirmation and clearly_outside[span].any():
                 boundary[span] = True
 
+        # A missing sample is not an on-pitch return. Carry only a confirmed
+        # exit through consecutive missing samples, stopping at any observation.
+        positions = np.arange(start, stop)
+        previous = np.maximum.accumulate(np.where(observed[block], positions, start - 1))
+        valid_previous = previous >= start
+        boundary_memory[block] = boundary[block] | (
+            ~observed[block] & valid_previous & boundary[np.maximum(previous, start)])
+
         # P1 speed uses two positions. Acceleration uses three. Reject derivatives
         # that depend on missing/imputed positions, even if the current position is real.
         tracked = observed[block]
@@ -94,12 +103,15 @@ def build_mask(config, spatial, events):
 
         fast = speed_ok & ~outside[block] & (speed[block] >= thresholds["restart_speed"])
         moving[block] = speed_ok & ~outside[block] & (speed[block] > thresholds["stationary_speed"])
+        last_exit = np.maximum.accumulate(np.where(boundary[block], positions, start - 1))
+        last_motion = np.maximum.accumulate(np.where(moving[block], positions, start - 1))
         for left, right in _runs(fast):
             if right - left < confirmation or left == 0:
                 continue
             frame = start + left
             # A sustained on-pitch return or a quiet-to-fast kick can confirm a restart.
-            returned = boundary[frame - 1]
+            returned = (last_exit[left - 1] >= start
+                        and last_motion[left - 1] <= last_exit[left - 1])
             recent_quiet = stationary[max(start, frame - confirmation - 1):frame].any()
             kicked = (recent_quiet and accel_ok[left]
                       and accel[frame] >= thresholds["restart_accel"])
@@ -117,8 +129,10 @@ def build_mask(config, spatial, events):
         # is occluded. Do not extend this prior onto observed live motion.
         weak = tag_probability[window]
         unsupported = ~observed[window]
-        weak[unsupported] = np.maximum(weak[unsupported], 0.5)
         possible = np.flatnonzero(candidates[window])
+        if possible.size:
+            unsupported[possible[0]:] = False
+        weak[unsupported] = np.maximum(weak[unsupported], 0.5)
         if not possible.size:
             quiet_frames = stationary[window]
             weak_evidence = tag_probability[window]
@@ -132,7 +146,7 @@ def build_mask(config, spatial, events):
         if earlier_motion.size:
             lead_start += earlier_motion[-1] + 1
         lead = slice(lead_start, restart)
-        support = np.flatnonzero(boundary[lead] | stationary[lead])
+        support = np.flatnonzero(boundary_memory[lead] | stationary[lead])
         if support.size:
             lead = slice(lead_start + support[0], restart)
             tag_probability[lead] = 0.7
@@ -144,7 +158,7 @@ def build_mask(config, spatial, events):
         types[frame] = piece
     probability = tag_probability
     probability[restarts] = 0.05
-    probability[boundary] = 0.98
+    probability[boundary_memory] = 0.98
     probability[halves == 0] = 1
     return pd.DataFrame({
         "is_dead_ball_prob": probability, "is_out_of_bounds": outside,

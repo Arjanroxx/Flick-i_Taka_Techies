@@ -11,14 +11,13 @@ from pathlib import Path
 import subprocess
 import sys
 
-import pandas as pd
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from src import p3_sequence_model as p3, p4_arbiter_and_eval as p4
-from src.contracts import SCHEMAS, frame_halves, read, write
+from src.contracts import frame_halves, read, write
 
 
 def digest(path):
@@ -52,11 +51,10 @@ def main():
     candidate_c = args.out / "base_predictions.parquet"
     write("predictions", predictions, candidate_c)
 
-    if paths["overrides"].is_file():
-        overrides = read("overrides", paths["overrides"])
-    else:
-        overrides = pd.DataFrame({name: pd.Series(dtype=dtype)
-                                  for name, dtype in SCHEMAS["overrides"].items()})
+    # Use the same provenance checks as the full pipeline, bound to the C just
+    # generated here rather than any older C at the normal handoff path.
+    override_config = {**config, "paths": {**paths, "predictions": candidate_c}}
+    overrides = p4.run(override_config, predictions)
     labels = p4.apply_overrides(predictions, overrides,
                                 config["thresholds"]["override_confidence"])
     labels.iloc[frame_halves() == 0] = "X"
