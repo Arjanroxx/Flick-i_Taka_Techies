@@ -213,7 +213,7 @@ Keep licensed match assets in `data/` and generated tracking, video clips, API c
 - Relative velocity comes from adjacent observations of the nearest track slot and can spike when a slot changes identity. `voronoi_control_H` currently uses a distance-based proxy.
 - Smart Tagging intervals exclude `end_frame`. D override intervals include `end_frame` and must stay within one half.
 - P2's thresholds are starting values. Its restart flag marks an inferred candidate. Automatic tags provide uncertain evidence.
-- P3 currently uses forward-backward HMM posteriors. X-shield and transition choices need external development.
+- P3 currently uses calibrated distance emissions (temperature 3.0), transition persistence 0.999 and Viterbi decoding, with forward-backward posteriors retained for probabilities and entropy. X-shield and transition choices were selected on synthetic fixtures; external labels remain unavailable.
 - P4 loads an existing valid D or returns an empty table. Its window finder and frame extractor are implemented. External Metrica ingestion and local arbitration remain development work. Gemini experiments are limited to external examples whose terms permit upload.
 - The provided public five-minute labels are for pipeline sanity checks. No human labels, manual corrections or frame-specific hand-coded possession rules on the competition match are allowed.
 

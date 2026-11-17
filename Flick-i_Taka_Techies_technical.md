@@ -1,6 +1,6 @@
 # Flick-i_Taka_Techies — technical document draft
 
-Prepared Nov 16, 2026. Candidate integration and clean-source reproduction are verified for the locally generated provisional candidate. Final reviewed A/B/C/D sign-offs and the release checksum remain pending.
+Prepared Nov 16, 2026; P3 release fields updated Nov 17, 2026. The final CSV is generated, validated and reproduced. P1/P2 sign-offs, a P4 refresh against the P3-reviewed C, and official full-match scoring remain outside what this repository can complete locally.
 
 ## Task and output
 
@@ -32,11 +32,11 @@ The dead-ball values are heuristic emission weights. Untagged in-bounds stoppage
 
 ## Sequence model and possession rules — P3
 
-Nearest-team distance scores form H/A emissions. Missing or imputed team-distance evidence is neutral between the teams. P2 supplies D evidence. A three-state forward-backward HMM smooths emissions independently within each half using the transition matrix in `configs/config.yaml`.
+Nearest-team distance scores form H/A emissions, with the metre distance divided by a calibrated temperature of 3.0 before the softmax. Missing or imputed team-distance evidence is neutral between the teams. P2 supplies D evidence. A three-state HMM smooths emissions independently within each half using the transition matrix in `configs/config.yaml` (persistence 0.999). The decoded label path uses Viterbi; forward-backward still supplies the reported probabilities and entropy.
 
-The strongest posterior selects H, A or D. An uncertainty shield can emit X for disputed short gaps or unavailable spatial evidence. The official spell scorer fills abstentions within each half, which can preserve an occluded possession but can also extend the preceding label past a turnover.
+The strongest path selects H, A or D. An uncertainty shield can emit X for disputed short gaps or unavailable spatial evidence. The official spell scorer fills abstentions within each half, which can preserve an occluded possession but can also extend the preceding label past a turnover.
 
-Loose-ball and challenge decisions therefore depend on the distance evidence, temporal context and uncertainty rule. The current baseline has no explicit player-control classifier. Restarts depend on P2's observed kinematics and automatic tag evidence. P3's final configuration and external-development rationale require its owner sign-off.
+Loose-ball and challenge decisions therefore depend on the distance evidence, temporal context and uncertainty rule. The current baseline has no explicit player-control classifier. Restarts depend on P2's observed kinematics and automatic tag evidence. Temperature 3.0, persistence 0.999 and Viterbi were selected on five fixed-seed synthetic spell fixtures, not on the public competition labels; the evidence is in `docs/p3/p3_completion.md`. External frame-level possession labels are unavailable, so the transition settings have not been validated on another match.
 
 ## Optional arbitration — P4
 
@@ -46,9 +46,9 @@ The Nov 16 refresh reviewed eight competition windows and eight external windows
 
 ## Development data and validation
 
-No supervised possession training was performed in the documented P4 experiments. Synthetic fixtures provide controlled evidence for interpolation, missingness, turnovers, stoppages and override mechanics. Public Metrica Sample Game 1 tracking exercises another match's coordinate and period handling. It uses its own 105 × 68 metre pitch and source frame identifiers. Its weak boundary proxy can miss in-bounds stoppages.
+No supervised possession training was performed. Fixed-seed synthetic spells provide controlled evidence for interpolation, missingness, turnovers, stoppages, emission calibration and decoder choice. On five seeds, the final P3 settings raised fixture spellF1 from 0.687 to 0.807 and reduced predicted spells from 711 to 573. Public Metrica Sample Game 1 tracking exercises another match's coordinate and period handling. It uses its own 105 × 68 metre pitch and source frame identifiers. Its weak boundary proxy can miss in-bounds stoppages.
 
-The external assessment lacks independent continuous possession labels. Accuracy improvements and score calibration remain unmeasured. The documented experiments retain provisional settings and provide no evidence for selecting them on the competition's public sample.
+The external assessment lacks independent continuous possession labels. Accuracy improvements and score calibration remain unmeasured. Public five-minute labels were inspected for alignment and fragmentation diagnostics, and the final score was measured after the settings were frozen. They were not used to choose the settings. The final candidate scores macroF1 0.5188 and spellF1 0.1926 with 37 predicted spells, below `baseline_smooth125` at 0.5812/0.4242. This is reported as a limitation, not as external validation.
 
 Metrica Sports' sample revision is `e706dd506b360d69d9d123d5b8026e7294b13996`. Its public README invites analytics use and requests attribution. Downloaded input URLs and checksums are recorded locally. [External source and usage statement](https://github.com/metrica-sports/sample-data/blob/e706dd506b360d69d9d123d5b8026e7294b13996/README.md)
 
@@ -61,6 +61,8 @@ Use Python 3.12 and `requirements-team.txt`. Unpack the authorised bundle as des
 ```powershell
 .venv/Scripts/python.exe scripts/run_full_pipeline.py --skip-evaluation
 .venv/Scripts/python.exe scripts/run_full_pipeline.py --deadball-only --verify-deadball
+.venv/Scripts/python.exe scripts/run_p3_experiments.py
+.venv/Scripts/python.exe scripts/freeze_p3_candidate.py --out artifacts/p3/release/freeze --submission Flick-i_Taka_Techies.csv
 .venv/Scripts/python.exe scripts/run_local_arbiter.py
 .venv/Scripts/python.exe scripts/assess_external_arbiter.py --download
 .venv/Scripts/python.exe -m unittest discover -s tests -v
@@ -68,4 +70,6 @@ Use Python 3.12 and `requirements-team.txt`. Unpack the authorised bundle as des
 
 For the omission decision, supply the validated empty D at the configured override path, then export using the matching A/B configuration and `--from-artifacts --skip-evaluation`. Validate the exact final file with `evaluation/validate_submission.py`. Record the configuration, code commit, input hashes, D and final CSV checksum together.
 
-The Nov 16 local candidate and manifest are under `artifacts/p4/nov14/candidate/`. Private configurations and trial caches are described in `docs/p4/nov12_14_completion.md`. A separate clean clone reproduced all five output fingerprints and passed all 45 tests, as recorded in `docs/p4/nov16_reproduction.md`. The final document needs the reviewed release versions and their reproduction result before submission.
+The final release manifest is `artifacts/p3/release/freeze/manifest.json`. It records A `0E0D790E…A629CB`, B `13A2E7D2…4DBA624`, C `5A2E6868…FB61872`, empty D `6003E21F…A41177` and CSV `D51E19A0…E90FAA`. A second freeze reproduced the C and CSV hashes exactly. The candidate CSV passed the official 199,319-row validator, and all 57 tests passed on the merged source tree. The P3 experiment and freeze utilities are `scripts/run_p3_experiments.py` and `scripts/freeze_p3_candidate.py`.
+
+The Nov 16 local candidate and manifest are under `artifacts/p4/nov14/candidate/`. Private configurations and trial caches are described in `docs/p4/nov12_14_completion.md`. The Nov 16 clean-clone check reproduced the then-current five outputs and passed the then-current 45 tests. P3's final C supersedes that provisional C; P4 must refresh its empty-D decision against this C before release sign-off. P2's real B reproduced byte for byte on Nov 17, and P1's A matches the published frozen candidate hash.

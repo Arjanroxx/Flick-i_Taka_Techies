@@ -45,10 +45,12 @@ class SequenceModelTests(unittest.TestCase):
         ):
             with self.subTest(home=home, away=away):
                 observed = self.single_frame_predictions(home, away, False)
-                self.assertGreater(observed.at[self.playing_frame, closer], 0.9)
+                # The configured temperature keeps a 1 m vs 5 m preference clear but
+                # deliberately below the old overconfident 0.9+ emission.
+                self.assertGreater(observed.at[self.playing_frame, closer], 0.7)
                 self.assertGreater(
                     observed.at[self.playing_frame, closer],
-                    observed.at[self.playing_frame, farther],
+                    observed.at[self.playing_frame, farther] + 0.3,
                 )
 
     def test_output_structure(self):
