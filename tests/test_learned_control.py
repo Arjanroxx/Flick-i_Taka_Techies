@@ -71,6 +71,28 @@ class LearnedControlTests(unittest.TestCase):
         np.testing.assert_array_equal(actual[0], original[0])
         np.testing.assert_array_equal(actual[1], original[1])
 
+    def test_confident_classifier_cannot_replace_confirmed_original_control(self):
+        self.a[['dist_nearest_H', 'dist_nearest_A']] = [1., 9.]
+        model = deepcopy(self.zero)
+        model['coef'][0] = -20.
+        original = sustained_control_evidence(self.a, self.b, 3., {})
+        actual = learned_control_evidence(self.a, self.b, 3., {},
+                                           {'model': model, 'fps': 25, 'confidence': .75})
+        self.assertTrue(original[1].all())
+        np.testing.assert_array_equal(actual[0], original[0])
+
+    def test_training_masks_unknowns_and_weights_matches_equally(self):
+        from scripts.train_learned_control import training_data
+        data = {
+            'one': {'eligible': np.ones(3, dtype=bool), 'reference': pd.Series(['H','A','X']),
+                    'x': np.zeros((3, len(FEATURE_NAMES)))},
+            'two': {'eligible': np.ones(5, dtype=bool), 'reference': pd.Series(['H','H','A','A','X']),
+                    'x': np.ones((5, len(FEATURE_NAMES)))}}
+        x, y, weight = training_data(['one', 'two'], data)
+        self.assertEqual(len(x), 6)
+        self.assertTrue(np.isin(y, [-1, 1]).all())
+        self.assertAlmostEqual(float(weight[:2].sum()), float(weight[2:].sum()))
+
     def test_model_file_must_match_recorded_hash(self):
         with tempfile.TemporaryDirectory(dir=ROOT / 'artifacts') as directory:
             path = Path(directory) / 'model.json'

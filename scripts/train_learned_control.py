@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from scripts.download_skillcorner import digest
 from scripts.validate_skillcorner import verify_source
-from scripts.validate_accumulated_control import load_cached
+from src.learned_control_cache import load_cached
 from src.skillcorner_validation import native_config, evaluate_reference
 from src.learned_control import control_features, fit_model, calibrate_model
 from src.p3_sequence_model import run
@@ -36,7 +36,7 @@ def main():
     protocol = json.loads((ROOT / 'configs/skillcorner_protocol.json').read_text())
     plan = json.loads((ROOT / 'configs/learned_control_protocol.json').read_text())
     blobs = json.loads((ROOT / 'configs/skillcorner_source_blobs.json').read_text())
-    source_names = ['src/learned_control.py', 'src/control_evidence.py', 'src/p3_sequence_model.py',
+    source_names = ['src/learned_control.py', 'src/learned_control_cache.py', 'src/control_evidence.py', 'src/p3_sequence_model.py',
                     'src/skillcorner_validation.py', 'scripts/train_learned_control.py',
                     'configs/learned_control_protocol.json', 'configs/skillcorner_protocol.json']
     sources = {name: digest(ROOT / name) for name in source_names}
@@ -49,7 +49,7 @@ def main():
         folder = ROOT / 'artifacts/external/skillcorner' / match
         tracking = verify_source(folder, match, protocol, blobs)
         a, b, reference = load_cached(folder, protocol,
-            ROOT / 'artifacts/accumulated_validation/feature_cache' / match, tracking)
+            out / 'feature_cache' / match, tracking)
         x, eligible = control_features(a, b, protocol['source_fps'])
         data[match] = {'a': a, 'b': b, 'reference': reference, 'x': x, 'eligible': eligible}
         print(match + ': label-free features prepared', flush=True)
