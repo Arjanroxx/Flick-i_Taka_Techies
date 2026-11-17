@@ -1,0 +1,9 @@
+{
+  "sources_unchanged_after_public": true,
+  "original_artifacts_preserved": true,
+  "original_predictions_regenerated_byte_identically": true,
+  "full_suite_passed": 125,
+  "targeted_tests_passed": 6,
+  "candidate_passed_validator": true,
+  "no_post_public_tuning": true
+}

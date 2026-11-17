@@ -5,7 +5,7 @@ from scipy.special import softmax
 
 from .contracts import SCHEMAS, entropy
 
-DECODERS = ("posterior", "viterbi")
+DECODERS = ("posterior", "viterbi", "duration")
 STATES = np.array(list("HAD"))
 
 
@@ -143,9 +143,13 @@ def decode(config, spatial, deadball):
         from .contact_transitions import transition_schedule
         transition = transition_schedule(spatial, deadball, transition, config)
     halves = spatial.half.to_numpy()
-    probs = forward_backward(emissions, halves, transition)
+    if decoder == 'duration':
+        from .duration_model import decode_duration
+        probs, labels = decode_duration(emissions, halves, transition, config['duration'])
+    else:
+        probs = forward_backward(emissions, halves, transition)
+        labels = STATES[probs.argmax(axis=1)].copy()
     uncertainty = entropy(probs)
-    labels = STATES[probs.argmax(axis=1)].copy()
     if decoder == "viterbi":
         labels = viterbi(emissions, halves, transition)
     thresholds = config["thresholds"]

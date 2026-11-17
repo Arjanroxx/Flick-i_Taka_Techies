@@ -1,0 +1,5 @@
+{
+  "src/duration_model.py": "4736b6748a896c17558180106ca5db6899aa6008af29f703b72db262afcba9de",
+  "src/p3_sequence_model.py": "bdc2d8ce6c6cad890d1b35494e7dfc329f16f2332250098aae16772f0713017b",
+  "configs/duration_candidate.yaml": "c9b3b7d43c70738a8835bd58407098621918b262bdc52577ee29d9f196b7de0d"
+}
