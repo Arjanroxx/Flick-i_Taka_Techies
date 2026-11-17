@@ -32,9 +32,10 @@ def set_piece_type(event):
     return None
 
 
-def tag_windows(events):
+def tag_windows(events, *, blocks=None):
     """Intersect each recognised half-open tag interval with the play blocks."""
-    blocks = [(start, end + 1) for _, start, end in half_video_blocks(GAME)]
+    if blocks is None:
+        blocks = [(start, end + 1) for _, start, end in half_video_blocks(GAME)]
     windows = set()
     for event in events:
         piece = set_piece_type(event)
@@ -49,15 +50,22 @@ def tag_windows(events):
     return sorted(windows, key=lambda window: (window[0] - window[1], *window))
 
 
-def build_mask(config, spatial, events):
+def build_mask(config, spatial, events, *, fps=None, pitch=None):
     thresholds = config["thresholds"]
     game = GAMES[GAME]
-    length, width = game["pitch"]
-    pitch = {"length": length, "width": width}
+    if pitch is None:
+        length, width = game["pitch"]
+        pitch = {"length": length, "width": width}
+    fps = game['fps'] if fps is None else fps
+    if (not np.isfinite(fps) or fps <= 0
+            or not np.isfinite(list(pitch.values())).all() or min(pitch.values()) <= 0):
+        raise ValueError('Invalid tracking frame rate or pitch')
+    if not np.array_equal(spatial.index, np.arange(len(spatial))):
+        raise ValueError('Dead-ball construction requires zero-based contiguous frames')
     # Defaults also support local configs copied before these settings were added.
     confirmation = thresholds.get("stoppage_confirm_frames", 3)
     margin = thresholds.get("boundary_margin_m", 0.35)
-    lookback = round(thresholds.get("stoppage_lookback_seconds", 3.0) * game["fps"])
+    lookback = round(thresholds.get("stoppage_lookback_seconds", 3.0) * fps)
     if confirmation < 2 or margin < 0 or lookback < confirmation:
         raise ValueError("P2 needs at least two confirmation frames, a nonnegative margin and sufficient lookback")
 
@@ -122,7 +130,7 @@ def build_mask(config, spatial, events):
     tag_probability = np.where(observed, 0.05, 1 / 3).astype("float32")
     types = np.full(len(spatial), "none", dtype=object)
     restart_types = {}
-    for start, stop, piece in tag_windows(events):
+    for start, stop, piece in tag_windows(events, blocks=blocks):
         window = slice(start, stop)
         types[window] = piece
         # Automatic set-piece tags are weak stoppage evidence even if the ball
@@ -163,7 +171,7 @@ def build_mask(config, spatial, events):
     return pd.DataFrame({
         "is_dead_ball_prob": probability, "is_out_of_bounds": outside,
         "active_set_piece_type": types, "restart_frame_flag": restarts,
-    }, index=FRAMES).astype(SCHEMAS["deadball"])
+    }, index=spatial.index).astype(SCHEMAS["deadball"])
 
 
 def run(config, spatial):

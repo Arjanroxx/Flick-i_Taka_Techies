@@ -1,5 +1,7 @@
 # Flick-i_Taka_Techies — team roadmap
 
+**External validation follow-up, Nov 18:** [SkillCorner benchmark](docs/SKILLCORNER_VALIDATION.md) completed on 20 other matches with a predeclared 12/8 split. Control-aware evidence improved partial-reference spellF1 on all eight test matches. This supersedes earlier statements that no external H/A references were available; a defensible full D reference remains unavailable. No fitting or submission replacement was performed.
+
 **Nov 18 audit revision:** the [end-to-end audit](docs/REPOSITORY_AUDIT.md) fixes stoppage continuity, stale-override reuse and contract gaps. It generates a separate candidate with new B/C/CSV hashes; earlier dated sign-offs and packages remain historical. The [current technical document](Flick-i_Taka_Techies_technical.md) identifies the audited implementation and candidate. No form submission was performed by the audit.
 
 Our goal is one reproducible CSV with 199,319 rows, one per tactical-video frame. Every row says Home (`H`), Away (`A`), Dead ball (`D`) or Uncertain (`X`).
