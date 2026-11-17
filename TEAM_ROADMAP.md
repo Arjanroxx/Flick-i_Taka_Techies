@@ -1,5 +1,7 @@
 # Flick-i_Taka_Techies — team roadmap
 
+**Nov 18 audit revision:** the [end-to-end audit](docs/REPOSITORY_AUDIT.md) fixes stoppage continuity, stale-override reuse and contract gaps. It generates a separate candidate with new B/C/CSV hashes; earlier dated sign-offs and packages remain historical. The [current technical document](Flick-i_Taka_Techies_technical.md) identifies the audited implementation and candidate. No form submission was performed by the audit.
+
 Our goal is one reproducible CSV with 199,319 rows, one per tactical-video frame. Every row says Home (`H`), Away (`A`), Dead ball (`D`) or Uncertain (`X`).
 
 ## Dates and data arrival
