@@ -1,6 +1,20 @@
-# Flick-i_Taka_Techies — technical document draft
+# Flick-i_Taka_Techies — technical document
 
-Prepared Nov 16, 2026; P3 release fields updated Nov 17, 2026. The final CSV is generated, validated and reproduced. P1/P2 sign-offs, a P4 refresh against the P3-reviewed C, and official full-match scoring remain outside what this repository can complete locally.
+Verified Nov 17, 2026. P4 independently reproduced P3's final candidate, refreshed the empty-D decision, passed all 57 tests and confirmed public-window sanity results. [Verification and P4 sign-off](docs/p4/nov17_release_signoff.md). P1/P2 owner confirmations and actual submission remain separate team actions.
+
+## Release record
+
+| Item | Record |
+|---|---|
+| Public repository | https://github.com/Arjanroxx/Flick-i_Taka_Techies |
+| Verified implementation commit | `783d20d1fc6e32d4ee62a3c3ea87bf7e07aa407a` |
+| Committed configuration SHA-256 | `8D1A4D16749AF7D5A18C922A0766DB70A9977F025F021F32305FA86416E775DB` |
+| A / B / C / D | Full hashes in the P4 sign-off report |
+| Final CSV SHA-256 | `D51E19A05ACAEA0A36DA065AD37C42DCFCB4B45E9FDD3CF8668FF96BA4E90FAA` |
+| Format and reproduction | Official validator passed; two complete runs matched all five hashes |
+| Public sanity | macroF1 0.5188; spellF1 0.1926; settings unchanged |
+
+P4 also reproduced all output hashes and passed all 57 tests in a fresh Python 3.12 environment with the pinned runtime packages. Optional development-package installation timed out; it was not needed for the successful pipeline and test runs. Full installation details and limitations are in the sign-off report.
 
 ## Task and output
 
@@ -32,7 +46,7 @@ The dead-ball values are heuristic emission weights. Untagged in-bounds stoppage
 
 ## Sequence model and possession rules — P3
 
-Nearest-team distance scores form H/A emissions, with the metre distance divided by a calibrated temperature of 3.0 before the softmax. Missing or imputed team-distance evidence is neutral between the teams. P2 supplies D evidence. A three-state HMM smooths emissions independently within each half using the transition matrix in `configs/config.yaml` (persistence 0.999). The decoded label path uses Viterbi; forward-backward still supplies the reported probabilities and entropy.
+Nearest-team distance scores form H/A emissions, with the metre distance divided by a fixture-selected temperature of 3.0 before the softmax. Missing or imputed team-distance evidence is neutral between the teams. P2 supplies D evidence. A three-state HMM smooths emissions independently within each half using the transition matrix in `configs/config.yaml` (persistence 0.999). The decoded label path uses Viterbi; forward-backward still supplies the reported probabilities and entropy.
 
 The strongest path selects H, A or D. An uncertainty shield can emit X for disputed short gaps or unavailable spatial evidence. The official spell scorer fills abstentions within each half, which can preserve an occluded possession but can also extend the preceding label past a turnover.
 
@@ -42,7 +56,7 @@ Loose-ball and challenge decisions therefore depend on the distance evidence, te
 
 The local experiment examines up to eight windows above entropy 0.9, with requests capped at 125 frames. Its deterministic proximity rule requires at least three consecutive observed frames with a nearest team within two metres, a two-metre advantage, low dead-ball evidence and an in-bounds ball. Proposals pass structured JSON validation, inclusive interval checks and a provisional score threshold of 0.8.
 
-The Nov 16 refresh reviewed eight competition windows and eight external windows. Both produced zero proposals. The decision is to omit optional arbitration for the current candidate and supply an explicit empty D. Its integration reproduces the base CSV exactly. Refresh this decision against P3's reviewed C before the Nov 15-style final freeze is signed off.
+The Nov 17 refresh against P3's final C reviewed eight competition windows and eight external windows. Both produced zero proposals. P4 signs off the decision to omit optional arbitration and supply an explicit empty D. Its integration reproduces the final base CSV exactly.
 
 ## Development data and validation
 
@@ -56,20 +70,19 @@ The provided public five-minute labels are reserved for pipeline sanity checks. 
 
 ## Reproduction
 
-Use Python 3.12 and `requirements-team.txt`. Unpack the authorised bundle as described in `DATA.md`, or set `MTAH_DATA_DIR` to its folder.
+Use Python 3.12 and `requirements-team.txt`. Unpack the authorised bundle as described in `DATA.md`, or set `MTAH_DATA_DIR` to its folder. From a clean checkout of the final recorded source commit:
 
 ```powershell
+.venv/Scripts/python.exe -m pip install -r requirements-team.txt
 .venv/Scripts/python.exe scripts/run_full_pipeline.py --skip-evaluation
-.venv/Scripts/python.exe scripts/run_full_pipeline.py --deadball-only --verify-deadball
-.venv/Scripts/python.exe scripts/run_p3_experiments.py
-.venv/Scripts/python.exe scripts/freeze_p3_candidate.py --out artifacts/p3/release/freeze --submission Flick-i_Taka_Techies.csv
-.venv/Scripts/python.exe scripts/run_local_arbiter.py
-.venv/Scripts/python.exe scripts/assess_external_arbiter.py --download
+.venv/Scripts/python.exe evaluation/validate_submission.py Flick-i_Taka_Techies.csv
 .venv/Scripts/python.exe -m unittest discover -s tests -v
 ```
 
-For the omission decision, supply the validated empty D at the configured override path, then export using the matching A/B configuration and `--from-artifacts --skip-evaluation`. Validate the exact final file with `evaluation/validate_submission.py`. Record the configuration, code commit, input hashes, D and final CSV checksum together.
+Create `.venv` first with `py -3.12 -m venv .venv`. The commands above use the committed configuration; if the team freezes different settings, commit those settings and record that source version before release. A clean checkout has no saved overrides, so the pipeline writes a valid empty D. Existing workspaces must verify that their configured D is empty for the omission decision.
+
+`--from-artifacts --skip-evaluation` reads saved A and B and regenerates C; it does not read P3's existing C. Before using that route, preserve the reviewed C separately and require the regenerated C to match its recorded hash. Record configuration, code commit, input hashes, A/B/C/D and final CSV checksum together. See the release checklist for exact checks and the public sanity-scoring command. External arbitration experiments are optional development steps and are not needed to regenerate the chosen empty-D submission.
 
 The final release manifest is `artifacts/p3/release/freeze/manifest.json`. It records A `0E0D790E…A629CB`, B `13A2E7D2…4DBA624`, C `5A2E6868…FB61872`, empty D `6003E21F…A41177` and CSV `D51E19A0…E90FAA`. A second freeze reproduced the C and CSV hashes exactly. The candidate CSV passed the official 199,319-row validator, and all 57 tests passed on the merged source tree. The P3 experiment and freeze utilities are `scripts/run_p3_experiments.py` and `scripts/freeze_p3_candidate.py`.
 
-The Nov 16 local candidate and manifest are under `artifacts/p4/nov14/candidate/`. Private configurations and trial caches are described in `docs/p4/nov12_14_completion.md`. The Nov 16 clean-clone check reproduced the then-current five outputs and passed the then-current 45 tests. P3's final C supersedes that provisional C; P4 must refresh its empty-D decision against this C before release sign-off. P2's real B reproduced byte for byte on Nov 17, and P1's A matches the published frozen candidate hash.
+The Nov 16 local candidate and manifest are under `artifacts/p4/nov14/candidate/`. Private configurations and trial caches are described in `docs/p4/nov12_14_completion.md`. The Nov 16 clean-clone check reproduced the then-current five outputs and passed the then-current 45 tests. P3's final C supersedes that provisional C; P4 independently refreshed and signed off the empty-D decision on Nov 17. P2's real B reproduced byte for byte on Nov 17, and P1's A matches the published frozen candidate hash.
