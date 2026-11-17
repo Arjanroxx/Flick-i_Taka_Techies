@@ -105,12 +105,19 @@ def build_mask(config, spatial, events):
                       and accel[frame] >= thresholds["restart_accel"])
             candidates[frame] = returned or kicked
 
-    tag_probability = np.full(len(spatial), 0.05, dtype="float32")
+    # Equal H/A/D emission weights when tracking supplies no evidence. A missing
+    # or imputed ball must not be treated as observed live play.
+    tag_probability = np.where(observed, 0.05, 1 / 3).astype("float32")
     types = np.full(len(spatial), "none", dtype=object)
     restart_types = {}
     for start, stop, piece in tag_windows(events):
         window = slice(start, stop)
         types[window] = piece
+        # Automatic set-piece tags are weak stoppage evidence even if the ball
+        # is occluded. Do not extend this prior onto observed live motion.
+        weak = tag_probability[window]
+        unsupported = ~observed[window]
+        weak[unsupported] = np.maximum(weak[unsupported], 0.5)
         possible = np.flatnonzero(candidates[window])
         if not possible.size:
             quiet_frames = stationary[window]

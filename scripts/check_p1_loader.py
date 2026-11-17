@@ -250,6 +250,10 @@ def main():
     }
     print(json.dumps(report, indent=2))
 
+    if report["failures"]:
+        print("FAIL: " + ", ".join(report["failures"]), file=sys.stderr)
+        return 1
+
     if args.write_a:
         ball, players, teams, _ = arrays
         import yaml
@@ -260,9 +264,6 @@ def main():
         write("spatial", table, path)
         print(f"wrote {path} ({len(table)} rows)", file=sys.stderr)
 
-    if report["failures"]:
-        print("FAIL: " + ", ".join(report["failures"]), file=sys.stderr)
-        return 1
     print("All loader checks passed.", file=sys.stderr)
     return 0
 

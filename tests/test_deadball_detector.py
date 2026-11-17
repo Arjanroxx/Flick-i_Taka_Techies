@@ -83,7 +83,10 @@ class DeadballDetectorTests(unittest.TestCase):
         mask = self.mask()
         self.assertEqual(mask.loc[frame:frame + 4, "is_out_of_bounds"].tolist(),
                          [True, False, False, True, True])
-        np.testing.assert_allclose(mask.loc[frame:frame + 4, "is_dead_ball_prob"], 0.05)
+        # Unconfirmed observed jitter stays live-weighted; missing/imputed
+        # observations are neutral rather than asserting live play.
+        np.testing.assert_allclose(mask.loc[frame:frame + 4, "is_dead_ball_prob"],
+                                   [0.05, 1 / 3, 1 / 3, 0.05, 0.05])
 
     def test_stationary_restart_and_overlap_order(self):
         frame = self.start + 6

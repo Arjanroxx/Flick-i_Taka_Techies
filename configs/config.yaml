@@ -20,6 +20,8 @@ hmm:
   emission_temperature: 3.0
   decoder: viterbi
 thresholds:
+  # Conditional H/A entropy divided by log(2), separate from three-state nats.
+  team_uncertainty: 0.9
   entropy: 0.9
   override_confidence: 0.8
   short_gap: 12

@@ -153,3 +153,29 @@ def generate(seed=0):
 
     truth = pd.Series(labels, index=FRAMES, name="label")
     return spatial, deadball, truth
+
+
+def generate_with_detector(config, seed=0):
+    """Additional stress fixture: derive B through P2, not from truth weights.
+
+    Synthetic tags deliberately omit every third stoppage. Long tracking gaps
+    affect both live and stopped spells. This is a diagnostic, not a calibrated
+    model of real tracking or a replacement for independent labelled matches.
+    """
+    from .p2_deadball_detector import build_mask
+
+    spatial, _, truth = generate(seed)
+    rng = np.random.default_rng(seed + 10000)
+    halves = spatial.half.to_numpy()
+    missing = _gap_mask(rng, halves, rate=0.001, low=100, high=1000)
+    spatial.loc[missing, ['ball_x', 'ball_y', 'ball_speed', 'ball_vx', 'ball_vy',
+                          'ball_accel', 'dist_nearest_H', 'dist_nearest_A']] = np.nan
+    spatial.loc[missing, 'ball_is_imputed'] = False
+    for left, right in _runs(missing):
+        spatial.loc[left:right - 1, 'gap_length_frames'] = right - left
+    events = []
+    for index, (left, right) in enumerate(_runs(truth.to_numpy() == 'D')):
+        if index % 3:
+            events.append({'code': 'SET PIECES', 'tags': {'Type': 'Free Kick'},
+                           'start_frame': left, 'end_frame': right})
+    return spatial, build_mask(config, spatial, events), truth
