@@ -1,6 +1,18 @@
 # Final release checks — Flick-i_Taka_Techies
 
-Prepared Nov 17, 2026, after PRs #11 and #12 merged into `e89498c8898dc321501ec6de15d2cf9571f7c559`. This is a ready-to-run checklist, not a completed release report. The organiser's stated deadline is Nov 17; the submitter must check the exact cutoff and form in the email.
+Executed against final P3 source `783d20d1fc6e32d4ee62a3c3ea87bf7e07aa407a` on Nov 17. The [P4 sign-off report](nov17_release_signoff.md) records completed pipeline, hash, arbitration, test and public-sanity checks. The steps below remain reusable instructions; unchecked owner and submission items are not implied complete. The organiser's stated deadline is Nov 17; the submitter must check the exact cutoff and form in the email.
+
+## Execution record
+
+- [x] Final A/B/C/D and CSV reproduced twice and matched all published hashes.
+- [x] B repeat-generation verification and both official CSV validations passed.
+- [x] Arbitration refreshed against final C; explicit empty D signed off by P4.
+- [x] All 57 tests passed, including four real-data integration tests, with no skips.
+- [x] Fresh Python 3.12 runtime environment independently reproduced every hash and passed all 57 tests. Full optional development dependency installation timed out; see the sign-off report for scope.
+- [x] Frozen-candidate public sanity check completed without changing settings.
+- [x] Technical document release fields and P4 roadmap updated.
+- [ ] P1/P2 owner confirmations incorporated into the final team release record.
+- [ ] Actual form submission and private receipt.
 
 ## 1. Agree the files to ship
 
