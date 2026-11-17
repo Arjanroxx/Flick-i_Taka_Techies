@@ -1,0 +1,62 @@
+{
+  "sources": {
+    "src/learned_control.py": "bda289b37169a76b4c2c4d36bd1dcff8437a1ec48bb0fa474509571147c62f93",
+    "src/learned_control_cache.py": "428210a8fe37d07941274ddc2ca64be293338a0c32b8e1e6a5aeefc26d1d4723",
+    "src/control_evidence.py": "c781b32622659add5228c6428c6f691c5bed84deed3b4bce68234ebd5a7ba0b4",
+    "src/p3_sequence_model.py": "7a210933db36ac6c5315a152b614ab13f36fdadd6f3064c13736fe513de51c9b",
+    "src/skillcorner_validation.py": "e3840d1a40255c16b3a30e3db6948dd8c7061b7ab74dc34d00951f58b839ddb1",
+    "src/p2_deadball_detector.py": "8a579b3c8725295b5438fa8e1122f05f52c676d5d8a718d44df3b7487e89c981",
+    "scripts/train_learned_control.py": "7ad419ec42754be2fe4b70c5a084aae73273071039607a1da60e553900b51819",
+    "scripts/validate_learned_control.py": "fcf585cff37bd5d8fed3711418763986bc6eb4c33196773c5f1fdd5a6cc57653",
+    "configs/skillcorner_protocol.json": "d5a53756f4d6cf2443d2f131515f8ea15f2cc8e346b680e64c3d964f6554d9e9",
+    "configs/learned_control_protocol.json": "16a0f4cab1224d5682eb8b2c14e2b33d19dcbafd4bac799be29dfb74fa78d75d",
+    "configs/learned_control_candidate.yaml": "fcbbd5e255c85659d017216d6bdbe78ebc2e2fbdada2c438cbfe2537e61914b9",
+    "models/learned_control.json": "dc3496e3a8c98423571d0bbdf4cb7dc6de834510f3202833eaf046a59bb04e71"
+  },
+  "matches": 8,
+  "summary": [
+    {
+      "model": "learned_control",
+      "partial_reference_spellF1": 0.45599131739383925,
+      "macroF1_HA": 0.785043892277709,
+      "fragmentation": 0.9610702104171954,
+      "spell_count_ratio": 0.8303231128085926,
+      "spell_precision_05": 0.5106048353135534,
+      "spell_recall_05": 0.42270061353408056,
+      "missed_spells_05": 190.0,
+      "spurious_spells_05": 133.875
+    },
+    {
+      "model": "sustained_control",
+      "partial_reference_spellF1": 0.4483443532643023,
+      "macroF1_HA": 0.7735304252777389,
+      "fragmentation": 0.898711960124497,
+      "spell_count_ratio": 0.7675616367094426,
+      "spell_precision_05": 0.5225745675576345,
+      "spell_recall_05": 0.40005147628868903,
+      "missed_spells_05": 197.5,
+      "spurious_spells_05": 120.75
+    }
+  ],
+  "comparison": {
+    "partial_reference_spellF1": {
+      "mean_difference": 0.0076469641295369845,
+      "wins": 4,
+      "paired_match_bootstrap_90pct": [
+        -0.000639508919087878,
+        0.016668598096000006
+      ]
+    },
+    "macroF1_HA": {
+      "mean_difference": 0.011513466999970148,
+      "wins": 8,
+      "paired_match_bootstrap_90pct": [
+        0.007931317257047415,
+        0.015289833971774455
+      ]
+    }
+  },
+  "reused_comparison_set": true,
+  "D_reference_available": false,
+  "post_evaluation_tuning": false
+}
