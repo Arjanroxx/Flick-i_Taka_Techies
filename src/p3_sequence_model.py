@@ -152,6 +152,11 @@ def decode(config, spatial, deadball):
     uncertainty = entropy(probs)
     if decoder == "viterbi":
         labels = viterbi(emissions, halves, transition)
+    if config.get('boundary_refinement', {}).get('enabled', False):
+        from .boundary_refinement import refine_boundaries
+        labels = refine_boundaries(labels, spatial, deadball,
+            config.get('hmm', {}).get('emission_temperature', 1.),
+            config.get('control', {}), config['boundary_refinement'])
     thresholds = config["thresholds"]
     if not np.isfinite(thresholds["entropy"]) or not 0 <= thresholds["entropy"] <= np.log(3):
         raise ValueError("Entropy threshold must be between zero and log(3) nats")
