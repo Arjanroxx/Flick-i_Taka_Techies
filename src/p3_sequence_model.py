@@ -42,7 +42,10 @@ def team_evidence(spatial, temperature=1.0):
 
 def build_emissions(spatial, deadball, config):
     """Normalized (frames, 3) H/A/D emissions and the observed-team mask."""
-    dead = deadball.is_dead_ball_prob.to_numpy()
+    dead = deadball.is_dead_ball_prob.to_numpy(dtype=float)
+    # Contract B stores float32. Restore the exact neutral weight so rounding
+    # cannot break an otherwise symmetric missing-evidence Viterbi tie.
+    dead = np.where(np.isclose(dead, 1 / 3, rtol=0, atol=1e-7), 1 / 3, dead)
     temperature = config.get("hmm", {}).get("emission_temperature", 1.0)
     teams, known = team_evidence(spatial, temperature)
     emissions = np.column_stack((teams * (1 - dead[:, None]), dead))
@@ -113,7 +116,13 @@ def decode(config, spatial, deadball):
         labels = viterbi(emissions, halves, transition)
     thresholds = config["thresholds"]
     short_gap = spatial.gap_length_frames.between(1, thresholds["short_gap"]).to_numpy()
-    shield = (short_gap | ~known) & (uncertainty >= thresholds["entropy"]) & (labels != "D")
+    team_limit = thresholds.get("team_uncertainty", 0.9)
+    if not np.isfinite(team_limit) or not 0 <= team_limit <= 1:
+        raise ValueError("Team uncertainty threshold must be between zero and one")
+    conditional = probs[:, :2] / np.maximum(probs[:, :2].sum(axis=1, keepdims=True), 1e-12)
+    team_uncertainty = entropy(conditional) / np.log(2)
+    ambiguous = (uncertainty >= thresholds["entropy"]) | (team_uncertainty >= team_limit)
+    shield = (short_gap | ~known) & ambiguous & (labels != "D")
     labels[shield] = "X"
     labels[halves == 0] = "X"
     result = pd.DataFrame(probs, index=spatial.index, columns=["prob_H", "prob_A", "prob_D"])

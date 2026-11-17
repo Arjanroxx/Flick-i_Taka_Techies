@@ -1,5 +1,7 @@
 # Flick-i_Taka_Techies — technical document
 
+**Implementation update:** [missing-evidence corrections](docs/p4/missing_evidence_fixes.md) change P2/P3 behavior. The release hashes and public scores below describe the preserved earlier candidate at `783d20d`, not the corrected output. Reproduce that earlier candidate by checking out its recorded commit. Current default commands use the corrections and require a new release manifest before substitution in a submission.
+
 Verified Nov 17, 2026. P4 independently reproduced P3's final candidate, refreshed the empty-D decision, passed all 57 tests and confirmed public-window sanity results. [Verification and P4 sign-off](docs/p4/nov17_release_signoff.md). P1/P2 owner confirmations and actual submission remain separate team actions.
 
 ## Release record

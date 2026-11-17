@@ -22,7 +22,7 @@ sys.path.insert(0, str(ROOT))
 import evaluation.possession_metrics as pm
 from src import p3_sequence_model as p3
 from src.contracts import frame_halves, read
-from src.p3_synthetic import generate
+from src.p3_synthetic import generate, generate_with_detector
 
 METRIC_KEYS = (
     "macro_f1", "spell_f1_mean", "accuracy", "n_gt_spells", "n_pred_spells",
@@ -246,6 +246,13 @@ def main():
     result = {"config": config, "config_sha256": digest(args.config)}
     if not args.skip_synthetic:
         result["synthetic"] = synthetic_suite(config, args.seeds)
+        # Diagnostic only: the old decoder sweep supplies idealized B weights.
+        # Exercise real P2 logic with long gaps and incomplete synthetic tags too.
+        result["detector_pipeline_stress"] = {}
+        for seed in args.seeds:
+            spatial, deadball, truth = generate_with_detector(config, seed)
+            result["detector_pipeline_stress"][str(seed)] = score(
+                truth, p3.run(config, spatial, deadball).raw_label)
         summaries = []
         for experiment in ("temperature", "transition", "decoder", "combined"):
             for name, value in result["synthetic"][experiment].items():
