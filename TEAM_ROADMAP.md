@@ -220,3 +220,7 @@ Keep licensed match assets in `data/` and generated tracking, video clips, API c
 - The provided public five-minute labels are for pipeline sanity checks. No human labels, manual corrections or frame-specific hand-coded possession rules on the competition match are allowed.
 
 The official files came from upstream commit `f8f2629ff1e0985f81d7e59d8413678514ee1530`. Verification passed under Python 3.12 for the official baseline scores, mock pipeline, an official-format synthetic fixture, gap and half boundaries, saved overrides, artifact replay and CSV validation. Initial real-data ingestion, contracts and local decode checks passed on Nov 6. Possession accuracy and feature quality remain development work.
+
+## Release coordination update — Nov 17
+
+P1 sign-off is merged through PR #15. P4 completed the [technical release verification for P2](docs/p2/nov17_release_verification.md): frozen A/B hashes, byte-identical B regeneration, full-pipeline reproduction and fresh-runtime tests. P2 was unavailable; no personal approval is claimed. The verified candidate has no remaining technical handoff dependency. Actual submission and receipt remain pending.
