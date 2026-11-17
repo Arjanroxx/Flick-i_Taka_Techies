@@ -1,0 +1,66 @@
+{
+  "sources": {
+    "src/control_evidence.py": "a4dddd90b85b03bf1d24f95a40e332ff7e88fb86207213424d16a89d74760889",
+    "src/p3_sequence_model.py": "718cfbe0399c9087d5ad1157fec8d15f70f7f5c0c9b22f29b8362c61ae356f3d",
+    "src/p2_deadball_detector.py": "8a579b3c8725295b5438fa8e1122f05f52c676d5d8a718d44df3b7487e89c981",
+    "src/skillcorner_validation.py": "e3840d1a40255c16b3a30e3db6948dd8c7061b7ab74dc34d00951f58b839ddb1",
+    "scripts/validate_accumulated_control.py": "76be1f95f974560d25cec7f25fe6c8d60bba5d9e1a8402c70bfec7efd48d8521",
+    "configs/accumulated_control_candidate.yaml": "34e7a2561860876c41e7c1c60477bbaef11bba64c6d558030a3e00b0bc3d719a",
+    "configs/skillcorner_protocol.json": "d5a53756f4d6cf2443d2f131515f8ea15f2cc8e346b680e64c3d964f6554d9e9"
+  },
+  "stage": "test",
+  "matches": [
+    "1996436",
+    "1953632",
+    "1874553",
+    "1986691",
+    "2007448",
+    "2016236",
+    "2017461",
+    "1996435"
+  ],
+  "summary": [
+    {
+      "model": "accumulated_control",
+      "partial_reference_spellF1": 0.44141411154109383,
+      "macroF1_HA": 0.7837999020861647,
+      "fragmentation": 1.059688292437497,
+      "spell_count_ratio": 0.9288935930771199,
+      "spell_precision_05": 0.4660565296121397,
+      "spell_recall_05": 0.42906459926336077,
+      "missed_spells_05": 187.875,
+      "spurious_spells_05": 164.0
+    },
+    {
+      "model": "sustained_control",
+      "partial_reference_spellF1": 0.4483443532643023,
+      "macroF1_HA": 0.7735304252777389,
+      "fragmentation": 0.898711960124497,
+      "spell_count_ratio": 0.7675616367094426,
+      "spell_precision_05": 0.5225745675576345,
+      "spell_recall_05": 0.40005147628868903,
+      "missed_spells_05": 197.5,
+      "spurious_spells_05": 120.75
+    }
+  ],
+  "comparisons": {
+    "partial_reference_spellF1": {
+      "mean_difference": -0.006930241723208434,
+      "wins": 3,
+      "paired_match_bootstrap_90pct": [
+        -0.01818696983411902,
+        0.004275362001435481
+      ]
+    },
+    "macroF1_HA": {
+      "mean_difference": 0.01026947680842584,
+      "wins": 7,
+      "paired_match_bootstrap_90pct": [
+        0.00447880762439673,
+        0.016072785196369115
+      ]
+    }
+  },
+  "reference_scope": "Partial provider H/A reference; no D labels",
+  "reused_test_set": true
+}

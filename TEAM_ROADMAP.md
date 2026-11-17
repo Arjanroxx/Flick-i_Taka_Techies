@@ -1,5 +1,7 @@
 # Flick-i_Taka_Techies — team roadmap
 
+**Accumulated-control study, Nov 18:** the [over-merging experiment](docs/ACCUMULATED_CONTROL.md) is complete and **not recommended for promotion**. Counts and recall improved, but the selected revision did not improve eight-match partial spellF1 and scored lower on the public sample. The earlier sustained-control candidate and default configurations are preserved.
+
 **External validation follow-up, Nov 18:** [SkillCorner benchmark](docs/SKILLCORNER_VALIDATION.md) completed on 20 other matches with a predeclared 12/8 split. Control-aware evidence improved partial-reference spellF1 on all eight test matches. This supersedes earlier statements that no external H/A references were available; a defensible full D reference remains unavailable. No fitting or submission replacement was performed.
 
 **Nov 18 audit revision:** the [end-to-end audit](docs/REPOSITORY_AUDIT.md) fixes stoppage continuity, stale-override reuse and contract gaps. It generates a separate candidate with new B/C/CSV hashes; earlier dated sign-offs and packages remain historical. The [current technical document](Flick-i_Taka_Techies_technical.md) identifies the audited implementation and candidate. No form submission was performed by the audit.
