@@ -1,0 +1,15 @@
+{
+  "original_artifacts_preserved": true,
+  "protected_duration_C_regenerated_byte_identically": true,
+  "protected_duration_CSV_preserved": true,
+  "exported_model_canonical_hash_verified": true,
+  "baseline_comparison": "same ten-match-fitted duration scale; separate from protected all-twelve duration candidate",
+  "probabilities_entropy_D_X_masks_unchanged_relative_to_same_fitted_baseline": true,
+  "changed_frames_vs_same_fitted_baseline": 403,
+  "added_full_play_segments_vs_same_fitted_baseline": 24,
+  "candidate_validated": true,
+  "full_suite_tests_passed": 146,
+  "targeted_tests_passed": 7,
+  "public_not_scored": true,
+  "candidate_sha256": "a0c54424bcafbc690210381ed081d3514fa1b006d9529ba46e295a9c8410d84c"
+}

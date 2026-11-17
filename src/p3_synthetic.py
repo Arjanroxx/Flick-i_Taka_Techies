@@ -13,7 +13,7 @@ from .contracts import FRAME_COUNT, FRAMES, SCHEMAS, frame_halves
 SET_PIECES = ("throw_in", "corner", "free_kick", "goal_kick", "kick_off")
 
 
-def _spell_labels(rng):
+def _spell_labels(rng, spell_lengths=None):
     """H/A/D spells inside the published halves; X outside play."""
     halves = frame_halves()
     labels = np.full(FRAME_COUNT, "X", dtype="<U1")
@@ -28,7 +28,8 @@ def _spell_labels(rng):
                 position = stop
                 if position >= len(frames):
                     break
-            length = int(np.clip(rng.geometric(1 / 355), 60, 1400))
+            length = (int(rng.choice(spell_lengths)) if spell_lengths is not None
+                      else int(np.clip(rng.geometric(1 / 355), 60, 1400)))
             stop = min(len(frames), position + length)
             labels[frames[position:stop]] = current
             position = stop
@@ -55,11 +56,14 @@ def _gap_mask(rng, halves, rate=0.0015, low=1, high=40):
     return mask
 
 
-def generate(seed=0):
+def generate(seed=0, *, spell_lengths=None):
     """Return (spatial, deadball, truth) with contracts valid and truth a label Series."""
     rng = np.random.default_rng(seed)
     halves = frame_halves()
-    labels = _spell_labels(rng)
+    if spell_lengths is not None and (
+            not len(spell_lengths) or any(type(n) is not int or n < 1 for n in spell_lengths)):
+        raise ValueError("Synthetic spell lengths must be positive integer frame counts")
+    labels = _spell_labels(rng, spell_lengths)
     n = FRAME_COUNT
 
     near = rng.lognormal(mean=np.log(1.8), sigma=0.5, size=n)
@@ -164,7 +168,9 @@ def generate_with_detector(config, seed=0):
     """
     from .p2_deadball_detector import build_mask
 
-    spatial, _, truth = generate(seed)
+    # Boundary stress cases span one frame to one minute; their lengths are
+    # independent of the public match's reported possession-duration statistic.
+    spatial, _, truth = generate(seed, spell_lengths=(1, 25, 100, 250, 750, 1500))
     rng = np.random.default_rng(seed + 10000)
     halves = spatial.half.to_numpy()
     missing = _gap_mask(rng, halves, rate=0.001, low=100, high=1000)

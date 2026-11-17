@@ -5,7 +5,7 @@ from scipy.special import softmax
 
 from .contracts import SCHEMAS, entropy
 
-DECODERS = ("posterior", "viterbi")
+DECODERS = ("posterior", "viterbi", "duration")
 STATES = np.array(list("HAD"))
 
 
@@ -47,10 +47,37 @@ def build_emissions(spatial, deadball, config):
     # cannot break an otherwise symmetric missing-evidence Viterbi tie.
     dead = np.where(np.isclose(dead, 1 / 3, rtol=0, atol=1e-7), 1 / 3, dead)
     temperature = config.get("hmm", {}).get("emission_temperature", 1.0)
-    teams, known = team_evidence(spatial, temperature)
+    mode = config.get("hmm", {}).get("team_evidence", "distance")
+    if mode == "distance":
+        teams, known = team_evidence(spatial, temperature)
+    elif mode == "sustained_control":
+        from .control_evidence import sustained_control_evidence
+        teams, known = sustained_control_evidence(
+            spatial, deadball, temperature, config.get("control", {}))
+    elif mode == 'gap_control':
+        from .gap_control import gap_control_evidence
+        teams, known = gap_control_evidence(spatial, deadball, temperature,
+            config.get('control', {}), config.get('gap_control', {}))
+    elif mode == 'stable_contact':
+        from .stable_contact import stable_contact_evidence
+        teams, known = stable_contact_evidence(spatial, deadball, temperature,
+            config.get('control', {}), config.get('stable_contact', {}))
+    elif mode == 'learned_control':
+        from .learned_control import learned_control_evidence
+        teams, known = learned_control_evidence(
+            spatial, deadball, temperature, config.get('control', {}), config['learned_control'])
+    else:
+        raise ValueError("Unknown team evidence mode: " + str(mode))
     emissions = np.column_stack((teams * (1 - dead[:, None]), dead))
     emissions = np.maximum(emissions, 1e-12)
     emissions /= emissions.sum(axis=1, keepdims=True)
+    power = config.get('hmm', {}).get('emission_power', 1.0)
+    if not np.isfinite(power) or power <= 0:
+        raise ValueError('Emission power must be finite and positive')
+    if power != 1:
+        # External lower-rate observations represent more elapsed time. This
+        # option is never enabled for the 25 Hz competition configuration.
+        emissions = softmax(np.log(emissions) * power, axis=1)
     return emissions, known
 
 
@@ -66,12 +93,15 @@ def forward_backward(emissions, halves, transition):
         for frame in range(start, stop):
             posterior = prior * emissions[frame]
             probs[frame] = posterior / posterior.sum()
-            prior = probs[frame] @ transition
+            step = transition[frame + 1] if transition.ndim == 3 and frame + 1 < stop else transition
+            if frame + 1 < stop:
+                prior = probs[frame] @ step
         backward = np.ones(3)
         for frame in range(stop - 1, start - 1, -1):
             posterior = probs[frame] * backward
             probs[frame] = posterior / posterior.sum()
-            backward = transition @ (emissions[frame] * backward)
+            step = transition[frame] if transition.ndim == 3 else transition
+            backward = step @ (emissions[frame] * backward)
             backward /= backward.sum()
     return probs
 
@@ -88,7 +118,8 @@ def viterbi(emissions, halves, transition):
         back = np.empty((stop - start, 3), dtype=np.int8)
         back[0] = -1
         for offset, frame in enumerate(range(start + 1, stop)):
-            candidate = score[:, None] + log_transition
+            step = log_transition[frame] if transition.ndim == 3 else log_transition
+            candidate = score[:, None] + step
             back[offset + 1] = candidate.argmax(axis=0)
             score = candidate.max(axis=0) + log_emissions[frame]
         state = int(score.argmax())
@@ -108,13 +139,32 @@ def decode(config, spatial, deadball):
     if decoder not in DECODERS:
         raise ValueError(f"HMM decoder must be one of {DECODERS}")
     emissions, known = build_emissions(spatial, deadball, config)
+    if 'contact_switch_probability' in config.get('hmm', {}):
+        from .contact_transitions import transition_schedule
+        transition = transition_schedule(spatial, deadball, transition, config)
     halves = spatial.half.to_numpy()
-    probs = forward_backward(emissions, halves, transition)
+    if decoder == 'duration':
+        from .duration_model import decode_duration
+        probs, labels = decode_duration(emissions, halves, transition, config['duration'])
+    else:
+        probs = forward_backward(emissions, halves, transition)
+        labels = STATES[probs.argmax(axis=1)].copy()
     uncertainty = entropy(probs)
-    labels = STATES[probs.argmax(axis=1)].copy()
     if decoder == "viterbi":
         labels = viterbi(emissions, halves, transition)
+    if config.get('selective_splits', {}).get('enabled', False):
+        from .selective_splits import split_verified_possessions
+        labels = split_verified_possessions(labels, spatial, deadball,
+            config.get('hmm', {}).get('emission_temperature', 1.),
+            config.get('control', {}), config['selective_splits'])
+    if config.get('boundary_refinement', {}).get('enabled', False):
+        from .boundary_refinement import refine_boundaries
+        labels = refine_boundaries(labels, spatial, deadball,
+            config.get('hmm', {}).get('emission_temperature', 1.),
+            config.get('control', {}), config['boundary_refinement'])
     thresholds = config["thresholds"]
+    if not np.isfinite(thresholds["entropy"]) or not 0 <= thresholds["entropy"] <= np.log(3):
+        raise ValueError("Entropy threshold must be between zero and log(3) nats")
     short_gap = spatial.gap_length_frames.between(1, thresholds["short_gap"]).to_numpy()
     team_limit = thresholds.get("team_uncertainty", 0.9)
     if not np.isfinite(team_limit) or not 0 <= team_limit <= 1:
@@ -126,7 +176,12 @@ def decode(config, spatial, deadball):
     labels[shield] = "X"
     labels[halves == 0] = "X"
     result = pd.DataFrame(probs, index=spatial.index, columns=["prob_H", "prob_A", "prob_D"])
-    return result.assign(state_entropy=uncertainty, raw_label=labels).astype(SCHEMAS["predictions"])
+    result = result.assign(state_entropy=uncertainty, raw_label=labels).astype(SCHEMAS["predictions"])
+    if config.get('segment_verifier', {}).get('enabled', False):
+        from .segment_verifier import refine_predictions
+        result['raw_label'] = refine_predictions(result, spatial, deadball, config)
+        result = result.astype(SCHEMAS['predictions'])
+    return result
 
 
 def run(config, spatial, deadball):

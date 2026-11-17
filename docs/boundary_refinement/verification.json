@@ -1,0 +1,13 @@
+{
+  "original_artifacts_preserved": true,
+  "duration_predictions_regenerated_byte_identically": true,
+  "duration_csv_preserved": true,
+  "probabilities_entropy_D_X_masks_unchanged": true,
+  "full_play_label_sequence_preserved": true,
+  "changed_frames": 217,
+  "candidate_validated": true,
+  "full_suite_tests_passed": 131,
+  "targeted_tests_passed": 5,
+  "public_not_scored": true,
+  "candidate_sha256": "bb77f447778711a483e1345920b577364fc46034f61471c02ce339b98d2f76df"
+}

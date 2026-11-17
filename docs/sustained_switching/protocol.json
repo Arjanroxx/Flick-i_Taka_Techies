@@ -1,0 +1,9 @@
+{
+  "sources": {
+    "src/contact_transitions.py": "aeba59a28d13c8138b62f046cabbfe8296928db0c5d930cb8f759fe8a8593fba",
+    "src/p3_sequence_model.py": "fdf50867cdb76ab2041451b0f466360310f77347c6aba31d65acd0639ce0c294",
+    "configs/skillcorner_protocol.json": "d5a53756f4d6cf2443d2f131515f8ea15f2cc8e346b680e64c3d964f6554d9e9"
+  },
+  "settings": "H/A switch probability 0.02 only at opposite confirmed contact lasting >=0.4 seconds; original emissions and D unchanged",
+  "selection": "development only; no tuning; public only if mean gain >=0.01 and >=8 wins"
+}

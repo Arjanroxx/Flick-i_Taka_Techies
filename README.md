@@ -1,3 +1,18 @@
+# Final submission — Flick-i Taka Techies
+
+**Upload-ready files:** [possession CSV](submission/Flick-i%20Taka%20Techies.csv) and [technical PDF](submission/Flick-i%20Taka%20Techies.pdf). These use the exact registered team name.
+
+**Final frozen model:** Step 6 duration decoder, public sanity spellF1 0.557143. Experimental refinements and learned split verifiers are disabled. This is a five-minute score, not a full-match estimate.
+
+```powershell
+.venv/Scripts/python.exe -m pip install -r requirements-team.txt
+.venv/Scripts/python.exe scripts/build_submission.py --data-dir 'C:/path/to/dataset'
+```
+
+See [the release instructions](submission/README.md). The command regenerates the complete CSV and requires the frozen checksum. Use this command for the final method; `configs/config.yaml` and the older workflow below describe the development baseline.
+
+---
+
 # Flick-i_Taka_Techies
 
 Four-person team workflow for the More Than a Hack 2027 possession challenge.
@@ -54,14 +69,14 @@ The files below come from [Metrica Sports' official repository](https://github.c
 
 ---
 
-# More than a Hack 2027 — Phase 1: Ball Possession
+# More than a Hack 2027 â€” Phase 1: Ball Possession
 
 **Organised by [Metrica Sports](https://metrica-sports.com), [FC Barcelona](https://www.fcbarcelona.com)
 and the [Mobile World Capital Barcelona](https://www.mwcbarcelona.com)**, at the Talent Arena in Barcelona.
 
 A football data challenge on real professional match data, open to analysts, data scientists and
-engineers. You are given one complete LaLiga match — two camera feeds, automatic tracking of every
-player and the ball, automatic tactical tagging, and the camera-to-pitch geometry — and one
+engineers. You are given one complete LaLiga match â€” two camera feeds, automatic tracking of every
+player and the ball, automatic tactical tagging, and the camera-to-pitch geometry â€” and one
 question to answer with it.
 
 ---
@@ -82,7 +97,7 @@ frame,label
 
 That is the whole task. One CSV, one row per video frame, 199,319 rows. It is scored automatically
 against a private frame-by-frame ground truth, so there is a number at the end and no argument
-about it — no jury, and no presentation to argue from.
+about it â€” no jury, and no presentation to argue from.
 
 The tracking is automatic and uncorrected: it has gaps and identity
 switches, and the ball itself is invisible on 41% of the frames you are scored on.
@@ -95,10 +110,10 @@ switches, and the ball itself is invisible on 41% of the frames you are scored o
 |---|---------------------------------------------------------------------------------------------------------------------------|
 | **Input** | one full match: tactical video, broadcast video, automatic tracking **with the ball** for both, Smart Tagging, homography |
 | **Output** | `frame,label` CSV, 199,319 rows, labels `H` / `A` / `D` / `X`                                                             |
-| **Ranked on** | `spellF1` — how many of the match's real possessions you recovered as whole possessions                                   |
-| **Also reported** | `macroF1` — the per-frame view, and the first tie-break                                                                   |
+| **Ranked on** | `spellF1` â€” how many of the match's real possessions you recovered as whole possessions                                   |
+| **Also reported** | `macroF1` â€” the per-frame view, and the first tie-break                                                                   |
 | **Baseline to beat** | `spellF1` **0.2433**, in this repository                                                                                  |
-| **Ground truth you get** | the first **5 minutes** of play — to check your pipeline, not to train on                                              |
+| **Ground truth you get** | the first **5 minutes** of play â€” to check your pipeline, not to train on                                              |
 | **Ground truth you are scored on** | the full match, **private**                                                                                               |
 
 It is deliberately **not** a tracking challenge. The tracking, tagging and homography are given to
@@ -132,7 +147,7 @@ rank  submission                macroF1  spellF1   poss     dur
    4  baseline_raw               0.5972   0.0378    131     2.0  
 ```
 
-Those four are **the same algorithm four times** — nearest tracked player to the ball, then a
+Those four are **the same algorithm four times** â€” nearest tracked player to the ball, then a
 majority vote over a window. Only the window changes. `macroF1` barely moves; `spellF1` moves by a
 factor of eleven. That disagreement is the whole point of the metric, and
 [EVALUATION.md](EVALUATION.md) explains it.
@@ -169,11 +184,11 @@ Full description of every asset and how the frames line up: **[DATA.md](DATA.md)
 |---|---|
 | **[CHALLENGE.md](CHALLENGE.md)** | the problem, the four labels, what counts as possession |
 | **[DATA.md](DATA.md)** | every provided asset, its format, and the frame alignment |
-| **[EVALUATION.md](EVALUATION.md)** | how you are scored, and why — read before optimising anything |
+| **[EVALUATION.md](EVALUATION.md)** | how you are scored, and why â€” read before optimising anything |
 | **[SUBMISSION.md](SUBMISSION.md)** | the file contract, the three deliverables, how to submit |
 | **[RULES.md](RULES.md)** | what you may and may not do |
 | **[FAQ.md](FAQ.md)** | |
-| **[OVERVIEW.md](OVERVIEW.md)** | the competition as a whole — context, why the 2027 format changed, the calendar |
+| **[OVERVIEW.md](OVERVIEW.md)** | the competition as a whole â€” context, why the 2027 format changed, the calendar |
 
 
 ---
@@ -183,7 +198,7 @@ Full description of every asset and how the frames line up: **[DATA.md](DATA.md)
 ```
 games.py                    per-match constants, asset paths and the frame alignment
 evaluation/
-  possession_metrics.py     the metric library — every number on the board is defined here
+  possession_metrics.py     the metric library â€” every number on the board is defined here
   run_evaluation.py         the scorer. This exact file produces the official result
   validate_submission.py    check a file before you send it
   gt/                       the public 5-minute ground truth
@@ -196,7 +211,7 @@ starter/
   utils.py                  pitch plotting for the notebooks
   01_smart_tagging.ipynb    guided tour of the tactical tagging
   02_tracking_atd.ipynb     guided tour of the tracking data, with plots
-  03_first_submission.ipynb data in, scored submission out — start here
+  03_first_submission.ipynb data in, scored submission out â€” start here
 data/                       unpack the downloaded match assets here. Empty in a fresh clone
 ```
 
@@ -209,7 +224,7 @@ machine, it scores the same way on ours.
 
 **Python 3.8 or newer.** The evaluation needs `numpy` and `pandas` and nothing else; it is tested
 under 3.8 and 3.11 and produces identical output under both. `starter/baseline.py` needs nothing
-more either — you can reach a scored submission without installing anything else.
+more either â€” you can reach a scored submission without installing anything else.
 
 The notebooks additionally want `kloppy` and `matplotlib` (`requirements-starter.txt`), and
 **Python 3.9+ is recommended for those**: on Windows, installing Jupyter under 3.8 hits a
@@ -230,13 +245,13 @@ The notebooks additionally want `kloppy` and `matplotlib` (`requirements-starter
 
 ## Questions
 
-Open an issue for anything about the data, the metrics or the documentation — corrections are
+Open an issue for anything about the data, the metrics or the documentation â€” corrections are
 genuinely useful, and a fix that helps you helps everyone equally. For enrolment and the terms of
 use: **hackathon.talentarena@mobileworldcapital.com**.
 
 ## Licence and citation
 
-The code and documentation in this repository are released under the MIT Licence — see
+The code and documentation in this repository are released under the MIT Licence â€” see
 [LICENSE](LICENSE). **The match data is not covered by it**: it is separately licensed for this
 competition only, under the terms you accept at enrolment.
 

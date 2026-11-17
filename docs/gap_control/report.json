@@ -1,0 +1,16 @@
+{
+  "mean": {
+    "spellF1": {
+      "gap_control": 0.45917026584770787,
+      "sustained_control": 0.45917026584770787
+    },
+    "macroF1": {
+      "gap_control": 0.7855246543379651,
+      "sustained_control": 0.7855246543379651
+    }
+  },
+  "gain": 0.0,
+  "wins": 0,
+  "development_gate_passed": false,
+  "public_evaluated": false
+}

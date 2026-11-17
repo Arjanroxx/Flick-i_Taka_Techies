@@ -1,0 +1,1024 @@
+{
+  "sources": {
+    "src/spell_diagnostics.py": "45c83583472e9df2b5095db95e64bf4199ef7c3c39992852a88daf6c6428ff7f",
+    "scripts/diagnose_possession_errors.py": "ea0295759d89635cc7cf0e0f915c809bfceb670f7e4ac26c6efc78531f766840",
+    "src/control_evidence.py": "c781b32622659add5228c6428c6f691c5bed84deed3b4bce68234ebd5a7ba0b4",
+    "src/p3_sequence_model.py": "c44690734e19c7cd7267c0be75b87874f4f5d5a1e28ed8fde3c638446159df2c",
+    "src/p2_deadball_detector.py": "8a579b3c8725295b5438fa8e1122f05f52c676d5d8a718d44df3b7487e89c981",
+    "src/skillcorner_validation.py": "e3840d1a40255c16b3a30e3db6948dd8c7061b7ab74dc34d00951f58b839ddb1",
+    "src/learned_control_cache.py": "428210a8fe37d07941274ddc2ca64be293338a0c32b8e1e6a5aeefc26d1d4723",
+    "evaluation/possession_metrics.py": "32c878630c74fb52a90c301485d6dff806509d8e933b1177b6035ee8e8f42b80",
+    "configs/control_candidate.yaml": "5000f1a789cd0265f091fff42f50a532dda46024c6e1796b25f081297191118d",
+    "configs/skillcorner_protocol.json": "d5a53756f4d6cf2443d2f131515f8ea15f2cc8e346b680e64c3d964f6554d9e9"
+  },
+  "summaries": {
+    "public": {
+      "scored_frames": 7500,
+      "scored_runs": 1,
+      "reference_spells": 17,
+      "predicted_spells": 11,
+      "spellF1": 0.5428571428571428,
+      "per_iou": {
+        "0.3": {
+          "precision": 0.8181818181818182,
+          "recall": 0.5294117647058824,
+          "f1": 0.6428571428571428,
+          "n_matched": 9,
+          "n_spurious": 2,
+          "n_missed": 8
+        },
+        "0.4": {
+          "precision": 0.8181818181818182,
+          "recall": 0.5294117647058824,
+          "f1": 0.6428571428571428,
+          "n_matched": 9,
+          "n_spurious": 2,
+          "n_missed": 8
+        },
+        "0.5": {
+          "precision": 0.7272727272727273,
+          "recall": 0.47058823529411764,
+          "f1": 0.5714285714285714,
+          "n_matched": 8,
+          "n_spurious": 3,
+          "n_missed": 9
+        },
+        "0.6": {
+          "precision": 0.6363636363636364,
+          "recall": 0.4117647058823529,
+          "f1": 0.5,
+          "n_matched": 7,
+          "n_spurious": 4,
+          "n_missed": 10
+        },
+        "0.7": {
+          "precision": 0.45454545454545453,
+          "recall": 0.29411764705882354,
+          "f1": 0.35714285714285715,
+          "n_matched": 5,
+          "n_spurious": 6,
+          "n_missed": 12
+        }
+      },
+      "reference_spell_categories": {
+        "matched": 8,
+        "missed_team_possession": 4,
+        "boundary_or_duration_mismatch": 3,
+        "merged_prediction_overlap": 2
+      },
+      "merge_bridge_categories": {
+        "merged_across_opponent_possession": 2
+      },
+      "dead_reference_available": true,
+      "stoppage_categories": {
+        "missed": 2,
+        "partly_covered": 2
+      },
+      "reference_stoppage_frames": 1469,
+      "raw_X_on_scored_frames": 596,
+      "matched_spell_internal_endpoint_errors": {
+        "endpoint_observations": 14,
+        "mean_absolute_seconds": 4.160000000000001,
+        "median_absolute_seconds": 2.96,
+        "max_absolute_seconds": 11.92,
+        "shared_transition_can_contribute_two_spell_endpoints": true
+      },
+      "diagnostic_only": true,
+      "prediction_modified": false,
+      "unmatched_spells_with_control_support": 4,
+      "scope": "public_sanity_only",
+      "reference_sha256": "24d13807dfd2173b3b567a5f1fa0c597d42653a21d808da6027f98583d446e34",
+      "prediction_sha256": "10a478d1cd4811e0586c77258b79bcc3f0d75f7875385715a14744681257a57c"
+    },
+    "2011166": {
+      "scored_frames": 27658,
+      "scored_runs": 127,
+      "reference_spells": 340,
+      "predicted_spells": 257,
+      "spellF1": 0.4395309882747068,
+      "per_iou": {
+        "0.3": {
+          "precision": 0.6303501945525292,
+          "recall": 0.4764705882352941,
+          "f1": 0.5427135678391959,
+          "n_matched": 162,
+          "n_spurious": 95,
+          "n_missed": 178
+        },
+        "0.4": {
+          "precision": 0.5758754863813229,
+          "recall": 0.43529411764705883,
+          "f1": 0.49581239530988275,
+          "n_matched": 148,
+          "n_spurious": 109,
+          "n_missed": 192
+        },
+        "0.5": {
+          "precision": 0.5214007782101168,
+          "recall": 0.3941176470588235,
+          "f1": 0.4489112227805695,
+          "n_matched": 134,
+          "n_spurious": 123,
+          "n_missed": 206
+        },
+        "0.6": {
+          "precision": 0.46303501945525294,
+          "recall": 0.35,
+          "f1": 0.3986599664991625,
+          "n_matched": 119,
+          "n_spurious": 138,
+          "n_missed": 221
+        },
+        "0.7": {
+          "precision": 0.36186770428015563,
+          "recall": 0.2735294117647059,
+          "f1": 0.3115577889447237,
+          "n_matched": 93,
+          "n_spurious": 164,
+          "n_missed": 247
+        }
+      },
+      "reference_spell_categories": {
+        "matched": 134,
+        "missed_team_possession": 92,
+        "merged_prediction_overlap": 53,
+        "boundary_or_duration_mismatch": 46,
+        "predicted_dead_instead_of_possession": 10,
+        "fragmented_or_boundary_mismatch": 3,
+        "unanswered_reference_run": 2
+      },
+      "merge_bridge_categories": {
+        "merged_across_opponent_possession": 41
+      },
+      "dead_reference_available": false,
+      "stoppage_categories": null,
+      "reference_stoppage_frames": null,
+      "raw_X_on_scored_frames": 2040,
+      "matched_spell_internal_endpoint_errors": {
+        "endpoint_observations": 147,
+        "mean_absolute_seconds": 2.400680272108844,
+        "median_absolute_seconds": 1.3,
+        "max_absolute_seconds": 23.5,
+        "shared_transition_can_contribute_two_spell_endpoints": true
+      },
+      "diagnostic_only": true,
+      "prediction_modified": false,
+      "unmatched_spells_with_control_support": 107,
+      "scope": "development",
+      "tracking_sha256": "8ec2937050930d87e4f52b2d65515f70ef8edd0ae2814bf40155c4448133390e"
+    },
+    "2013725": {
+      "scored_frames": 31775,
+      "scored_runs": 125,
+      "reference_spells": 397,
+      "predicted_spells": 311,
+      "spellF1": 0.4435028248587571,
+      "per_iou": {
+        "0.3": {
+          "precision": 0.684887459807074,
+          "recall": 0.5365239294710328,
+          "f1": 0.6016949152542372,
+          "n_matched": 213,
+          "n_spurious": 98,
+          "n_missed": 184
+        },
+        "0.4": {
+          "precision": 0.5755627009646302,
+          "recall": 0.4508816120906801,
+          "f1": 0.5056497175141244,
+          "n_matched": 179,
+          "n_spurious": 132,
+          "n_missed": 218
+        },
+        "0.5": {
+          "precision": 0.5112540192926045,
+          "recall": 0.4005037783375315,
+          "f1": 0.4491525423728813,
+          "n_matched": 159,
+          "n_spurious": 152,
+          "n_missed": 238
+        },
+        "0.6": {
+          "precision": 0.40836012861736337,
+          "recall": 0.3198992443324937,
+          "f1": 0.3587570621468927,
+          "n_matched": 127,
+          "n_spurious": 184,
+          "n_missed": 270
+        },
+        "0.7": {
+          "precision": 0.3440514469453376,
+          "recall": 0.2695214105793451,
+          "f1": 0.3022598870056497,
+          "n_matched": 107,
+          "n_spurious": 204,
+          "n_missed": 290
+        }
+      },
+      "reference_spell_categories": {
+        "matched": 159,
+        "missed_team_possession": 92,
+        "boundary_or_duration_mismatch": 70,
+        "merged_prediction_overlap": 65,
+        "fragmented_or_boundary_mismatch": 5,
+        "predicted_dead_instead_of_possession": 4,
+        "unanswered_reference_run": 2
+      },
+      "merge_bridge_categories": {
+        "merged_across_opponent_possession": 46
+      },
+      "dead_reference_available": false,
+      "stoppage_categories": null,
+      "reference_stoppage_frames": null,
+      "raw_X_on_scored_frames": 2178,
+      "matched_spell_internal_endpoint_errors": {
+        "endpoint_observations": 190,
+        "mean_absolute_seconds": 2.4073684210526314,
+        "median_absolute_seconds": 1.45,
+        "max_absolute_seconds": 26.3,
+        "shared_transition_can_contribute_two_spell_endpoints": true
+      },
+      "diagnostic_only": true,
+      "prediction_modified": false,
+      "unmatched_spells_with_control_support": 150,
+      "scope": "development",
+      "tracking_sha256": "13eb83329814ed5f5d73da8f8ab5c5979d6c8a7858e89e28a7fa8072f91fb250"
+    },
+    "1925299": {
+      "scored_frames": 35589,
+      "scored_runs": 104,
+      "reference_spells": 335,
+      "predicted_spells": 264,
+      "spellF1": 0.5001669449081804,
+      "per_iou": {
+        "0.3": {
+          "precision": 0.7159090909090909,
+          "recall": 0.564179104477612,
+          "f1": 0.6310517529215359,
+          "n_matched": 189,
+          "n_spurious": 75,
+          "n_missed": 146
+        },
+        "0.4": {
+          "precision": 0.6590909090909091,
+          "recall": 0.5194029850746269,
+          "f1": 0.5809682804674459,
+          "n_matched": 174,
+          "n_spurious": 90,
+          "n_missed": 161
+        },
+        "0.5": {
+          "precision": 0.5871212121212122,
+          "recall": 0.4626865671641791,
+          "f1": 0.5175292153589316,
+          "n_matched": 155,
+          "n_spurious": 109,
+          "n_missed": 180
+        },
+        "0.6": {
+          "precision": 0.4810606060606061,
+          "recall": 0.37910447761194027,
+          "f1": 0.4240400667779633,
+          "n_matched": 127,
+          "n_spurious": 137,
+          "n_missed": 208
+        },
+        "0.7": {
+          "precision": 0.3939393939393939,
+          "recall": 0.31044776119402984,
+          "f1": 0.34724540901502504,
+          "n_matched": 104,
+          "n_spurious": 160,
+          "n_missed": 231
+        }
+      },
+      "reference_spell_categories": {
+        "matched": 155,
+        "missed_team_possession": 75,
+        "merged_prediction_overlap": 54,
+        "boundary_or_duration_mismatch": 44,
+        "predicted_dead_instead_of_possession": 4,
+        "unanswered_reference_run": 3
+      },
+      "merge_bridge_categories": {
+        "merged_across_opponent_possession": 47
+      },
+      "dead_reference_available": false,
+      "stoppage_categories": null,
+      "reference_stoppage_frames": null,
+      "raw_X_on_scored_frames": 2037,
+      "matched_spell_internal_endpoint_errors": {
+        "endpoint_observations": 190,
+        "mean_absolute_seconds": 3.203684210526316,
+        "median_absolute_seconds": 1.5,
+        "max_absolute_seconds": 28.4,
+        "shared_transition_can_contribute_two_spell_endpoints": true
+      },
+      "diagnostic_only": true,
+      "prediction_modified": false,
+      "unmatched_spells_with_control_support": 92,
+      "scope": "development",
+      "tracking_sha256": "48528be40ad82fa3e2b232e1af8d311705f7d6d119925ef199d2b59ea36fd3c9"
+    },
+    "2006229": {
+      "scored_frames": 32452,
+      "scored_runs": 105,
+      "reference_spells": 337,
+      "predicted_spells": 254,
+      "spellF1": 0.44873096446700506,
+      "per_iou": {
+        "0.3": {
+          "precision": 0.6653543307086615,
+          "recall": 0.5014836795252225,
+          "f1": 0.571912013536379,
+          "n_matched": 169,
+          "n_spurious": 85,
+          "n_missed": 168
+        },
+        "0.4": {
+          "precision": 0.5984251968503937,
+          "recall": 0.45103857566765576,
+          "f1": 0.5143824027072759,
+          "n_matched": 152,
+          "n_spurious": 102,
+          "n_missed": 185
+        },
+        "0.5": {
+          "precision": 0.5354330708661418,
+          "recall": 0.4035608308605341,
+          "f1": 0.4602368866328257,
+          "n_matched": 136,
+          "n_spurious": 118,
+          "n_missed": 201
+        },
+        "0.6": {
+          "precision": 0.43700787401574803,
+          "recall": 0.3293768545994065,
+          "f1": 0.3756345177664974,
+          "n_matched": 111,
+          "n_spurious": 143,
+          "n_missed": 226
+        },
+        "0.7": {
+          "precision": 0.37401574803149606,
+          "recall": 0.2818991097922849,
+          "f1": 0.32148900169204736,
+          "n_matched": 95,
+          "n_spurious": 159,
+          "n_missed": 242
+        }
+      },
+      "reference_spell_categories": {
+        "matched": 136,
+        "missed_team_possession": 88,
+        "merged_prediction_overlap": 65,
+        "boundary_or_duration_mismatch": 37,
+        "fragmented_or_boundary_mismatch": 6,
+        "unanswered_reference_run": 3,
+        "predicted_dead_instead_of_possession": 2
+      },
+      "merge_bridge_categories": {
+        "merged_across_opponent_possession": 51
+      },
+      "dead_reference_available": false,
+      "stoppage_categories": null,
+      "reference_stoppage_frames": null,
+      "raw_X_on_scored_frames": 1795,
+      "matched_spell_internal_endpoint_errors": {
+        "endpoint_observations": 155,
+        "mean_absolute_seconds": 3.158709677419355,
+        "median_absolute_seconds": 1.6,
+        "max_absolute_seconds": 28.2,
+        "shared_transition_can_contribute_two_spell_endpoints": true
+      },
+      "diagnostic_only": true,
+      "prediction_modified": false,
+      "unmatched_spells_with_control_support": 121,
+      "scope": "development",
+      "tracking_sha256": "3ee193ba01f1fe2cbce087eca8a881c21b8b0ea3485ae6c3d7e32e8b2f51e738"
+    },
+    "2006363": {
+      "scored_frames": 32854,
+      "scored_runs": 105,
+      "reference_spells": 358,
+      "predicted_spells": 247,
+      "spellF1": 0.4383471074380165,
+      "per_iou": {
+        "0.3": {
+          "precision": 0.6882591093117408,
+          "recall": 0.4748603351955307,
+          "f1": 0.5619834710743802,
+          "n_matched": 170,
+          "n_spurious": 77,
+          "n_missed": 188
+        },
+        "0.4": {
+          "precision": 0.6356275303643725,
+          "recall": 0.43854748603351956,
+          "f1": 0.5190082644628099,
+          "n_matched": 157,
+          "n_spurious": 90,
+          "n_missed": 201
+        },
+        "0.5": {
+          "precision": 0.5506072874493927,
+          "recall": 0.37988826815642457,
+          "f1": 0.44958677685950416,
+          "n_matched": 136,
+          "n_spurious": 111,
+          "n_missed": 222
+        },
+        "0.6": {
+          "precision": 0.46558704453441296,
+          "recall": 0.32122905027932963,
+          "f1": 0.38016528925619836,
+          "n_matched": 115,
+          "n_spurious": 132,
+          "n_missed": 243
+        },
+        "0.7": {
+          "precision": 0.3441295546558704,
+          "recall": 0.23743016759776536,
+          "f1": 0.2809917355371901,
+          "n_matched": 85,
+          "n_spurious": 162,
+          "n_missed": 273
+        }
+      },
+      "reference_spell_categories": {
+        "matched": 136,
+        "missed_team_possession": 100,
+        "merged_prediction_overlap": 84,
+        "boundary_or_duration_mismatch": 30,
+        "fragmented_or_boundary_mismatch": 5,
+        "predicted_dead_instead_of_possession": 2,
+        "unanswered_reference_run": 1
+      },
+      "merge_bridge_categories": {
+        "merged_across_opponent_possession": 62
+      },
+      "dead_reference_available": false,
+      "stoppage_categories": null,
+      "reference_stoppage_frames": null,
+      "raw_X_on_scored_frames": 1981,
+      "matched_spell_internal_endpoint_errors": {
+        "endpoint_observations": 153,
+        "mean_absolute_seconds": 3.463398692810457,
+        "median_absolute_seconds": 2.4,
+        "max_absolute_seconds": 23.2,
+        "shared_transition_can_contribute_two_spell_endpoints": true
+      },
+      "diagnostic_only": true,
+      "prediction_modified": false,
+      "unmatched_spells_with_control_support": 132,
+      "scope": "development",
+      "tracking_sha256": "61dfdbd83f8e654127b249b8503f062338c14ec0c9e65404bcf70fb7c1346bd4"
+    },
+    "2015213": {
+      "scored_frames": 31349,
+      "scored_runs": 140,
+      "reference_spells": 371,
+      "predicted_spells": 307,
+      "spellF1": 0.423598820058997,
+      "per_iou": {
+        "0.3": {
+          "precision": 0.6254071661237784,
+          "recall": 0.5175202156334232,
+          "f1": 0.5663716814159292,
+          "n_matched": 192,
+          "n_spurious": 115,
+          "n_missed": 179
+        },
+        "0.4": {
+          "precision": 0.5602605863192183,
+          "recall": 0.4636118598382749,
+          "f1": 0.5073746312684366,
+          "n_matched": 172,
+          "n_spurious": 135,
+          "n_missed": 199
+        },
+        "0.5": {
+          "precision": 0.4592833876221498,
+          "recall": 0.38005390835579517,
+          "f1": 0.415929203539823,
+          "n_matched": 141,
+          "n_spurious": 166,
+          "n_missed": 230
+        },
+        "0.6": {
+          "precision": 0.38436482084690554,
+          "recall": 0.31805929919137466,
+          "f1": 0.3480825958702065,
+          "n_matched": 118,
+          "n_spurious": 189,
+          "n_missed": 253
+        },
+        "0.7": {
+          "precision": 0.30944625407166126,
+          "recall": 0.2560646900269542,
+          "f1": 0.28023598820059,
+          "n_matched": 95,
+          "n_spurious": 212,
+          "n_missed": 276
+        }
+      },
+      "reference_spell_categories": {
+        "matched": 141,
+        "missed_team_possession": 96,
+        "boundary_or_duration_mismatch": 64,
+        "merged_prediction_overlap": 53,
+        "fragmented_or_boundary_mismatch": 7,
+        "unanswered_reference_run": 5,
+        "predicted_dead_instead_of_possession": 5
+      },
+      "merge_bridge_categories": {
+        "merged_across_opponent_possession": 42
+      },
+      "dead_reference_available": false,
+      "stoppage_categories": null,
+      "reference_stoppage_frames": null,
+      "raw_X_on_scored_frames": 2164,
+      "matched_spell_internal_endpoint_errors": {
+        "endpoint_observations": 151,
+        "mean_absolute_seconds": 2.831788079470199,
+        "median_absolute_seconds": 1.8,
+        "max_absolute_seconds": 15.9,
+        "shared_transition_can_contribute_two_spell_endpoints": true
+      },
+      "diagnostic_only": true,
+      "prediction_modified": false,
+      "unmatched_spells_with_control_support": 139,
+      "scope": "development",
+      "tracking_sha256": "413990d0024d84856ce1f2a16866b8887472c0cea22c61caef0d1f46505a609e"
+    },
+    "1927964": {
+      "scored_frames": 37398,
+      "scored_runs": 86,
+      "reference_spells": 290,
+      "predicted_spells": 216,
+      "spellF1": 0.5154150197628459,
+      "per_iou": {
+        "0.3": {
+          "precision": 0.7314814814814815,
+          "recall": 0.5448275862068965,
+          "f1": 0.624505928853755,
+          "n_matched": 158,
+          "n_spurious": 58,
+          "n_missed": 132
+        },
+        "0.4": {
+          "precision": 0.6898148148148148,
+          "recall": 0.5137931034482759,
+          "f1": 0.5889328063241106,
+          "n_matched": 149,
+          "n_spurious": 67,
+          "n_missed": 141
+        },
+        "0.5": {
+          "precision": 0.6157407407407407,
+          "recall": 0.4586206896551724,
+          "f1": 0.525691699604743,
+          "n_matched": 133,
+          "n_spurious": 83,
+          "n_missed": 157
+        },
+        "0.6": {
+          "precision": 0.5324074074074074,
+          "recall": 0.39655172413793105,
+          "f1": 0.4545454545454546,
+          "n_matched": 115,
+          "n_spurious": 101,
+          "n_missed": 175
+        },
+        "0.7": {
+          "precision": 0.44907407407407407,
+          "recall": 0.33448275862068966,
+          "f1": 0.383399209486166,
+          "n_matched": 97,
+          "n_spurious": 119,
+          "n_missed": 193
+        }
+      },
+      "reference_spell_categories": {
+        "matched": 133,
+        "missed_team_possession": 66,
+        "merged_prediction_overlap": 57,
+        "boundary_or_duration_mismatch": 28,
+        "predicted_dead_instead_of_possession": 3,
+        "fragmented_or_boundary_mismatch": 2,
+        "unanswered_reference_run": 1
+      },
+      "merge_bridge_categories": {
+        "merged_across_opponent_possession": 45
+      },
+      "dead_reference_available": false,
+      "stoppage_categories": null,
+      "reference_stoppage_frames": null,
+      "raw_X_on_scored_frames": 1735,
+      "matched_spell_internal_endpoint_errors": {
+        "endpoint_observations": 158,
+        "mean_absolute_seconds": 3.521518987341772,
+        "median_absolute_seconds": 2.0,
+        "max_absolute_seconds": 31.3,
+        "shared_transition_can_contribute_two_spell_endpoints": true
+      },
+      "diagnostic_only": true,
+      "prediction_modified": false,
+      "unmatched_spells_with_control_support": 88,
+      "scope": "development",
+      "tracking_sha256": "858c7a756ca3d33017f864775af5999d2c0f364e58ab60ae040c8b9ebab17827"
+    },
+    "1959846": {
+      "scored_frames": 31073,
+      "scored_runs": 106,
+      "reference_spells": 323,
+      "predicted_spells": 263,
+      "spellF1": 0.4477815699658703,
+      "per_iou": {
+        "0.3": {
+          "precision": 0.6463878326996197,
+          "recall": 0.5263157894736842,
+          "f1": 0.5802047781569967,
+          "n_matched": 170,
+          "n_spurious": 93,
+          "n_missed": 153
+        },
+        "0.4": {
+          "precision": 0.5855513307984791,
+          "recall": 0.47678018575851394,
+          "f1": 0.5255972696245733,
+          "n_matched": 154,
+          "n_spurious": 109,
+          "n_missed": 169
+        },
+        "0.5": {
+          "precision": 0.5209125475285171,
+          "recall": 0.4241486068111455,
+          "f1": 0.46757679180887374,
+          "n_matched": 137,
+          "n_spurious": 126,
+          "n_missed": 186
+        },
+        "0.6": {
+          "precision": 0.4144486692015209,
+          "recall": 0.33746130030959753,
+          "f1": 0.37201365187713314,
+          "n_matched": 109,
+          "n_spurious": 154,
+          "n_missed": 214
+        },
+        "0.7": {
+          "precision": 0.3269961977186312,
+          "recall": 0.26625386996904027,
+          "f1": 0.2935153583617747,
+          "n_matched": 86,
+          "n_spurious": 177,
+          "n_missed": 237
+        }
+      },
+      "reference_spell_categories": {
+        "matched": 137,
+        "missed_team_possession": 76,
+        "merged_prediction_overlap": 62,
+        "boundary_or_duration_mismatch": 41,
+        "fragmented_or_boundary_mismatch": 6,
+        "predicted_dead_instead_of_possession": 1
+      },
+      "merge_bridge_categories": {
+        "merged_across_opponent_possession": 47
+      },
+      "dead_reference_available": false,
+      "stoppage_categories": null,
+      "reference_stoppage_frames": null,
+      "raw_X_on_scored_frames": 2006,
+      "matched_spell_internal_endpoint_errors": {
+        "endpoint_observations": 160,
+        "mean_absolute_seconds": 2.944375,
+        "median_absolute_seconds": 1.7,
+        "max_absolute_seconds": 18.6,
+        "shared_transition_can_contribute_two_spell_endpoints": true
+      },
+      "diagnostic_only": true,
+      "prediction_modified": false,
+      "unmatched_spells_with_control_support": 120,
+      "scope": "development",
+      "tracking_sha256": "5ba2d87f6fd1ba3138301b369bd9266be69416a2d799a3fba5b5ec8a52e1284b"
+    },
+    "1899585": {
+      "scored_frames": 29576,
+      "scored_runs": 122,
+      "reference_spells": 327,
+      "predicted_spells": 267,
+      "spellF1": 0.48417508417508415,
+      "per_iou": {
+        "0.3": {
+          "precision": 0.704119850187266,
+          "recall": 0.5749235474006116,
+          "f1": 0.632996632996633,
+          "n_matched": 188,
+          "n_spurious": 79,
+          "n_missed": 139
+        },
+        "0.4": {
+          "precision": 0.6404494382022472,
+          "recall": 0.5229357798165137,
+          "f1": 0.5757575757575757,
+          "n_matched": 171,
+          "n_spurious": 96,
+          "n_missed": 156
+        },
+        "0.5": {
+          "precision": 0.5430711610486891,
+          "recall": 0.4434250764525994,
+          "f1": 0.48821548821548827,
+          "n_matched": 145,
+          "n_spurious": 122,
+          "n_missed": 182
+        },
+        "0.6": {
+          "precision": 0.4419475655430712,
+          "recall": 0.36085626911314983,
+          "f1": 0.39730639730639733,
+          "n_matched": 118,
+          "n_spurious": 149,
+          "n_missed": 209
+        },
+        "0.7": {
+          "precision": 0.36329588014981273,
+          "recall": 0.2966360856269113,
+          "f1": 0.3265993265993266,
+          "n_matched": 97,
+          "n_spurious": 170,
+          "n_missed": 230
+        }
+      },
+      "reference_spell_categories": {
+        "matched": 145,
+        "missed_team_possession": 73,
+        "merged_prediction_overlap": 52,
+        "boundary_or_duration_mismatch": 44,
+        "predicted_dead_instead_of_possession": 7,
+        "fragmented_or_boundary_mismatch": 6
+      },
+      "merge_bridge_categories": {
+        "merged_across_opponent_possession": 33
+      },
+      "dead_reference_available": false,
+      "stoppage_categories": null,
+      "reference_stoppage_frames": null,
+      "raw_X_on_scored_frames": 1929,
+      "matched_spell_internal_endpoint_errors": {
+        "endpoint_observations": 148,
+        "mean_absolute_seconds": 2.6202702702702707,
+        "median_absolute_seconds": 1.6,
+        "max_absolute_seconds": 23.0,
+        "shared_transition_can_contribute_two_spell_endpoints": true
+      },
+      "diagnostic_only": true,
+      "prediction_modified": false,
+      "unmatched_spells_with_control_support": 99,
+      "scope": "development",
+      "tracking_sha256": "90b6289ec2181192d1793ec6240fbbe8225ff0219c7956710c6278c31a661100"
+    },
+    "2007721": {
+      "scored_frames": 34069,
+      "scored_runs": 108,
+      "reference_spells": 330,
+      "predicted_spells": 266,
+      "spellF1": 0.46375838926174495,
+      "per_iou": {
+        "0.3": {
+          "precision": 0.6616541353383458,
+          "recall": 0.5333333333333333,
+          "f1": 0.5906040268456376,
+          "n_matched": 176,
+          "n_spurious": 90,
+          "n_missed": 154
+        },
+        "0.4": {
+          "precision": 0.6127819548872181,
+          "recall": 0.49393939393939396,
+          "f1": 0.546979865771812,
+          "n_matched": 163,
+          "n_spurious": 103,
+          "n_missed": 167
+        },
+        "0.5": {
+          "precision": 0.5338345864661654,
+          "recall": 0.4303030303030303,
+          "f1": 0.47651006711409394,
+          "n_matched": 142,
+          "n_spurious": 124,
+          "n_missed": 188
+        },
+        "0.6": {
+          "precision": 0.43609022556390975,
+          "recall": 0.3515151515151515,
+          "f1": 0.389261744966443,
+          "n_matched": 116,
+          "n_spurious": 150,
+          "n_missed": 214
+        },
+        "0.7": {
+          "precision": 0.3533834586466165,
+          "recall": 0.28484848484848485,
+          "f1": 0.31543624161073824,
+          "n_matched": 94,
+          "n_spurious": 172,
+          "n_missed": 236
+        }
+      },
+      "reference_spell_categories": {
+        "matched": 142,
+        "missed_team_possession": 79,
+        "merged_prediction_overlap": 54,
+        "boundary_or_duration_mismatch": 41,
+        "fragmented_or_boundary_mismatch": 6,
+        "predicted_dead_instead_of_possession": 5,
+        "unanswered_reference_run": 3
+      },
+      "merge_bridge_categories": {
+        "merged_across_opponent_possession": 45
+      },
+      "dead_reference_available": false,
+      "stoppage_categories": null,
+      "reference_stoppage_frames": null,
+      "raw_X_on_scored_frames": 1798,
+      "matched_spell_internal_endpoint_errors": {
+        "endpoint_observations": 173,
+        "mean_absolute_seconds": 3.1595375722543353,
+        "median_absolute_seconds": 2.0,
+        "max_absolute_seconds": 31.6,
+        "shared_transition_can_contribute_two_spell_endpoints": true
+      },
+      "diagnostic_only": true,
+      "prediction_modified": false,
+      "unmatched_spells_with_control_support": 105,
+      "scope": "development",
+      "tracking_sha256": "fea913b8d4cbde8d85c6bdf5f1a4b3fd203b78227e976a171c8ab0946705d378"
+    },
+    "2010085": {
+      "scored_frames": 32972,
+      "scored_runs": 96,
+      "reference_spells": 296,
+      "predicted_spells": 223,
+      "spellF1": 0.4323699421965318,
+      "per_iou": {
+        "0.3": {
+          "precision": 0.6278026905829597,
+          "recall": 0.47297297297297297,
+          "f1": 0.5394990366088632,
+          "n_matched": 140,
+          "n_spurious": 83,
+          "n_missed": 156
+        },
+        "0.4": {
+          "precision": 0.5919282511210763,
+          "recall": 0.44594594594594594,
+          "f1": 0.508670520231214,
+          "n_matched": 132,
+          "n_spurious": 91,
+          "n_missed": 164
+        },
+        "0.5": {
+          "precision": 0.5112107623318386,
+          "recall": 0.38513513513513514,
+          "f1": 0.43930635838150284,
+          "n_matched": 114,
+          "n_spurious": 109,
+          "n_missed": 182
+        },
+        "0.6": {
+          "precision": 0.4260089686098655,
+          "recall": 0.32094594594594594,
+          "f1": 0.36608863198458574,
+          "n_matched": 95,
+          "n_spurious": 128,
+          "n_missed": 201
+        },
+        "0.7": {
+          "precision": 0.35874439461883406,
+          "recall": 0.2702702702702703,
+          "f1": 0.30828516377649323,
+          "n_matched": 80,
+          "n_spurious": 143,
+          "n_missed": 216
+        }
+      },
+      "reference_spell_categories": {
+        "matched": 114,
+        "missed_team_possession": 77,
+        "merged_prediction_overlap": 59,
+        "boundary_or_duration_mismatch": 38,
+        "fragmented_or_boundary_mismatch": 4,
+        "predicted_dead_instead_of_possession": 3,
+        "unanswered_reference_run": 1
+      },
+      "merge_bridge_categories": {
+        "merged_across_opponent_possession": 48
+      },
+      "dead_reference_available": false,
+      "stoppage_categories": null,
+      "reference_stoppage_frames": null,
+      "raw_X_on_scored_frames": 1702,
+      "matched_spell_internal_endpoint_errors": {
+        "endpoint_observations": 132,
+        "mean_absolute_seconds": 3.8022727272727272,
+        "median_absolute_seconds": 1.9,
+        "max_absolute_seconds": 30.4,
+        "shared_transition_can_contribute_two_spell_endpoints": true
+      },
+      "diagnostic_only": true,
+      "prediction_modified": false,
+      "unmatched_spells_with_control_support": 105,
+      "scope": "development",
+      "tracking_sha256": "04562d9754b2977c80430535e9b5733426bc4ce910db56fe7a3760876211ac5a"
+    },
+    "1886347": {
+      "scored_frames": 32100,
+      "scored_runs": 115,
+      "reference_spells": 346,
+      "predicted_spells": 243,
+      "spellF1": 0.4726655348047538,
+      "per_iou": {
+        "0.3": {
+          "precision": 0.7242798353909465,
+          "recall": 0.5086705202312138,
+          "f1": 0.597623089983022,
+          "n_matched": 176,
+          "n_spurious": 67,
+          "n_missed": 170
+        },
+        "0.4": {
+          "precision": 0.6666666666666666,
+          "recall": 0.4682080924855491,
+          "f1": 0.5500848896434635,
+          "n_matched": 162,
+          "n_spurious": 81,
+          "n_missed": 184
+        },
+        "0.5": {
+          "precision": 0.5967078189300411,
+          "recall": 0.4190751445086705,
+          "f1": 0.49235993208828516,
+          "n_matched": 145,
+          "n_spurious": 98,
+          "n_missed": 201
+        },
+        "0.6": {
+          "precision": 0.48559670781893005,
+          "recall": 0.34104046242774566,
+          "f1": 0.400679117147708,
+          "n_matched": 118,
+          "n_spurious": 125,
+          "n_missed": 228
+        },
+        "0.7": {
+          "precision": 0.39094650205761317,
+          "recall": 0.2745664739884393,
+          "f1": 0.3225806451612903,
+          "n_matched": 95,
+          "n_spurious": 148,
+          "n_missed": 251
+        }
+      },
+      "reference_spell_categories": {
+        "matched": 145,
+        "missed_team_possession": 93,
+        "merged_prediction_overlap": 67,
+        "boundary_or_duration_mismatch": 32,
+        "predicted_dead_instead_of_possession": 7,
+        "fragmented_or_boundary_mismatch": 2
+      },
+      "merge_bridge_categories": {
+        "merged_across_opponent_possession": 54
+      },
+      "dead_reference_available": false,
+      "stoppage_categories": null,
+      "reference_stoppage_frames": null,
+      "raw_X_on_scored_frames": 1806,
+      "matched_spell_internal_endpoint_errors": {
+        "endpoint_observations": 169,
+        "mean_absolute_seconds": 3.622485207100592,
+        "median_absolute_seconds": 2.3,
+        "max_absolute_seconds": 37.2,
+        "shared_transition_can_contribute_two_spell_endpoints": true
+      },
+      "diagnostic_only": true,
+      "prediction_modified": false,
+      "unmatched_spells_with_control_support": 116,
+      "scope": "development",
+      "tracking_sha256": "3577e2803da95390f8b2f85d47829eb55fbbfee6211c94adc65db0dc78e46b41"
+    }
+  },
+  "original_artifacts_unchanged": true,
+  "model_parameters_changed": false,
+  "public_used_for_tuning": false,
+  "comparison_matches_evaluated": false,
+  "limits": [
+    "Categories describe prediction/reference interval geometry, not proven physical causes.",
+    "Spell categories partition GT spells; merge bridges and D coverage overlap them and must not be added.",
+    "Public edge intervals are censored; candidate errors there are not full-spell boundary estimates.",
+    "External references have unknown gaps and no D labels; missed external stoppages cannot be measured."
+  ]
+}

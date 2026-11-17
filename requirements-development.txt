@@ -1,0 +1,8 @@
+# Optional exploratory tools, unused by the release pipeline. These unpinned
+# extras are not a reproducible release environment; freeze them before using
+# any of them in a submitted method. Installing an SDK does not authorize uploads.
+-r requirements-team.txt
+scikit-learn
+hmmlearn
+xgboost
+google-genai
