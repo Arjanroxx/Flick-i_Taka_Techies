@@ -111,6 +111,18 @@ def build_mask(config, spatial, events, *, fps=None, pitch=None):
 
         fast = speed_ok & ~outside[block] & (speed[block] >= thresholds["restart_speed"])
         moving[block] = speed_ok & ~outside[block] & (speed[block] > thresholds["stationary_speed"])
+        if thresholds.get('hold_confirmed_exit_until_motion', False):
+            # A ball placed back inside the pitch may still await a restart.
+            # Retain a confirmed exit through missing/quiet return frames, but
+            # release on the first reliable movement; do not wait for a fast kick.
+            holding = False
+            for frame in range(start, stop):
+                if boundary[frame]:
+                    holding = True
+                elif moving[frame]:
+                    holding = False
+                if holding:
+                    boundary_memory[frame] = True
         last_exit = np.maximum.accumulate(np.where(boundary[block], positions, start - 1))
         last_motion = np.maximum.accumulate(np.where(moving[block], positions, start - 1))
         for left, right in _runs(fast):
